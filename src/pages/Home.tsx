@@ -84,13 +84,15 @@ export const Home: React.FC = () => {
         scrollTrigger: {
           trigger: section,
           pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
           scrub: 1,
           snap: {
             snapTo: 1 / (totalPanels - 1),
             duration: { min: 0.2, max: 0.5 },
             delay: 0.1,
           },
-          end: () => `+=${section.offsetWidth * 2.8}`,
+          end: () => `+=${section.offsetWidth * 2.5}`,
           onUpdate: (self) => {
             const index = Math.min(
               Math.floor(self.progress * totalPanels),
@@ -371,13 +373,14 @@ export const Home: React.FC = () => {
       {/* 3. OUR PRODUCTS – PINNED HORIZONTAL SCROLL ON DESKTOP & SNAP CAROUSEL ON MOBILE */}
       <section
         ref={horizontalSectionRef}
-        className="relative py-20 lg:py-28 overflow-hidden transition-colors duration-700"
+        className="relative py-12 lg:py-6 lg:min-h-screen lg:h-screen lg:max-h-[960px] flex flex-col justify-center overflow-hidden transition-colors duration-700"
         style={{
           backgroundColor: `${activeAccent}0D`, // ~5% soft ambient tint
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 lg:mb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 lg:mb-6 shrink-0">
           <SectionHeading
+            compact
             badge="Farm Direct Collection"
             title="Harvested with Care, Roasted to Perfection"
             subtitle="Explore our artisanal range of nutrient-dense natural seeds. Single origin seeds and balanced multi-seed power blends for daily wellness."
@@ -386,15 +389,15 @@ export const Home: React.FC = () => {
         </div>
 
         {/* Desktop: GSAP Horizontal Track */}
-        <div className="hidden lg:block w-full overflow-hidden">
+        <div className="hidden lg:block w-full overflow-hidden shrink-0">
           <div
             ref={horizontalTrackRef}
-            className="flex items-center space-x-12 px-12 w-max"
+            className="flex items-center space-x-8 xl:space-x-12 px-8 lg:px-12 w-max"
           >
             {PRODUCTS.map((product, idx) => (
               <div
                 key={product.slug}
-                className="horizontal-panel w-[860px] flex-shrink-0"
+                className="horizontal-panel w-[820px] xl:w-[860px] flex-shrink-0"
               >
                 <ProductPanel product={product} index={idx} />
               </div>

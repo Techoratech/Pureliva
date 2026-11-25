@@ -10,6 +10,7 @@ interface SectionHeadingProps {
   align?: "left" | "center" | "right";
   className?: string;
   titleAs?: "h1" | "h2" | "h3";
+  compact?: boolean;
 }
 
 export const SectionHeading: React.FC<SectionHeadingProps> = ({
@@ -20,6 +21,7 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   align = "center",
   className = "",
   titleAs = "h2",
+  compact = false,
 }) => {
   const alignClass = {
     left: "text-left items-start",
@@ -28,21 +30,29 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
   }[align];
 
   return (
-    <div className={`flex flex-col max-w-3xl mb-12 md:mb-16 ${alignClass} ${className}`}>
+    <div
+      className={`flex flex-col max-w-3xl ${
+        compact ? "mb-4 lg:mb-6" : "mb-12 md:mb-16"
+      } ${alignClass} ${className}`}
+    >
       {badge && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-3"
+          className={compact ? "mb-1.5" : "mb-3"}
         >
           {badgeScript ? (
-            <span className="font-script text-2xl md:text-3xl text-pureliva-brown">
+            <span
+              className={`font-script text-pureliva-brown ${
+                compact ? "text-xl md:text-2xl" : "text-2xl md:text-3xl"
+              }`}
+            >
               {badge}
             </span>
           ) : (
-            <span className="inline-block text-xs uppercase tracking-widest font-semibold px-3.5 py-1 rounded-full bg-pureliva-green/10 text-pureliva-green">
+            <span className="inline-block text-[11px] uppercase tracking-widest font-semibold px-3 py-0.5 rounded-full bg-pureliva-green/10 text-pureliva-green">
               {badge}
             </span>
           )}
@@ -52,7 +62,11 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
       <RevealText
         as={titleAs}
         text={title}
-        className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-pureliva-heading leading-tight tracking-tight"
+        className={`font-heading font-bold text-pureliva-heading leading-tight tracking-tight ${
+          compact
+            ? "text-2xl sm:text-3xl lg:text-4xl"
+            : "text-3xl sm:text-4xl md:text-5xl"
+        }`}
       />
 
       {subtitle && (
@@ -61,7 +75,11 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-4 text-base md:text-lg text-pureliva-body font-light leading-relaxed max-w-2xl"
+          className={`text-pureliva-body font-light leading-relaxed max-w-2xl ${
+            compact
+              ? "mt-1.5 text-xs sm:text-sm"
+              : "mt-4 text-base md:text-lg"
+          }`}
         >
           {subtitle}
         </motion.p>
@@ -71,4 +89,3 @@ export const SectionHeading: React.FC<SectionHeadingProps> = ({
 };
 
 export default SectionHeading;
-

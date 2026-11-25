@@ -1,0 +1,380 @@
+{
+  "info": {
+    "name": "Pureliva Foods REST API",
+    "_postman_id": "a4d954e3-b0f3-4e89-a2e6-92c2a046c825",
+    "description": "Production REST API collection for Pureliva Foods (Public endpoints + Admin Operations).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "List Active Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "Get Product By Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/flax-seeds",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "flax-seeds"]
+            }
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": {\n    \"name\": \"Rahul Sharma\",\n    \"phone\": \"9876543210\",\n    \"email\": \"customer@example.com\"\n  },\n  \"address\": {\n    \"line1\": \"123 Green Avenue, Near Clock Tower\",\n    \"city\": \"Khandwa\",\n    \"state\": \"Madhya Pradesh\",\n    \"pincode\": \"450001\"\n  },\n  \"items\": [\n    {\n      \"slug\": \"flax-seeds\",\n      \"quantity\": 2\n    },\n    {\n      \"slug\": \"seed-mix\",\n      \"quantity\": 1\n    }\n  ],\n  \"paymentMethod\": \"WhatsApp\",\n  \"notes\": \"Please dispatch afternoon batch\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders"]
+            }
+          }
+        },
+        {
+          "name": "Track Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/orders/track?orderNumber=PUR-2026-000001&phone=9876543210",
+              "host": ["{{baseUrl}}"],
+              "path": ["orders", "track"],
+              "query": [
+                {
+                  "key": "orderNumber",
+                  "value": "PUR-2026-000001"
+                },
+                {
+                  "key": "phone",
+                  "value": "9876543210"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pooja Patel\",\n  \"email\": \"pooja@example.com\",\n  \"phone\": \"9876543211\",\n  \"subject\": \"Product inquiry\",\n  \"message\": \"Are these roasted seeds salted with sendha namak / rock salt?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contact",
+              "host": ["{{baseUrl}}"],
+              "path": ["contact"]
+            }
+          }
+        },
+        {
+          "name": "Submit Bulk / Export Enquiry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"David Miller\",\n  \"company\": \"Crown Organic Foods Ltd\",\n  \"country\": \"United Kingdom\",\n  \"product\": \"Chia Seeds\",\n  \"quantity\": \"10 Metric Tons\",\n  \"email\": \"david@crownorganics.co.uk\",\n  \"phone\": \"+442079460912\",\n  \"message\": \"Looking for 99.9% purity machine cleaned chia in 25kg multiwall paper bags. Please share CIF Felixstowe pricing.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bulk-enquiry",
+              "host": ["{{baseUrl}}"],
+              "path": ["bulk-enquiry"]
+            }
+          }
+        },
+        {
+          "name": "Subscribe to Newsletter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"wellness.lover@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/newsletter/subscribe",
+              "host": ["{{baseUrl}}"],
+              "path": ["newsletter", "subscribe"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Auth",
+      "item": [
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@purelivafoods.com\",\n  \"password\": \"your_admin_password_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Admin Me (Profile)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Admin Change Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"your_current_password\",\n  \"newPassword\": \"your_new_secure_password_8chars\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "auth", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "Admin Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "stats"]
+            }
+          }
+        },
+        {
+          "name": "List Orders (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/orders?page=1&limit=20&status=all",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "orders"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "status", "value": "all" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export Orders CSV",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/orders?export=csv",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "orders"],
+              "query": [
+                { "key": "export", "value": "csv" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"shipped\",\n  \"note\": \"Dispatched via DTDC Express, AWB #DTDC987654\",\n  \"notifyCustomer\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/orders/:orderId/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "orders", ":orderId", "status"],
+              "variable": [
+                { "key": "orderId", "value": "replace_with_mongo_order_id" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Admin Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Quick Update Price and Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 109,\n  \"mrp\": 135,\n  \"stock\": 150,\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/:productId",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", ":productId"],
+              "variable": [
+                { "key": "productId", "value": "replace_with_product_id" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Bulk Enquiries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/bulk-enquiries?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "bulk-enquiries"]
+            }
+          }
+        },
+        {
+          "name": "List Contact Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/contact-messages?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "contact-messages"]
+            }
+          }
+        },
+        {
+          "name": "List Subscribers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/subscribers?page=1&limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "subscribers"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

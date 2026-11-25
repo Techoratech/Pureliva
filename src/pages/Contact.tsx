@@ -1,32 +1,86 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { motion, AnimatePresence } from "framer-motion";
 import { SITE_CONFIG } from "../config/site";
 import SectionHeading from "../components/SectionHeading";
 import WhatsAppIcon from "../components/WhatsAppIcon";
 import { buildContactFormLink, ContactFormData } from "../lib/whatsapp";
-import { MapPin, Mail, Phone, Instagram, Send, Clock, ShieldCheck } from "lucide-react";
+import { api } from "../lib/api";
+import {
+  MapPin,
+  Mail,
+  Instagram,
+  CheckCircle2,
+  AlertCircle,
+  RotateCcw,
+} from "lucide-react";
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
+  const [mountTime] = useState<number>(() => Date.now());
+
+  const [formData, setFormData] = useState<ContactFormData & { _hp?: string }>({
     name: "",
     email: "",
     phone: "",
     subject: "Product Order & Delivery Inquiry",
     message: "",
+    _hp: "",
   });
 
+  const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.name.trim() || !formData.message.trim()) {
       setFormError("Please fill in your Name and Message.");
       return;
     }
-    setFormError("");
 
+    if (!formData.email?.trim() || !formData.email.includes("@")) {
+      setFormError("Please provide a valid email address.");
+      return;
+    }
+
+    setFormError("");
+    setLoading(true);
+
+    try {
+      await api.post("/contact", {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone?.trim() || undefined,
+        subject: formData.subject?.trim() || undefined,
+        message: formData.message.trim(),
+        _hp: formData._hp,
+        _timestamp: mountTime,
+      });
+
+      setSubmitted(true);
+    } catch (err: any) {
+      setFormError(err?.message || "Failed to submit message. Please try sending directly via WhatsApp.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenWhatsApp = () => {
     const waUrl = buildContactFormLink(formData);
     window.open(waUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const handleReset = () => {
+    setSubmitted(false);
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      subject: "Product Order & Delivery Inquiry",
+      message: "",
+      _hp: "",
+    });
   };
 
   return (
@@ -35,7 +89,7 @@ export const Contact: React.FC = () => {
         <title>Contact Us | Pureliva Foods, Khandwa</title>
         <meta
           name="description"
-          content="Get in touch with Pureliva Foods by Patidar Enterprises, Khandwa, Madhya Pradesh. Direct WhatsApp inquiries, order updates, and customer support."
+          content="Get in touch with Pureliva Foods by Patidar Enterprises, Khandwa, Madhya Pradesh. Direct inquiries, order updates, and customer support."
         />
         <link rel="canonical" href="https://purelivafoods.com/contact" />
       </Helmet>
@@ -103,7 +157,7 @@ export const Contact: React.FC = () => {
                         href={SITE_CONFIG.instagramUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-pureliva-heading font-medium hover:underline"
+                        className="hover:text-pureliva-green transition-colors"
                       >
                         {SITE_CONFIG.instagramHandle}
                       </a>
@@ -111,125 +165,167 @@ export const Contact: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-stone-200/60 flex items-center gap-3 text-xs text-pureliva-body">
-                  <Clock size={16} className="text-pureliva-green shrink-0" />
-                  <span>Support Hours: Mon – Sat, 9:00 AM – 7:00 PM IST</span>
-                </div>
-              </div>
-
-              {/* FSSAI Registration Card */}
-              <div className="p-6 rounded-3xl bg-white border border-stone-200 shadow-sm flex items-center gap-4">
-                <img
-                  src="/images/brand/fssai-logo.png"
-                  alt="FSSAI"
-                  className="h-10 w-auto object-contain"
-                />
-                <div className="text-xs text-pureliva-body">
-                  <span className="font-semibold text-pureliva-heading block">Food Safety Authority of India</span>
-                  <span className="font-mono text-pureliva-green font-bold">Lic. No. {SITE_CONFIG.fssaiNumber}</span>
+                <div className="pt-4 border-t border-stone-200/70 text-xs text-pureliva-muted space-y-1">
+                  <p>FSSAI License No: <strong>{SITE_CONFIG.fssaiNumber}</strong></p>
+                  <p>Operating Hours: Mon – Sat, 9:00 AM – 7:30 PM IST</p>
                 </div>
               </div>
             </div>
 
-            {/* Right: Contact Form */}
-            <div className="lg:col-span-7 p-8 sm:p-10 rounded-3xl bg-white border border-stone-200 shadow-soft-lg">
+            {/* Right: Message Form */}
+            <div className="lg:col-span-7 p-8 sm:p-10 rounded-3xl bg-white border border-gray-200 shadow-soft">
               <h3 className="font-heading text-2xl font-bold text-pureliva-heading mb-2">
                 Send Us a Message
               </h3>
-              <p className="text-sm text-pureliva-body mb-6">
-                Fill in the details below and click send. It will immediately open WhatsApp with your pre-formatted query.
+              <p className="text-xs sm:text-sm text-pureliva-body mb-6">
+                Fill the form below to message our customer support team directly. We acknowledge all messages instantly.
               </p>
 
-              {formError && (
-                <div className="mb-6 p-3.5 rounded-xl bg-red-50 text-red-600 text-xs font-medium">
-                  {formError}
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
-                    Your Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Ananya Sharma"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
-                      Email Address (Optional)
-                    </label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. ananya@example.com"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
-                      Phone Number (Optional)
-                    </label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="e.g. +91 98765 43210"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
-                    Subject
-                  </label>
-                  <select
-                    value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green bg-white"
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="p-8 rounded-2xl bg-pureliva-cream border border-emerald-200 text-center space-y-4"
                   >
-                    <option value="Product Order & Delivery Inquiry">Product Order & Delivery Inquiry</option>
-                    <option value="Pincode Serviceability Check">Pincode Serviceability Check</option>
-                    <option value="Bulk / B2B Supply Inquiry">Bulk / B2B Supply Inquiry</option>
-                    <option value="Product Feedback or Suggestions">Product Feedback or Suggestions</option>
-                    <option value="Other Inquiries">Other Inquiries</option>
-                  </select>
-                </div>
+                    <div className="w-14 h-14 rounded-full bg-emerald-100 text-pureliva-green flex items-center justify-center mx-auto">
+                      <CheckCircle2 size={32} />
+                    </div>
+                    <h4 className="font-heading text-xl font-bold text-pureliva-heading">
+                      Message Received!
+                    </h4>
+                    <p className="text-xs sm:text-sm text-pureliva-body max-w-md mx-auto">
+                      Thank you for contacting Pureliva Foods. Our support desk has logged your inquiry and sent an email acknowledgement.
+                    </p>
 
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
-                    Your Message *
-                  </label>
-                  <textarea
-                    rows={4}
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell us what you need, your delivery pincode, or specific questions..."
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
-                  />
-                </div>
+                    <div className="pt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                      <button
+                        type="button"
+                        onClick={handleOpenWhatsApp}
+                        className="px-6 py-3.5 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-soft"
+                      >
+                        <WhatsAppIcon size={18} fill="#FFFFFF" />
+                        <span>Continue to WhatsApp</span>
+                      </button>
 
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="w-full py-4 rounded-2xl bg-whatsapp hover:bg-whatsapp-hover text-white font-semibold text-base shadow-soft hover:shadow-soft-lg flex items-center justify-center gap-3 transition-all"
-                  >
-                    <WhatsAppIcon size={22} fill="#FFFFFF" />
-                    <span>Send via WhatsApp (+91 97531 64155)</span>
-                  </button>
-                </div>
-              </form>
+                      <button
+                        type="button"
+                        onClick={handleReset}
+                        className="px-6 py-3.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs sm:text-sm flex items-center justify-center gap-2"
+                      >
+                        <RotateCcw size={16} />
+                        <span>Send Another Message</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Honeypot hidden input */}
+                    <input
+                      type="text"
+                      name="_hp"
+                      value={formData._hp}
+                      onChange={(e) => setFormData({ ...formData, _hp: e.target.value })}
+                      className="hidden"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+
+                    {formError && (
+                      <div className="p-3.5 rounded-xl bg-red-50 text-red-600 text-xs flex items-center gap-2">
+                        <AlertCircle size={15} />
+                        <span>{formError}</span>
+                      </div>
+                    )}
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                        Your Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="e.g. Ananya Sharma"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                          Email Address *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder="e.g. ananya@example.com"
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                          Phone Number (Optional)
+                        </label>
+                        <input
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          placeholder="e.g. +91 98765 43210"
+                          className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                        Subject
+                      </label>
+                      <select
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green bg-white"
+                      >
+                        <option value="Product Order & Delivery Inquiry">Product Order & Delivery Inquiry</option>
+                        <option value="Pincode Serviceability Check">Pincode Serviceability Check</option>
+                        <option value="Bulk / B2B Supply Inquiry">Bulk / B2B Supply Inquiry</option>
+                        <option value="Product Feedback or Suggestions">Product Feedback or Suggestions</option>
+                        <option value="Other Inquiries">Other Inquiries</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">
+                        Your Message *
+                      </label>
+                      <textarea
+                        rows={4}
+                        required
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        placeholder="Tell us what you need, your delivery pincode, or specific questions..."
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-pureliva-green"
+                      />
+                    </div>
+
+                    <div className="pt-2">
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-4 rounded-2xl bg-whatsapp hover:bg-whatsapp-hover text-white font-semibold text-base shadow-soft hover:shadow-soft-lg flex items-center justify-center gap-3 transition-all disabled:opacity-50"
+                      >
+                        <WhatsAppIcon size={22} fill="#FFFFFF" />
+                        <span>{loading ? "Submitting Message..." : "Submit & Connect on WhatsApp"}</span>
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -262,4 +358,3 @@ export const Contact: React.FC = () => {
 };
 
 export default Contact;
-
