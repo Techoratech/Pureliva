@@ -46,6 +46,18 @@ export const ProductDetail: React.FC = () => {
     setQuantity(1);
     setIsZoomed(false);
     window.scrollTo(0, 0);
+
+    // Save to recently viewed
+    if (slug) {
+      try {
+        const stored = localStorage.getItem("pureliva_recently_viewed");
+        const list: string[] = stored ? JSON.parse(stored) : [];
+        const updated = [slug, ...list.filter((s) => s !== slug)].slice(0, 8);
+        localStorage.setItem("pureliva_recently_viewed", JSON.stringify(updated));
+      } catch (e) {
+        // ignore storage errors
+      }
+    }
   }, [slug]);
 
   if (!product) {

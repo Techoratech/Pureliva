@@ -1,11 +1,24 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { PRODUCTS, CATEGORIES, EXTENDED_PORTFOLIO, Product } from "../data/products";
 import ProductCard from "../components/ProductCard";
-import SectionHeading from "../components/SectionHeading";
-import { Search, Filter, ArrowUpDown, Sparkles, Clock, Leaf, ShieldCheck } from "lucide-react";
+import {
+  Search,
+  Filter,
+  ArrowUpDown,
+  Sparkles,
+  Clock,
+  Leaf,
+  ShieldCheck,
+  ChevronRight,
+  LayoutGrid,
+  Grid,
+  Check,
+  X,
+  SlidersHorizontal,
+} from "lucide-react";
 
 export const Collections: React.FC = () => {
   const { category: paramCategory } = useParams<{ category?: string }>();
@@ -20,14 +33,44 @@ export const Collections: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("featured");
+  const [gridCols, setGridCols] = useState<2 | 3 | 4>(3);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<string>("all");
 
-  // Filter products by category & search
+  // Recently viewed products from localStorage
+  const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("pureliva_recently_viewed");
+      if (stored) {
+        const slugs: string[] = JSON.parse(stored);
+        const prods = slugs
+          .map((s) => PRODUCTS.find((p) => p.slug === s))
+          .filter(Boolean) as Product[];
+        setRecentlyViewed(prods.slice(0, 4));
+      } else {
+        // Fallback to top 3 products
+        setRecentlyViewed(PRODUCTS.slice(0, 3));
+      }
+    } catch {
+      setRecentlyViewed(PRODUCTS.slice(0, 3));
+    }
+  }, []);
+
+  // Filter products by category, search, stock, and size
   const filteredProducts = useMemo(() => {
     let list = [...PRODUCTS];
 
     // Category filter
     if (activeCategory !== "All" && activeCategory !== "All Products") {
       list = list.filter((p) => p.category === activeCategory);
+    }
+
+    // Size filter
+    if (selectedSize !== "all") {
+      list = list.filter((p) => p.netWeight === selectedSize);
     }
 
     // Search query
@@ -52,7 +95,7 @@ export const Collections: React.FC = () => {
     }
 
     return list;
-  }, [activeCategory, searchQuery, sortBy]);
+  }, [activeCategory, searchQuery, sortBy, selectedSize]);
 
   return (
     <>
@@ -60,169 +103,392 @@ export const Collections: React.FC = () => {
         <title>All Products & Collections | Pureliva Foods</title>
         <meta
           name="description"
-          content="Explore Pureliva's complete range of wholesome natural seeds — Chia, Pumpkin, Sunflower, Flax and 6-in-1 Seed Mix. 100% natural with no artificial additives."
+          content="Explore Pureliva's complete range of wholesome natural seeds — Chia, Pumpkin, Sunflower, Flax and 5-in-1 Seed Mix. 100% natural with no artificial additives."
         />
         <link rel="canonical" href="https://purelivafoods.com/collections" />
       </Helmet>
 
-      <div className="pt-32 pb-24 min-h-screen bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <SectionHeading
-            badge="Our Collections"
-            title="Wholesome Natural Seeds"
-            subtitle="Explore our premium 100g resealable zipper packs. Grown with agricultural care, cleaned without chemicals, and packed for everyday vitality."
-            align="center"
-          />
+      <div className="pt-28 sm:pt-32 pb-24 min-h-screen bg-white">
+        {/* Breadcrumb Bar */}
+        <div className="bg-[#F7F3E8] py-3 border-b border-stone-200/60 mb-8">
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="flex items-center gap-2 text-xs text-stone-500 font-medium">
+              <Link to="/" className="hover:text-[#2E7D32] transition-colors">
+                Home
+              </Link>
+              <ChevronRight size={13} className="text-stone-400" />
+              <Link to="/collections" className="hover:text-[#2E7D32] transition-colors">
+                Collections
+              </Link>
+              {activeCategory !== "All" && (
+                <>
+                  <ChevronRight size={13} className="text-stone-400" />
+                  <span className="text-[#1E2140] font-bold">{activeCategory}</span>
+                </>
+              )}
+            </nav>
+          </div>
+        </div>
 
-          {/* Controls Bar: Category Tabs, Search & Sort */}
-          <div className="mt-10 mb-8 space-y-4">
-            {/* Category Pills */}
-            <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-              {CATEGORIES.map((cat) => {
-                const isSelected =
-                  (cat.slug === "all" && (activeCategory === "All" || activeCategory === "All Products")) ||
-                  activeCategory === cat.name;
-
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => {
-                      if (cat.available) {
-                        setActiveCategory(cat.slug === "all" ? "All" : cat.name);
-                      }
-                    }}
-                    className={`relative whitespace-nowrap px-4 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 flex items-center gap-1.5 ${
-                      !cat.available
-                        ? "opacity-50 cursor-not-allowed bg-stone-100 text-stone-400"
-                        : isSelected
-                        ? "text-white shadow-soft bg-pureliva-green"
-                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
-                    }`}
-                  >
-                    <span>{cat.name}</span>
-                    {cat.badge && (
-                      <span className="text-[9px] bg-stone-200 text-stone-600 px-1.5 py-0.2 rounded-full uppercase font-bold">
-                        {cat.badge}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Search Input & Sort Dropdown */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-              {/* Search input */}
-              <div className="relative w-full sm:w-80">
-                <Search
-                  size={16}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400"
-                />
-                <input
-                  type="text"
-                  placeholder="Search collections..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-stone-200 text-xs sm:text-sm focus:outline-none focus:border-pureliva-green bg-stone-50/50"
-                />
-              </div>
-
-              {/* Product Counter and Sort */}
-              <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3">
-                <span className="text-xs text-stone-500 font-medium">
-                  Showing <strong className="text-stone-800">{filteredProducts.length}</strong> items
-                </span>
-
-                <div className="flex items-center gap-1.5 bg-stone-50 border border-stone-200 rounded-2xl px-3 py-1.5">
-                  <ArrowUpDown size={13} className="text-stone-400" />
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-transparent text-xs font-semibold text-stone-700 focus:outline-none cursor-pointer"
-                  >
-                    <option value="featured">Sort: Featured</option>
-                    <option value="name-asc">Sort: Name (A to Z)</option>
-                    <option value="price-asc">Sort: Price (Low to High)</option>
-                    <option value="price-desc">Sort: Price (High to Low)</option>
-                  </select>
-                </div>
-              </div>
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Collection Header Banner */}
+          <div className="rounded-3xl bg-gradient-to-r from-[#1E2140] to-[#2E7D32] p-8 sm:p-10 text-white mb-10 shadow-soft relative overflow-hidden">
+            <div className="max-w-2xl space-y-2 relative z-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+                100% Natural Farm Direct
+              </span>
+              <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white">
+                {activeCategory === "All" ? "All Natural Seeds" : activeCategory}
+              </h1>
+              <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
+                Wholesome raw and slow dry-roasted seeds in convenient 100g resealable pouches. Zero added white sugar, zero chemical preservatives, high in plant protein and dietary fibre.
+              </p>
             </div>
           </div>
 
-          {/* Product Grid: 4 columns laptop, 2 columns mobile */}
-          {filteredProducts.length === 0 ? (
-            <div className="py-20 text-center space-y-3">
-              <p className="font-heading text-xl font-bold text-stone-800">
-                No products found
-              </p>
-              <p className="text-xs text-stone-500">
-                Try resetting your search query or switching categories.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery("");
-                  setActiveCategory("All");
-                }}
-                className="mt-3 px-5 py-2 rounded-full bg-pureliva-green text-white text-xs font-semibold"
-              >
-                Reset Filters
-              </button>
-            </div>
-          ) : (
-            <motion.div
-              layout
-              className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
-            >
-              <AnimatePresence>
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.slug} product={product} />
-                ))}
-              </AnimatePresence>
-            </motion.div>
-          )}
+          {/* Main Layout: Left Filter Sidebar (300px) + Right Products Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Desktop Left Sidebar (300px) */}
+            <aside className="hidden lg:block lg:col-span-3 space-y-6 bg-white p-6 rounded-3xl border border-stone-200 sticky top-36">
+              <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+                <span className="font-heading font-bold text-base text-[#1E2140] flex items-center gap-2">
+                  <SlidersHorizontal size={16} className="text-[#2E7D32]" />
+                  <span>Filters</span>
+                </span>
+                {(activeCategory !== "All" || selectedSize !== "all" || searchQuery) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveCategory("All");
+                      setSelectedSize("all");
+                      setSearchQuery("");
+                    }}
+                    className="text-[11px] font-bold text-[#2E7D32] hover:underline"
+                  >
+                    Clear All
+                  </button>
+                )}
+              </div>
 
-          {/* Coming Soon Showcase Shelf (Healthy Snacks & Sweets) */}
-          <div className="mt-20 p-8 sm:p-10 rounded-3xl bg-pureliva-cream border border-stone-200">
-            <div className="max-w-2xl mx-auto text-center space-y-3 mb-8">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-200/80 text-stone-700 text-[10px] font-bold uppercase tracking-wider">
-                <Clock size={12} /> Expanding Soon
-              </span>
-              <h3 className="font-heading text-2xl font-bold text-stone-900">
-                Upcoming Naturally Sweet Treats & Healthy Snacks
-              </h3>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                Made without added refined sugar, artificial colours or preservatives — naturally sweetened with dates, dry fruits and pure honey.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {EXTENDED_PORTFOLIO.slice(0, 3).map((item) => (
-                <div
-                  key={item.id}
-                  className="p-5 rounded-2xl bg-white border border-stone-200/80 space-y-2 opacity-85"
-                >
-                  <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                    <span>{item.category}</span>
-                    <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
-                      Coming Soon
-                    </span>
-                  </div>
-                  <h4 className="font-heading text-base font-bold text-stone-900">
-                    {item.name}
-                  </h4>
-                  <p className="text-xs text-stone-500 leading-relaxed">
-                    {item.description}
-                  </p>
+              {/* Category Filter */}
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                  Category
+                </h4>
+                <div className="space-y-1.5">
+                  {CATEGORIES.map((cat) => {
+                    const isSelected =
+                      (cat.slug === "all" && (activeCategory === "All" || activeCategory === "All Products")) ||
+                      activeCategory === cat.name;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => {
+                          if (cat.available) {
+                            setActiveCategory(cat.slug === "all" ? "All" : cat.name);
+                          }
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
+                          !cat.available
+                            ? "opacity-50 cursor-not-allowed text-stone-400"
+                            : isSelected
+                            ? "bg-[#2E7D32] text-white font-bold"
+                            : "text-stone-700 hover:bg-stone-50"
+                        }`}
+                      >
+                        <span>{cat.name}</span>
+                        {cat.available ? (
+                          <span
+                            className={`text-[10px] px-2 py-0.5 rounded-full ${
+                              isSelected ? "bg-white/20 text-white" : "bg-stone-100 text-stone-500"
+                            }`}
+                          >
+                            {cat.slug === "all"
+                              ? PRODUCTS.length
+                              : PRODUCTS.filter((p) => p.category === cat.name).length}
+                          </span>
+                        ) : (
+                          <span className="text-[9px] bg-stone-100 text-stone-400 px-1.5 py-0.5 rounded">
+                            Soon
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
+              </div>
+
+              {/* Availability Filter */}
+              <div className="pt-4 border-t border-stone-100 space-y-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                  Availability
+                </h4>
+                <label className="flex items-center gap-2.5 text-xs text-stone-600 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={inStockOnly}
+                    onChange={(e) => setInStockOnly(e.target.checked)}
+                    className="rounded text-[#2E7D32] focus:ring-[#2E7D32]"
+                  />
+                  <span>In Stock ({PRODUCTS.length})</span>
+                </label>
+              </div>
+
+              {/* Size / Weight Filter */}
+              <div className="pt-4 border-t border-stone-100 space-y-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                  Pack Size
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {["all", "100 g"].map((sz) => (
+                    <button
+                      key={sz}
+                      type="button"
+                      onClick={() => setSelectedSize(sz)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                        selectedSize === sz
+                          ? "bg-[#1E2140] text-white border-[#1E2140]"
+                          : "bg-white text-stone-700 border-stone-200 hover:border-stone-400"
+                      }`}
+                    >
+                      {sz === "all" ? "All Sizes" : sz}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </aside>
+
+            {/* Right Column: Toolbar & Product Grid */}
+            <main className="lg:col-span-9 space-y-6">
+              {/* Toolbar: Search, Sort, Grid Switcher */}
+              <div className="p-4 rounded-2xl bg-[#F7F3E8] border border-stone-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                {/* Search */}
+                <div className="relative w-full sm:w-72">
+                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+                  <input
+                    type="text"
+                    placeholder="Search seeds..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-4 py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:border-[#2E7D32] bg-white"
+                  />
+                </div>
+
+                <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3">
+                  {/* Mobile Filter Toggle */}
+                  <button
+                    type="button"
+                    onClick={() => setMobileFilterOpen(true)}
+                    className="lg:hidden px-3 py-2 rounded-xl bg-white border border-stone-200 text-xs font-bold flex items-center gap-1.5 text-stone-700"
+                  >
+                    <Filter size={14} />
+                    <span>Filter</span>
+                  </button>
+
+                  <span className="text-xs text-stone-500 font-medium hidden sm:inline">
+                    Showing <strong>{filteredProducts.length}</strong> items
+                  </span>
+
+                  {/* Sort Dropdown */}
+                  <div className="flex items-center gap-1.5 bg-white border border-stone-200 rounded-xl px-3 py-2">
+                    <ArrowUpDown size={13} className="text-stone-400" />
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="bg-transparent text-xs font-semibold text-stone-700 focus:outline-none cursor-pointer"
+                    >
+                      <option value="featured">Best selling</option>
+                      <option value="name-asc">Alphabetically, A-Z</option>
+                      <option value="price-asc">Price, low to high</option>
+                      <option value="price-desc">Price, high to low</option>
+                    </select>
+                  </div>
+
+                  {/* Grid Column Switcher (Desktop) */}
+                  <div className="hidden sm:flex items-center gap-1 border-l border-stone-200 pl-3">
+                    <button
+                      type="button"
+                      onClick={() => setGridCols(2)}
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        gridCols === 2 ? "bg-[#1E2140] text-white" : "text-stone-400 hover:text-stone-700"
+                      }`}
+                      title="2 Columns"
+                    >
+                      <Grid size={15} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGridCols(3)}
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        gridCols === 3 ? "bg-[#1E2140] text-white" : "text-stone-400 hover:text-stone-700"
+                      }`}
+                      title="3 Columns"
+                    >
+                      <LayoutGrid size={15} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product Grid */}
+              {filteredProducts.length === 0 ? (
+                <div className="py-20 text-center space-y-3 bg-stone-50 rounded-3xl border border-stone-200">
+                  <p className="font-heading text-xl font-bold text-stone-800">
+                    No products found
+                  </p>
+                  <p className="text-xs text-stone-500">
+                    Try adjusting your search terms or filters.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setActiveCategory("All");
+                      setSelectedSize("all");
+                    }}
+                    className="px-5 py-2.5 rounded-xl bg-[#2E7D32] text-white text-xs font-bold"
+                  >
+                    Reset All Filters
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className={`grid gap-5 ${
+                    gridCols === 2
+                      ? "grid-cols-1 sm:grid-cols-2"
+                      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+                  }`}
+                >
+                  {filteredProducts.map((product) => (
+                    <ProductCard key={product.slug} product={product} />
+                  ))}
+                </div>
+              )}
+
+              {/* Recently Viewed Shelf (matching gomoswafoods) */}
+              {recentlyViewed.length > 0 && (
+                <div className="mt-16 pt-12 border-t border-stone-200">
+                  <div className="mb-6">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#2E7D32]">
+                      Your Browsing History
+                    </span>
+                    <h3 className="font-heading text-2xl font-bold text-[#1E2140] mt-1">
+                      Recently Viewed
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {recentlyViewed.map((prod) => (
+                      <ProductCard key={`recent-${prod.slug}`} product={prod} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </main>
           </div>
         </div>
       </div>
+
+      {/* Mobile Filter Slide-out Drawer */}
+      <AnimatePresence>
+        {mobileFilterOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm lg:hidden flex justify-end"
+            onClick={() => setMobileFilterOpen(false)}
+          >
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-80 max-w-full bg-white h-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto"
+            >
+              <div className="space-y-6">
+                <div className="flex items-center justify-between pb-4 border-b border-stone-100">
+                  <h3 className="font-heading font-bold text-lg text-[#1E2140]">
+                    Filter Products
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setMobileFilterOpen(false)}
+                    className="p-1 rounded-full text-stone-400 hover:text-stone-900"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Categories */}
+                <div className="space-y-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500">
+                    Category
+                  </h4>
+                  <div className="space-y-1">
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={`m-${cat.id}`}
+                        type="button"
+                        onClick={() => {
+                          if (cat.available) {
+                            setActiveCategory(cat.slug === "all" ? "All" : cat.name);
+                            setMobileFilterOpen(false);
+                          }
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold ${
+                          activeCategory === cat.name || (cat.slug === "all" && activeCategory === "All")
+                            ? "bg-[#2E7D32] text-white"
+                            : "text-stone-700 hover:bg-stone-50"
+                        }`}
+                      >
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Size */}
+                <div className="space-y-2 pt-4 border-t border-stone-100">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500">
+                    Size
+                  </h4>
+                  <div className="flex gap-2">
+                    {["all", "100 g"].map((sz) => (
+                      <button
+                        key={`m-sz-${sz}`}
+                        type="button"
+                        onClick={() => {
+                          setSelectedSize(sz);
+                          setMobileFilterOpen(false);
+                        }}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${
+                          selectedSize === sz
+                            ? "bg-[#1E2140] text-white border-[#1E2140]"
+                            : "bg-white text-stone-700 border-stone-200"
+                        }`}
+                      >
+                        {sz === "all" ? "All Sizes" : sz}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-stone-100">
+                <button
+                  type="button"
+                  onClick={() => setMobileFilterOpen(false)}
+                  className="w-full py-3 rounded-xl bg-[#2E7D32] text-white font-bold text-xs uppercase tracking-wider"
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

@@ -158,12 +158,16 @@ export const Navbar: React.FC = () => {
                 All Products
               </NavLink>
 
-              {/* Shop by Category Dropdown */}
-              <div className="relative" ref={dropdownRef}>
+              {/* Shop by Category Mega Menu */}
+              <div
+                className="relative"
+                ref={dropdownRef}
+                onMouseEnter={() => setShopDropdownOpen(true)}
+                onMouseLeave={() => setShopDropdownOpen(false)}
+              >
                 <button
                   type="button"
                   onClick={() => setShopDropdownOpen(!shopDropdownOpen)}
-                  onMouseEnter={() => setShopDropdownOpen(true)}
                   className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     shopDropdownOpen
                       ? "text-pureliva-green bg-pureliva-green/10"
@@ -183,71 +187,131 @@ export const Navbar: React.FC = () => {
                 <AnimatePresence>
                   {shopDropdownOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.18 }}
-                      onMouseLeave={() => setShopDropdownOpen(false)}
-                      className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-stone-200 p-2 z-50 overflow-hidden"
+                      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 12, scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[720px] bg-white rounded-3xl shadow-2xl border border-stone-200 p-6 z-50 overflow-hidden"
                     >
-                      <div className="px-3 py-2 border-b border-stone-100 mb-1">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
-                          Shop by Category
-                        </span>
-                      </div>
-
-                      {/* Active Categories */}
-                      <Link
-                        to="/collections/raw-seeds"
-                        onClick={() => setShopDropdownOpen(false)}
-                        className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
-                      >
-                        <span>Raw Seeds</span>
-                        <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-medium">
-                          Chia
-                        </span>
-                      </Link>
-
-                      <Link
-                        to="/collections/roasted-seeds"
-                        onClick={() => setShopDropdownOpen(false)}
-                        className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
-                      >
-                        <span>Roasted Seeds</span>
-                        <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-medium">
-                          Pumpkin, Sunflower, Flax
-                        </span>
-                      </Link>
-
-                      <Link
-                        to="/collections/seed-mix"
-                        onClick={() => setShopDropdownOpen(false)}
-                        className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
-                      >
-                        <span>Seed Mix</span>
-                        <span className="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-medium">
-                          6-in-1 Blend
-                        </span>
-                      </Link>
-
-                      <div className="my-1 border-t border-stone-100" />
-
-                      {/* Coming Soon Categories (Greyed out) */}
-                      <div className="px-3 py-1.5 opacity-60 cursor-not-allowed">
-                        <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
-                          <span>Healthy Snacks</span>
-                          <span className="text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">
-                            Coming Soon
+                      <div className="grid grid-cols-12 gap-6">
+                        {/* Column 1: Shop by Category */}
+                        <div className="col-span-4 space-y-3">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-pureliva-green block border-b border-stone-100 pb-2">
+                            Shop by Category
                           </span>
+                          <div className="space-y-1">
+                            <Link
+                              to="/collections/raw-seeds"
+                              onClick={() => setShopDropdownOpen(false)}
+                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-all"
+                            >
+                              <div>
+                                <span className="block font-bold">Raw Seeds</span>
+                                <span className="text-[10px] text-stone-400 font-normal">Pure unroasted seeds</span>
+                              </div>
+                              <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-medium">
+                                Chia
+                              </span>
+                            </Link>
+
+                            <Link
+                              to="/collections/roasted-seeds"
+                              onClick={() => setShopDropdownOpen(false)}
+                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-all"
+                            >
+                              <div>
+                                <span className="block font-bold">Roasted Seeds</span>
+                                <span className="text-[10px] text-stone-400 font-normal">Gently dry roasted</span>
+                              </div>
+                              <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-medium">
+                                3 varieties
+                              </span>
+                            </Link>
+
+                            <Link
+                              to="/collections/seed-mix"
+                              onClick={() => setShopDropdownOpen(false)}
+                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-all"
+                            >
+                              <div>
+                                <span className="block font-bold">Seed Mix (5-in-1)</span>
+                                <span className="text-[10px] text-stone-400 font-normal">Synergistic power blend</span>
+                              </div>
+                              <span className="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-medium">
+                                Best Seller
+                              </span>
+                            </Link>
+                          </div>
+
+                          <div className="pt-2 border-t border-stone-100 space-y-1">
+                            <div className="p-2 opacity-50 flex items-center justify-between text-xs text-stone-500 font-medium">
+                              <span>Healthy Snacks</span>
+                              <span className="text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">
+                                Coming Soon
+                              </span>
+                            </div>
+                            <div className="p-2 opacity-50 flex items-center justify-between text-xs text-stone-500 font-medium">
+                              <span>Sweets & Desserts</span>
+                              <span className="text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">
+                                Coming Soon
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="px-3 py-1.5 opacity-60 cursor-not-allowed">
-                        <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
-                          <span>Sweets & Desserts</span>
-                          <span className="text-[9px] bg-stone-100 text-stone-500 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">
-                            Coming Soon
+                        {/* Column 2: Pureliva Specials (5 products) */}
+                        <div className="col-span-4 space-y-3 border-l border-stone-100 pl-6">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-pureliva-green block border-b border-stone-100 pb-2">
+                            Pureliva Specials
                           </span>
+                          <div className="space-y-1.5">
+                            {[
+                              { name: "Chia Seeds", sub: "Raw • 100g", slug: "chia-seeds", price: "₹99" },
+                              { name: "Pumpkin Seeds", sub: "Roasted • 100g", slug: "pumpkin-seeds", price: "₹119" },
+                              { name: "5-in-1 Seed Mix", sub: "Roasted • 100g", slug: "seed-mix", price: "₹129" },
+                              { name: "Sunflower Seeds", sub: "Roasted • 100g", slug: "sunflower-seeds", price: "₹99" },
+                              { name: "Flax Seeds", sub: "Roasted • 100g", slug: "flax-seeds", price: "₹89" },
+                            ].map((prod) => (
+                              <Link
+                                key={prod.slug}
+                                to={`/product/${prod.slug}`}
+                                onClick={() => setShopDropdownOpen(false)}
+                                className="flex items-center justify-between p-1.5 rounded-lg text-xs hover:bg-stone-50 transition-colors"
+                              >
+                                <div>
+                                  <span className="font-semibold text-stone-900 block">{prod.name}</span>
+                                  <span className="text-[10px] text-stone-400">{prod.sub}</span>
+                                </div>
+                                <span className="font-mono font-bold text-pureliva-green text-[11px]">{prod.price}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Column 3: Featured Collection Promo Banner */}
+                        <div className="col-span-4 flex flex-col justify-between rounded-2xl bg-gradient-to-br from-[#1E2140] to-[#2E7D32] p-5 text-white relative overflow-hidden">
+                          <div className="relative z-10 space-y-2">
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-300 bg-white/10 px-2 py-0.5 rounded-full inline-block">
+                              Farm Direct
+                            </span>
+                            <h4 className="font-heading text-lg font-bold leading-tight">
+                              Pure Nutrition in Every Spoon
+                            </h4>
+                            <p className="text-[11px] text-white/80 leading-relaxed">
+                              No artificial colours, preservatives or added refined sugars.
+                            </p>
+                          </div>
+
+                          <div className="relative z-10 pt-4">
+                            <Link
+                              to="/collections"
+                              onClick={() => setShopDropdownOpen(false)}
+                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-pureliva-navy hover:bg-emerald-50 rounded-xl text-xs font-bold transition-all shadow-md"
+                            >
+                              <span>Explore All Seeds</span>
+                              <ArrowRight size={13} />
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </motion.div>

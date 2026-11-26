@@ -8,13 +8,14 @@ export default {
     extend: {
       colors: {
         pureliva: {
-          green: "#0B3D1E",
-          "green-hover": "#0e4d27",
-          "green-dark": "#072613",
+          navy: "#1E2140",
+          green: "#2E7D32",
+          "green-hover": "#256629",
+          "green-dark": "#1B4D1F",
           brown: "#B5652A",
-          cream: "#FBF8F1",
-          heading: "#1A1A1A",
-          body: "#555555",
+          cream: "#F7F3E8",
+          heading: "#1E2140",
+          body: "#4A4D57",
           muted: "#767676",
           border: "#E7E5E4",
         },

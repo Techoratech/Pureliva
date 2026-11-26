@@ -1,22 +1,14 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion, AnimatePresence } from "framer-motion";
 import { SITE_CONFIG } from "../config/site";
-import { PRODUCTS } from "../data/products";
-import { FAQS } from "../data/faqs";
+import { PRODUCTS, Product } from "../data/products";
+import { RECIPES } from "../data/newsEvents";
+import ProductCard from "../components/ProductCard";
 import Img from "../components/Img";
 import WhatsAppButton from "../components/WhatsAppButton";
-import ProductPanel from "../components/ProductPanel";
-import SectionHeading from "../components/SectionHeading";
-import Marquee from "../components/Marquee";
-import FAQAccordion from "../components/FAQAccordion";
-import NutritionBars from "../components/NutritionBars";
-import WaveDivider from "../components/WaveDivider";
 import { buildWhatsAppLink } from "../lib/whatsapp";
-import { useReducedMotion } from "../hooks/useReducedMotion";
 import {
   Sparkles,
   ArrowRight,
@@ -26,162 +18,83 @@ import {
   Package,
   Layers,
   Heart,
-  MessageCircle,
   Truck,
   Check,
-  Instagram,
-  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Award,
+  Zap,
+  Flame,
+  ThumbsUp,
 } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export const Home: React.FC = () => {
-  const prefersReduced = useReducedMotion();
-  const horizontalSectionRef = useRef<HTMLDivElement>(null);
-  const horizontalTrackRef = useRef<HTMLDivElement>(null);
-  const [activeAccent, setActiveAccent] = useState<string>(PRODUCTS[0].accent);
+  // 1. Hero Slideshow State
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Mouse tilt for hero section on desktop
-  const heroRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+  const heroSlides = [
+    {
+      badge: "Farm-to-Table Purity",
+      title: "Pure Nutrition in Every Spoon",
+      subtitle:
+        "Artisanal raw and dry-roasted seeds harvested with generational farming care in Khandwa, Madhya Pradesh. No added sugars, zero preservatives, 100% natural wellness.",
+      ctaText: "Explore Collections",
+      ctaLink: "/collections",
+      waText: "Order on WhatsApp",
+      image: "/images/products/seed-mix-bowl",
+      accent: "#2E7D32",
+    },
+    {
+      badge: "Healthy Everyday Crunch",
+      title: "Gently Roasted to Perfection",
+      subtitle:
+        "Wholesome Pumpkin, Sunflower, and Flax seeds crafted for sustained energy and heart health. Packed with plant protein, essential omega-3, and dietary fibre.",
+      ctaText: "Shop Roasted Seeds",
+      ctaLink: "/collections/roasted-seeds",
+      waText: "Chat on WhatsApp",
+      image: "/images/products/pumpkin-seeds-bowl",
+      accent: "#B5652A",
+    },
+    {
+      badge: "B2B & Commercial Supply",
+      title: "Bulk Agro Supply & Export Ready",
+      subtitle:
+        "Supplying top-grade Chia, Flax, Onion Flakes, and Garlic to commercial food processors, exporters, and retailers across India and worldwide.",
+      ctaText: "Bulk Specifications",
+      ctaLink: "/bulk-export",
+      waText: "Bulk Enquiry",
+      image: "/images/products/chia-seed-bowl",
+      accent: "#1E2140",
+    },
+  ];
 
-  const handleHeroMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (prefersReduced || window.innerWidth < 1024) return;
-    const { clientX, clientY, currentTarget } = e;
-    const { left, top, width, height } = currentTarget.getBoundingClientRect();
-    const x = (clientX - (left + width / 2)) / 30;
-    const y = (clientY - (top + height / 2)) / 30;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleHeroMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
-  // GSAP pinned horizontal scroll on desktop
+  // Auto-slide every 6 seconds
   useEffect(() => {
-    if (prefersReduced || typeof window === "undefined") return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
 
-    // Run GSAP matchMedia for desktop only
-    const mm = gsap.matchMedia();
+  // 2. Best Seller Filter Tabs State
+  const [activeTab, setActiveTab] = useState<"all" | "raw" | "roasted" | "mix">("all");
 
-    mm.add("(min-width: 1024px)", () => {
-      const track = horizontalTrackRef.current;
-      const section = horizontalSectionRef.current;
-      if (!track || !section) return;
+  const filteredProducts = PRODUCTS.filter((p) => {
+    if (activeTab === "all") return true;
+    if (activeTab === "raw") return p.category.toLowerCase().includes("raw");
+    if (activeTab === "roasted") return p.category.toLowerCase().includes("roasted");
+    if (activeTab === "mix") return p.category.toLowerCase().includes("mix");
+    return true;
+  });
 
-      const panels = gsap.utils.toArray<HTMLElement>(".horizontal-panel");
-      const totalPanels = panels.length;
-
-      const tween = gsap.to(panels, {
-        xPercent: -100 * (totalPanels - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          scrub: 1,
-          snap: {
-            snapTo: 1 / (totalPanels - 1),
-            duration: { min: 0.2, max: 0.5 },
-            delay: 0.1,
-          },
-          end: () => `+=${section.offsetWidth * 2.5}`,
-          onUpdate: (self) => {
-            const index = Math.min(
-              Math.floor(self.progress * totalPanels),
-              totalPanels - 1
-            );
-            setActiveAccent(PRODUCTS[index]?.accent || PRODUCTS[0].accent);
-          },
-        },
-      });
-
-      return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
-    });
-
-    return () => mm.revert();
-  }, [prefersReduced]);
-
-  const whyChooseUs = [
-    {
-      icon: Leaf,
-      title: "No Added Refined Sugar",
-      desc: "Zero white sugars or chemical sweeteners. Wholesome goodness kept completely natural.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "No Artificial Colours or Preservatives",
-      desc: "Pure single-origin seeds and blends. Zero chemical additives or artificial colouring.",
-    },
-    {
-      icon: Heart,
-      title: "Rich in Protein, Fibre & Vitamins",
-      desc: "Naturally high in vegan plant protein, vital dietary fibre, and essential omega fatty acids.",
-    },
-    {
-      icon: Layers,
-      title: "Rooted in Generational Farming",
-      desc: "Born in a farmer's family in Khandwa, Madhya Pradesh. We honor the soil from sprout to pack.",
-    },
-    {
-      icon: Package,
-      title: "Airtight Resealable Zipper",
-      desc: "High-barrier moisture-proof pouches that lock in crunch, freshness, and nutrients.",
-    },
-    {
-      icon: CheckCircle,
-      title: "Certified Food Safety & FSSAI",
-      desc: "Hygienically cleaned, optical sorted, and packed in accredited food safety processing lines.",
-    },
-  ];
-
-  const waysToEnjoy = [
-    {
-      title: "Smoothies & Shakes",
-      desc: "Blend raw chia seeds or power seed mix into morning fruit bowls for long-lasting stamina.",
-      tag: "Energize",
-    },
-    {
-      title: "Salads & Raita",
-      desc: "Toss crunchy roasted sunflower or flax seeds over green salads and chilled curd raita.",
-      tag: "Crunch",
-    },
-    {
-      title: "Oats & Breakfast Bowls",
-      desc: "Sprinkle generously on warm oatmeal, muesli, or Greek yogurt with local honey.",
-      tag: "Breakfast",
-    },
-    {
-      title: "Anytime Snacking",
-      desc: "Keep a pack in your work bag or car for wholesome, guilt-free mid-afternoon crunch.",
-      tag: "On the Go",
-    },
-    {
-      title: "Baking & Laddoos",
-      desc: "Fold into artisanal sourdough breads, cookies, crackers, and traditional energy laddoos.",
-      tag: "Kitchen",
-    },
-    {
-      title: "Curd & Yogurt Topping",
-      desc: "Stir a spoon into fresh probiotic curd after meals for smooth digestion and satiety.",
-      tag: "Gut Health",
-    },
-  ];
+  // Selected Recipe Modal State
+  const [selectedRecipe, setSelectedRecipe] = useState<(typeof RECIPES)[0] | null>(null);
 
   return (
     <>
       <Helmet>
-        <title>Pureliva Foods | Natural Seeds & Everyday Wellness</title>
+        <title>Pureliva Foods | Pure Nutrition in Every Spoon</title>
         <meta
           name="description"
           content="Pureliva Foods by Patidar Enterprises, Khandwa. Premium roasted & raw natural seeds – Flax Seeds, Seed Mix, Chia Seeds, Sunflower Seeds, and Pumpkin Seeds. Order via WhatsApp."
@@ -189,279 +102,197 @@ export const Home: React.FC = () => {
         <link rel="canonical" href="https://purelivafoods.com" />
       </Helmet>
 
-      {/* 1. HERO SECTION */}
-      <section
-        ref={heroRef}
-        onMouseMove={handleHeroMouseMove}
-        onMouseLeave={handleHeroMouseLeave}
-        className="relative min-h-[92vh] pt-32 pb-20 flex items-center bg-white overflow-hidden"
-      >
-        {/* Subtle decorative background gradient circles */}
-        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-pureliva-green/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 -right-32 w-96 h-96 bg-pureliva-brown/5 rounded-full blur-3xl pointer-events-none" />
+      {/* SECTION 1 — HERO BANNER SLIDESHOW */}
+      <section className="relative min-h-[580px] lg:min-h-[660px] pt-28 sm:pt-32 pb-16 bg-[#F7F3E8] overflow-hidden flex items-center">
+        {/* Decorative background ambient glows */}
+        <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-emerald-200/40 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -right-20 w-80 h-80 rounded-full bg-amber-200/40 blur-3xl pointer-events-none" />
 
-        {/* Floating background seed particle accents */}
-        <motion.div
-          animate={{ y: [0, -25, 0], x: [0, 10, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-36 left-12 hidden lg:block opacity-40 pointer-events-none"
-        >
-          <div className="w-4 h-6 rounded-[50%] bg-accent-flax rotate-12" />
-        </motion.div>
-        <motion.div
-          animate={{ y: [0, 20, 0], x: [0, -15, 0] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-24 right-1/3 hidden lg:block opacity-35 pointer-events-none"
-        >
-          <div className="w-5 h-3 rounded-[50%] bg-accent-pumpkin -rotate-45" />
-        </motion.div>
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
+            >
+              {/* Left Column: Headlines & CTA */}
+              <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1E2140]/10 text-[#1E2140] text-xs font-bold tracking-wider uppercase">
+                  <Sparkles size={13} className="text-[#2E7D32]" />
+                  <span>{heroSlides[currentSlide].badge}</span>
+                </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            {/* Left Column: Headlines & CTA */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pureliva-green/10 text-pureliva-green text-xs sm:text-sm font-semibold tracking-wider uppercase"
-              >
-                <Sparkles size={14} className="text-pureliva-brown" />
-                <span>Farm-to-Table. Honest. Pure.</span>
-              </motion.div>
+                <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1E2140] tracking-tight leading-[1.12]">
+                  {heroSlides[currentSlide].title}
+                </h1>
 
-              {/* Headline */}
-              <div className="overflow-hidden">
-                <motion.h1
-                  initial={{ y: "100%", opacity: 0 }}
-                  animate={{ y: "0%", opacity: 1 }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                  className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-pureliva-heading tracking-tight leading-[1.15]"
-                >
-                  Pure Nutrition in Every Spoon
-                </motion.h1>
+                <p className="text-base sm:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  {heroSlides[currentSlide].subtitle}
+                </p>
+
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
+                  <Link
+                    to={heroSlides[currentSlide].ctaLink}
+                    className="w-full sm:w-auto px-7 py-3.5 bg-[#2E7D32] hover:bg-emerald-900 text-white rounded-xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2"
+                  >
+                    <span>{heroSlides[currentSlide].ctaText}</span>
+                    <ArrowRight size={16} />
+                  </Link>
+
+                  <WhatsAppButton
+                    href={buildWhatsAppLink(
+                      `Hello Pureliva, I am visiting your website and would like to order fresh seeds.`
+                    )}
+                    text={heroSlides[currentSlide].waText}
+                    size="md"
+                    className="w-full sm:w-auto shadow-sm"
+                  />
+                </div>
               </div>
 
-              {/* Subtitle */}
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="text-base sm:text-lg text-pureliva-body leading-relaxed max-w-xl mx-auto lg:mx-0"
-              >
-                Premium seeds, naturally sourced from Indian farms. Roasted, raw and ready for your everyday wellness. No artificial additives, just crisp wholesome vitality.
-              </motion.p>
+              {/* Right Column: Featured Image with Floating Animation */}
+              <div className="lg:col-span-5 flex items-center justify-center relative">
+                <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 flex items-center justify-center">
+                  {/* Subtle ring */}
+                  <div className="absolute inset-4 rounded-full border-2 border-dashed border-[#2E7D32]/30 animate-spin-slow" />
+                  
+                  <motion.div
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="relative z-10 w-full h-full flex items-center justify-center"
+                  >
+                    <Img
+                      src={heroSlides[currentSlide].image}
+                      alt={heroSlides[currentSlide].title}
+                      transparent
+                      priority
+                      className="w-full h-full object-contain filter drop-shadow-2xl"
+                    />
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
 
-              {/* Action Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.45 }}
-                className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2"
-              >
-                <Link
-                  to="/products"
-                  className="px-6 py-3.5 rounded-2xl bg-pureliva-green text-white font-semibold text-sm hover:bg-pureliva-green-hover transition-all duration-300 shadow-soft hover:shadow-soft-lg flex items-center gap-2"
-                >
-                  <span>Explore Products</span>
-                  <ArrowRight size={16} />
-                </Link>
-
-                <WhatsAppButton
-                  href={buildWhatsAppLink("Hello Pureliva, I want to order natural seeds.")}
-                  text="Order on WhatsApp"
-                  size="md"
-                />
-              </motion.div>
-
-              {/* Trust Row */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="pt-6 border-t border-gray-100 flex flex-wrap items-center justify-center lg:justify-start gap-y-2 gap-x-5 text-xs text-pureliva-muted font-medium"
-              >
-                {SITE_CONFIG.trustBadges.map((badge, idx) => (
-                  <span key={idx} className="flex items-center gap-1.5">
-                    <Check size={14} className="text-pureliva-green" />
-                    <span>{badge}</span>
-                  </span>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Right Column: Hero Bowl Composition with Parallax & Mouse Tilt */}
-            <div className="lg:col-span-6 relative flex items-center justify-center min-h-[380px] sm:min-h-[460px]">
-              <motion.div
-                style={{ x: springX, y: springY }}
-                className="relative w-full max-w-lg aspect-square flex items-center justify-center"
-              >
-                {/* Center Main Bowl (Seed Mix) */}
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0, y: 30 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-                  className="relative z-20 w-72 h-72 sm:w-88 sm:h-88 animate-float"
-                >
-                  {/* Shadow ellipse */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-56 h-8 bg-black/15 rounded-full blur-md" />
-                  <Img
-                    src="/images/products/seed-mix-bowl"
-                    alt="Pureliva Seed Mix Bowl"
-                    transparent
-                    priority
-                    className="w-full h-full object-contain filter drop-shadow-xl"
-                  />
-                </motion.div>
-
-                {/* Secondary Bowl Left Behind (Chia Seed) */}
-                <motion.div
-                  initial={{ scale: 0.7, opacity: 0, x: -40 }}
-                  animate={{ scale: 1, opacity: 1, x: 0 }}
-                  transition={{ duration: 1, delay: 0.4 }}
-                  className="absolute -left-4 sm:left-2 top-8 z-10 w-44 h-44 sm:w-52 sm:h-52 animate-float-slow"
-                >
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-5 bg-black/10 rounded-full blur-sm" />
-                  <Img
-                    src="/images/products/chia-seed-bowl"
-                    alt="Pureliva Chia Seed Bowl"
-                    transparent
-                    className="w-full h-full object-contain filter drop-shadow-md"
-                  />
-                </motion.div>
-
-                {/* Tertiary Bowl Right Behind (Pumpkin Seeds) */}
-                <motion.div
-                  initial={{ scale: 0.7, opacity: 0, x: 40 }}
-                  animate={{ scale: 1, opacity: 1, x: 0 }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className="absolute -right-4 sm:right-2 bottom-6 z-10 w-44 h-44 sm:w-52 sm:h-52 animate-float"
-                >
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-5 bg-black/10 rounded-full blur-sm" />
-                  <Img
-                    src="/images/products/pumpkin-seeds-bowl"
-                    alt="Pureliva Pumpkin Seeds Bowl"
-                    transparent
-                    className="w-full h-full object-contain filter drop-shadow-md"
-                  />
-                </motion.div>
-
-                {/* Botanical Accent (Flax Flower Seeds) */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 0.85, scale: 1 }}
-                  transition={{ duration: 1.2, delay: 0.7 }}
-                  className="absolute -top-6 -right-6 sm:top-0 sm:right-0 z-30 w-32 h-32 sm:w-40 sm:h-40 pointer-events-none"
-                >
-                  <Img
-                    src="/images/decor/flax-flower-seeds"
-                    alt="Flax flowers botanical accent"
-                    transparent
-                    className="w-full h-full object-contain filter drop-shadow-sm rotate-12"
-                  />
-                </motion.div>
-              </motion.div>
-            </div>
+          {/* Slider Pagination Controls */}
+          <div className="flex items-center justify-center lg:justify-start gap-2.5 mt-8 sm:mt-10">
+            {heroSlides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setCurrentSlide(idx)}
+                className={`transition-all duration-300 rounded-full h-2.5 ${
+                  currentSlide === idx ? "w-8 bg-[#2E7D32]" : "w-2.5 bg-stone-300 hover:bg-stone-400"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 2. CERTIFICATE MARQUEE STRIP */}
-      <Marquee />
-
-      {/* 2.5 SHOP BY CATEGORY SECTION */}
-      <section className="py-16 bg-stone-50/70 border-b border-stone-200/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
+      {/* SECTION 2 — SHOP BY CATEGORIES (4 Tiles Grid) */}
+      <section className="py-16 sm:py-20 bg-white border-b border-stone-100">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
               Curated Collections
             </span>
-            <h2 className="font-heading text-3xl font-bold text-stone-900">
-              Shop by Category
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140]">
+              Shop by Categories
             </h2>
             <p className="text-xs sm:text-sm text-stone-500">
-              Find the perfect natural crunch for your daily wellness routine.
+              Explore our wholesome range of nutrient-packed raw seeds, lightly roasted crunch, and power mixes.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* 1. Raw Seeds */}
             <Link
               to="/collections/raw-seeds"
-              className="group p-6 rounded-3xl bg-white border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              className="group p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 hover:border-[#2E7D32]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
             >
-              <div className="w-16 h-16 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Leaf size={28} />
               </div>
-              <div>
-                <h3 className="font-heading text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors">
+              <div className="space-y-1">
+                <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors">
                   Raw Seeds
                 </h3>
-                <p className="text-xs text-stone-500 mt-1">
-                  Pure, unroasted raw chia seeds for smoothies & breakfast bowls.
+                <p className="text-xs text-stone-500 line-clamp-2">
+                  Unroasted Chia Seeds rich in dietary fibre, omega-3, and antioxidants for smoothies.
                 </p>
               </div>
-              <span className="mt-4 text-xs font-semibold text-pureliva-green group-hover:underline">
-                Explore Raw Seeds &rarr;
+              <span className="mt-5 text-xs font-bold text-[#2E7D32] group-hover:underline inline-flex items-center gap-1">
+                <span>View Products</span>
+                <ArrowRight size={13} />
               </span>
             </Link>
 
+            {/* 2. Roasted Seeds */}
             <Link
               to="/collections/roasted-seeds"
-              className="group p-6 rounded-3xl bg-white border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              className="group p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 hover:border-[#2E7D32]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
             >
-              <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                <Sparkles size={28} />
+              <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Flame size={28} />
               </div>
-              <div>
-                <h3 className="font-heading text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors">
+              <div className="space-y-1">
+                <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors">
                   Roasted Seeds
                 </h3>
-                <p className="text-xs text-stone-500 mt-1">
-                  Dry roasted pumpkin, sunflower & flax seeds, lightly salted.
+                <p className="text-xs text-stone-500 line-clamp-2">
+                  Slow dry-roasted Pumpkin, Sunflower, and Flax seeds with savory natural crunch.
                 </p>
               </div>
-              <span className="mt-4 text-xs font-semibold text-pureliva-green group-hover:underline">
-                Explore Roasted &rarr;
+              <span className="mt-5 text-xs font-bold text-[#2E7D32] group-hover:underline inline-flex items-center gap-1">
+                <span>View Products</span>
+                <ArrowRight size={13} />
               </span>
             </Link>
 
+            {/* 3. Seed Mix */}
             <Link
               to="/collections/seed-mix"
-              className="group p-6 rounded-3xl bg-white border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              className="group p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 hover:border-[#2E7D32]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
             >
-              <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Layers size={28} />
               </div>
-              <div>
-                <h3 className="font-heading text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors">
-                  Seed Mix (6-in-1)
+              <div className="space-y-1">
+                <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors">
+                  5-in-1 Seed Mix
                 </h3>
-                <p className="text-xs text-stone-500 mt-1">
-                  Synergistic blend of 6 roasted seeds for everyday vitality.
+                <p className="text-xs text-stone-500 line-clamp-2">
+                  Balanced blend of 5 powerhouse seeds formulated for daily plant protein & stamina.
                 </p>
               </div>
-              <span className="mt-4 text-xs font-semibold text-pureliva-green group-hover:underline">
-                Explore Seed Mix &rarr;
+              <span className="mt-5 text-xs font-bold text-[#2E7D32] group-hover:underline inline-flex items-center gap-1">
+                <span>View Products</span>
+                <ArrowRight size={13} />
               </span>
             </Link>
 
-            <div className="p-6 rounded-3xl bg-stone-100/70 border border-stone-200 text-center flex flex-col items-center justify-between opacity-80">
-              <div className="w-16 h-16 rounded-2xl bg-stone-200/80 text-stone-500 flex items-center justify-center mb-4">
+            {/* 4. Healthy Snacks & Sweets (Coming Soon) */}
+            <div className="p-6 rounded-2xl bg-stone-50 border border-stone-200/60 text-center flex flex-col items-center justify-between opacity-75">
+              <div className="w-16 h-16 rounded-2xl bg-stone-200 text-stone-500 flex items-center justify-center mb-4">
                 <Heart size={28} />
               </div>
-              <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-stone-200 text-stone-600 px-2 py-0.5 rounded-full inline-block mb-1.5">
+              <div className="space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-stone-200 text-stone-600 px-2.5 py-0.5 rounded-full inline-block">
                   Coming Soon
                 </span>
                 <h3 className="font-heading text-lg font-bold text-stone-700">
-                  Healthy Snacks & Sweets
+                  Healthy Sweets & Snacks
                 </h3>
-                <p className="text-xs text-stone-500 mt-1">
-                  Naturally sweet bites & desserts without refined sugar.
+                <p className="text-xs text-stone-400 line-clamp-2">
+                  Naturally sweetened artisan bites made with pure seeds and jaggery, zero refined sugar.
                 </p>
               </div>
-              <span className="mt-4 text-xs font-semibold text-stone-400">
+              <span className="mt-5 text-xs font-semibold text-stone-400">
                 In Development
               </span>
             </div>
@@ -469,166 +300,176 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. OUR PRODUCTS – PINNED HORIZONTAL SCROLL ON DESKTOP & SNAP CAROUSEL ON MOBILE */}
-      <section
-        ref={horizontalSectionRef}
-        className="relative py-12 lg:py-6 lg:min-h-screen lg:h-screen lg:max-h-[960px] flex flex-col justify-center overflow-hidden transition-colors duration-700"
-        style={{
-          backgroundColor: `${activeAccent}0D`, // ~5% soft ambient tint
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 lg:mb-6 shrink-0">
-          <SectionHeading
-            compact
-            badge="Farm Direct Collection"
-            title="Harvested with Care, Roasted to Perfection"
-            subtitle="Explore our artisanal range of nutrient-dense natural seeds. Single origin seeds and balanced multi-seed power blends for daily wellness."
-            align="center"
-          />
-        </div>
-
-        {/* Desktop: GSAP Horizontal Track */}
-        <div className="hidden lg:block w-full overflow-hidden shrink-0">
-          <div
-            ref={horizontalTrackRef}
-            className="flex items-center space-x-8 xl:space-x-12 px-8 lg:px-12 w-max"
-          >
-            {PRODUCTS.map((product, idx) => (
-              <div
-                key={product.slug}
-                className="horizontal-panel w-[820px] xl:w-[860px] flex-shrink-0"
-              >
-                <ProductPanel product={product} index={idx} />
-              </div>
-            ))}
+      {/* SECTION 3 — WHY CHOOSE US (6 Icon Row) */}
+      <section className="py-16 sm:py-20 bg-stone-50/70">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+              The Pureliva Standard
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140]">
+              Why Choose Pureliva?
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500">
+              Clean ethics, unadulterated farming purity, and science-backed nutrition in every spoonful.
+            </p>
           </div>
-        </div>
 
-        {/* Mobile / Tablet: Swipeable Snap Carousel */}
-        <div className="block lg:hidden px-4 sm:px-6">
-          <div className="flex space-x-6 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar">
-            {PRODUCTS.map((product, idx) => (
-              <div
-                key={product.slug}
-                className="w-[85vw] max-w-sm flex-shrink-0 snap-center"
-              >
-                <ProductPanel product={product} index={idx} />
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-2 text-xs text-pureliva-muted">
-            Swipe sideways to view all 5 seed varieties →
-          </div>
-        </div>
-      </section>
-
-      {/* 4. WHY PURELIVA (6 ICON CARDS) */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            badge="The Pureliva Standard"
-            title="Honest Nutrition, No Compromises"
-            subtitle="We believe wellness shouldn't be complicated or loaded with synthetic chemicals. Every batch is crafted with clean ethics."
-            align="center"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {whyChooseUs.map((item, idx) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Leaf,
+                title: "No Added Refined Sugar",
+                desc: "Zero white sugars, artificial sweeteners, or synthetic syrups. Kept 100% natural.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "No Artificial Colours or Preservatives",
+                desc: "Zero chemical preservatives or synthetic coloring agents. Pure, untouched seeds.",
+              },
+              {
+                icon: Heart,
+                title: "Rich in Protein & Fibre",
+                desc: "Naturally high in vegan plant protein, vital dietary fibre, and heart-healthy omega fats.",
+              },
+              {
+                icon: Layers,
+                title: "Generational Farming Heritage",
+                desc: "Rooted in Khandwa, Madhya Pradesh. We honor the soil from sprout to sealed pack.",
+              },
+              {
+                icon: Package,
+                title: "Resealable Moisture Zipper",
+                desc: "High-barrier food-grade pouches that lock in crunch, freshness, and nutrients.",
+              },
+              {
+                icon: CheckCircle,
+                title: "Certified Food Safety & FSSAI",
+                desc: "Hygienically optical sorted and packed in accredited clean-room processing lines.",
+              },
+            ].map((item, idx) => {
               const Icon = item.icon;
               return (
-                <motion.div
+                <div
                   key={idx}
-                  initial={{ opacity: 0, y: 25 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
-                  whileHover={{ y: -5 }}
-                  className="p-8 rounded-3xl bg-pureliva-cream border border-stone-200/60 shadow-soft hover:shadow-soft-lg transition-all duration-300"
+                  className="p-6 sm:p-7 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-pureliva-green text-white flex items-center justify-center mb-6 shadow-sm">
+                  <div className="w-12 h-12 rounded-xl bg-[#2E7D32]/10 text-[#2E7D32] flex items-center justify-center mb-5">
                     <Icon size={24} />
                   </div>
-                  <h3 className="font-heading text-xl font-bold text-pureliva-heading mb-2">
+                  <h3 className="font-heading text-lg font-bold text-[#1E2140] mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-pureliva-body leading-relaxed">
+                  <p className="text-xs sm:text-sm text-stone-500 leading-relaxed">
                     {item.desc}
                   </p>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* 5. WHO WE ARE (FARMING HERITAGE COLLAGE) */}
-      <section className="py-20 bg-pureliva-cream/50 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Image Collage */}
-            <div className="lg:col-span-6 relative">
-              <div className="relative w-full max-w-md mx-auto aspect-square flex items-center justify-center">
-                {/* Background soft circle */}
-                <div className="absolute inset-4 rounded-full bg-pureliva-green/10 blur-2xl" />
+      {/* SECTION 4 — BEST SELLER WITH FILTER TABS */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 pb-6 border-b border-stone-100">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+                Customer Favorites
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140] mt-1">
+                Best Seller Products
+              </h2>
+            </div>
 
-                {/* Primary collage item: Chia flower seeds */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7 }}
-                  className="relative z-10 w-64 h-64 sm:w-72 sm:h-72"
+            {/* Filter Tabs */}
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 overflow-x-auto max-w-full">
+              {[
+                { id: "all", label: "All Seeds" },
+                { id: "raw", label: "Raw Seeds" },
+                { id: "roasted", label: "Roasted Seeds" },
+                { id: "mix", label: "Seed Mix" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                    activeTab === tab.id
+                      ? "bg-[#2E7D32] text-white shadow-sm"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
                 >
-                  <Img
-                    src="/images/decor/chia-flower-seeds"
-                    alt="Chia flower seeds natural collage"
-                    transparent
-                    className="w-full h-full object-contain filter drop-shadow-lg"
-                  />
-                </motion.div>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
-                {/* Secondary collage item: Sunflower kernels pile */}
-                <motion.div
-                  initial={{ opacity: 0, x: 30, y: 30 }}
-                  whileInView={{ opacity: 1, x: 0, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="absolute bottom-0 right-0 z-20 w-44 h-44 sm:w-52 sm:h-52"
-                >
-                  <Img
-                    src="/images/decor/sunflower-kernels-pile"
-                    alt="Pile of golden sunflower kernels"
-                    transparent
-                    className="w-full h-full object-contain filter drop-shadow-md"
-                  />
-                </motion.div>
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.slug} product={product} />
+            ))}
+          </div>
+
+          {/* Explore all link */}
+          <div className="text-center mt-12">
+            <Link
+              to="/collections"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#1E2140] hover:bg-stone-900 text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md"
+            >
+              <span>View All 5 Seed Varieties</span>
+              <ArrowRight size={15} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5 — BRAND STORY BANNER (Split 2-Column) */}
+      <section className="py-16 sm:py-20 bg-[#F7F3E8] relative overflow-hidden">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {/* Left Column: Image with Natural Aesthetic */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative w-full aspect-square max-w-md mx-auto rounded-3xl overflow-hidden bg-white p-6 shadow-soft border border-stone-200/80 flex items-center justify-center">
+                <Img
+                  src="/images/products/chia-seed-bowl"
+                  alt="Pureliva Natural Seeds Heritage"
+                  transparent
+                  className="w-full h-full object-contain filter drop-shadow-xl"
+                />
+                <span className="absolute bottom-4 left-4 right-4 bg-[#1E2140]/90 backdrop-blur-md text-white text-[11px] font-semibold py-2 px-4 rounded-xl text-center">
+                  Patidar Enterprises • Khandwa, Madhya Pradesh
+                </span>
               </div>
             </div>
 
             {/* Right Column: Founder Story */}
-            <div className="lg:col-span-6 space-y-6">
-              <span className="font-script text-3xl text-pureliva-brown">
-                Generations of Indian Agriculture
+            <div className="lg:col-span-7 space-y-5">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+                Our Roots & Heritage
               </span>
 
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-pureliva-heading leading-tight">
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1E2140] leading-tight">
                 Rooted in Farming. Built on Trust.
               </h2>
 
-              <p className="text-base sm:text-lg text-pureliva-body leading-relaxed">
-                Pureliva is an agro brand by <strong className="text-pureliva-heading">Patidar Enterprises</strong>, Khandwa, Madhya Pradesh. Our founder grew up in a farming family — purity isn't a marketing promise, it's a standard we lived by long before it became a trend.
+              <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+                Pureliva is an agro-wellness brand by <strong>Patidar Enterprises</strong>, located in the fertile agricultural heartland of Khandwa, Madhya Pradesh. Our founders were raised in farming families, learning the true value of soil, crop cycles, and honest harvest long before wellness became an industry.
               </p>
 
-              <p className="text-sm sm:text-base text-pureliva-body leading-relaxed">
-                We work directly with trusted farmers and certified processing units, with no middlemen and no shortcuts. Every seed is carefully inspected, cleaned, gently roasted, and sealed to bring nature’s authentic nourishment to your dining table.
+              <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+                We work directly with certified farming communities and modern optical sorting facilities. No chemical middlemen, no bleached batches, and zero shortcuts.
               </p>
 
-              {/* Quote block */}
-              <div className="p-6 rounded-2xl bg-white border-l-4 border-pureliva-green shadow-soft">
-                <blockquote className="font-heading text-lg sm:text-xl italic text-pureliva-heading">
-                  "When the soil is your teacher, purity is our promise."
+              {/* Quote Block */}
+              <div className="p-5 rounded-2xl bg-white border-l-4 border-[#2E7D32] shadow-sm">
+                <blockquote className="font-heading text-base sm:text-lg italic text-[#1E2140]">
+                  "When the soil is your teacher, purity is your only promise."
                 </blockquote>
-                <span className="block mt-2 text-xs font-semibold text-pureliva-brown uppercase tracking-wider">
+                <span className="block mt-2 text-xs font-semibold text-stone-500 uppercase tracking-wider">
                   — Patidar Enterprises, Khandwa (M.P.)
                 </span>
               </div>
@@ -636,9 +477,9 @@ export const Home: React.FC = () => {
               <div className="pt-2">
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-2 text-pureliva-green font-semibold text-sm hover:underline"
+                  className="inline-flex items-center gap-2 text-[#2E7D32] font-bold text-sm hover:underline"
                 >
-                  <span>Read our full farming story</span>
+                  <span>Read our full story & mission</span>
                   <ArrowRight size={16} />
                 </Link>
               </div>
@@ -647,203 +488,297 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. HOW TO ORDER ON WHATSAPP (3 CONNECTED STEPS) */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            badge="Effortless Ordering"
-            title="How to Order in 3 Simple Steps"
-            subtitle="Direct customer support without complicated shopping carts or account passwords. We chat, confirm, and deliver."
-            align="center"
-          />
+      {/* SECTION 6 — TEXT MARQUEE TICKER */}
+      <div className="py-4 bg-[#1E2140] text-[#F7F3E8] overflow-hidden whitespace-nowrap border-y border-white/10">
+        <div className="inline-flex items-center gap-8 animate-marquee text-xs font-bold tracking-widest uppercase">
+          {[
+            "100% FARM DIRECT",
+            "•",
+            "FSSAI ACCREDITED",
+            "•",
+            "AIRTIGHT RESEALABLE ZIPPER",
+            "•",
+            "ZERO ADDED WHITE SUGAR",
+            "•",
+            "NO ARTIFICIAL PRESERVATIVES",
+            "•",
+            "RICH IN OMEGA-3 & VEGAN PROTEIN",
+            "•",
+            "PROUDLY MADE IN INDIA",
+            "•",
+            "OPTICAL SORTED PURITY",
+            "•",
+          ].map((item, i) => (
+            <span key={i} className={item === "•" ? "text-emerald-400" : ""}>
+              {item}
+            </span>
+          ))}
+          {[
+            "100% FARM DIRECT",
+            "•",
+            "FSSAI ACCREDITED",
+            "•",
+            "AIRTIGHT RESEALABLE ZIPPER",
+            "•",
+            "ZERO ADDED WHITE SUGAR",
+            "•",
+            "NO ARTIFICIAL PRESERVATIVES",
+            "•",
+            "RICH IN OMEGA-3 & VEGAN PROTEIN",
+            "•",
+            "PROUDLY MADE IN INDIA",
+            "•",
+            "OPTICAL SORTED PURITY",
+            "•",
+          ].map((item, i) => (
+            <span key={`dup-${i}`} className={item === "•" ? "text-emerald-400" : ""}>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
 
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            {/* Connecting line on desktop */}
-            <div className="hidden md:block absolute top-1/2 left-1/6 right-1/6 h-0.5 bg-dashed border-t-2 border-dashed border-pureliva-green/20 -translate-y-8 z-0 pointer-events-none" />
+      {/* SECTION 7 — OUR DEVOTION / OUR PROMISE (4 Feature Cards) */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+              Our Devotion
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140]">
+              Our Promise in Every Spoon
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500">
+              Four unshakable commitments that guide every harvest, sorting pass, and pack we ship.
+            </p>
+          </div>
 
-            {/* Step 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="relative z-10 flex flex-col items-center text-center p-8 bg-pureliva-cream rounded-3xl border border-stone-200/60 shadow-soft"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-pureliva-green text-white flex items-center justify-center font-heading text-2xl font-bold mb-6 shadow-md">
-                1
-              </div>
-              <h3 className="font-heading text-xl font-bold text-pureliva-heading mb-2">
-                Choose Your Seeds
-              </h3>
-              <p className="text-sm text-pureliva-body leading-relaxed">
-                Browse our range of roasted or raw seeds, or use our multi-product order builder to customize quantities.
-              </p>
-            </motion.div>
-
-            {/* Step 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.15 }}
-              className="relative z-10 flex flex-col items-center text-center p-8 bg-pureliva-cream rounded-3xl border border-stone-200/60 shadow-soft"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-whatsapp text-white flex items-center justify-center font-heading text-2xl font-bold mb-6 shadow-md">
-                2
-              </div>
-              <h3 className="font-heading text-xl font-bold text-pureliva-heading mb-2">
-                Tap "Order on WhatsApp"
-              </h3>
-              <p className="text-sm text-pureliva-body leading-relaxed">
-                Your selected items and quantities pre-fill into a WhatsApp message automatically. Tap send to begin.
-              </p>
-            </motion.div>
-
-            {/* Step 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="relative z-10 flex flex-col items-center text-center p-8 bg-pureliva-cream rounded-3xl border border-stone-200/60 shadow-soft"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-pureliva-brown text-white flex items-center justify-center font-heading text-2xl font-bold mb-6 shadow-md">
-                3
-              </div>
-              <h3 className="font-heading text-xl font-bold text-pureliva-heading mb-2">
-                Confirm & Delivered
-              </h3>
-              <p className="text-sm text-pureliva-body leading-relaxed">
-                We confirm your delivery address and payment on chat. Your fresh batch ships swiftly to your doorstep.
-              </p>
-            </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: ShieldCheck,
+                title: "100% Honest Purity",
+                desc: "Never adulterated, never blended with fillers. Exactly what nature produced.",
+              },
+              {
+                icon: Zap,
+                title: "Precision Optical Sorting",
+                desc: "Triple-cleansed using modern optical sorting to remove foreign matter.",
+              },
+              {
+                icon: Truck,
+                title: "Direct From Cultivators",
+                desc: "Ethically procured with fair compensation to generational farming families.",
+              },
+              {
+                icon: Package,
+                title: "Freshness-Lock Pouches",
+                desc: "Sealed with airtight resealable zippers to keep the natural crunch intact.",
+              },
+            ].map((card, idx) => {
+              const Icon = card.icon;
+              return (
+                <div
+                  key={idx}
+                  className="p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/80 text-center flex flex-col items-center justify-between"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-[#2E7D32] text-white flex items-center justify-center mb-4 shadow-sm">
+                    <Icon size={24} />
+                  </div>
+                  <h3 className="font-heading text-base font-bold text-[#1E2140] mb-2">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-stone-500 leading-relaxed">
+                    {card.desc}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* 7. NUTRITION AT A GLANCE (TABS, BARS, BOWL) */}
-      <section className="py-20 bg-pureliva-cream/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            badge="Macro Breakdown"
-            title="Nutrition at a Glance"
-            subtitle="Compare protein, dietary fibre, and sustained energy across all our seed varieties. Real lab-tested metrics per 100g."
-            align="center"
-          />
-
-          <NutritionBars />
-        </div>
-      </section>
-
-      {/* 8. WAYS TO ENJOY (CARDS) */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            badge="Culinary Inspiration"
-            title="Simple Ways to Enjoy Every Spoon"
-            subtitle="From energizing breakfast bowls to guilt-free midday crunching, here's how Pureliva fits seamlessly into your daily lifestyle."
-            align="center"
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {waysToEnjoy.map((item, idx) => (
-              <motion.div
+      {/* SECTION 8 — KEY FEATURES BADGES STRIP */}
+      <section className="py-10 bg-stone-50 border-y border-stone-200/60">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+            {[
+              { label: "FSSAI Accredited", sub: "Govt Certified" },
+              { label: "100% Vegetarian", sub: "Pure Plant-Based" },
+              { label: "Zero Trans Fat", sub: "Cholesterol Free" },
+              { label: "High Dietary Fibre", sub: "Gut Friendly" },
+              { label: "Resealable Pouch", sub: "Freshness Sealed" },
+              { label: "Proudly Indian", sub: "Khandwa, M.P." },
+            ].map((badge, idx) => (
+              <div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.45, delay: idx * 0.08 }}
-                whileHover={{ y: -6 }}
-                className="p-8 rounded-3xl bg-pureliva-cream/60 border border-stone-200/70 shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col justify-between"
+                className="p-3.5 rounded-xl bg-white border border-stone-200/80 shadow-xs flex flex-col items-center justify-center"
               >
-                <div>
-                  <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-pureliva-green/10 text-pureliva-green mb-4">
-                    {item.tag}
-                  </span>
-                  <h3 className="font-heading text-xl font-bold text-pureliva-heading mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-pureliva-body leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-stone-200/40 text-xs text-pureliva-brown font-medium">
-                  Ideal with all Pureliva packs
-                </div>
-              </motion.div>
+                <CheckCircle size={18} className="text-[#2E7D32] mb-1.5" />
+                <span className="text-xs font-bold text-[#1E2140] leading-tight block">
+                  {badge.label}
+                </span>
+                <span className="text-[10px] text-stone-400 block mt-0.5">
+                  {badge.sub}
+                </span>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 9. BULK & EXPORT TEASER */}
-      <section className="py-20 bg-pureliva-green text-white relative overflow-hidden">
-        <div className="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-pureliva-brown/20 blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* SECTION 9 — BULK & EXPORT ORDER BANNER */}
+      <section className="py-16 sm:py-20 bg-[#1E2140] text-white relative overflow-hidden">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
-              <span className="font-script text-3xl text-pureliva-brown">
-                B2B & Commercial Supply
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+                B2B & Commercial Agro Supply
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                 Bulk Agro Supply & Export Ready
               </h2>
-              <p className="text-base sm:text-lg text-emerald-100/90 max-w-2xl leading-relaxed">
-                Also supplying bulk Chia Seeds, Flax Seeds, Onion Flakes, Garlic Powder and Dry Garlic to retailers, manufacturers, importers and distributors across India and worldwide.
+              <p className="text-sm sm:text-base text-stone-300 max-w-2xl leading-relaxed">
+                Also supplying bulk quantities of Chia Seeds, Flax Seeds, Dehydrated Onion Flakes, Garlic Powder, and Dry Garlic to domestic manufacturers, wholesale distributors, and global importers.
               </p>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center lg:items-end gap-4">
+            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center lg:items-end gap-3.5">
               <Link
                 to="/bulk-export"
-                className="w-full sm:w-auto px-6 py-3.5 bg-white text-pureliva-green hover:bg-emerald-50 rounded-2xl font-semibold text-sm transition-all shadow-md text-center"
+                className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#1E2140] hover:bg-stone-100 rounded-xl font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all"
               >
                 View Bulk Specifications
               </Link>
 
               <WhatsAppButton
-                href={buildWhatsAppLink("Hello, I want to enquire about bulk/export supply.")}
+                href={buildWhatsAppLink("Hello Pureliva, I want to enquire about commercial bulk / export supply.")}
                 text="Bulk Enquiry on WhatsApp"
                 size="md"
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto shadow-sm"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* 10. FAQS ACCORDION */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            badge="Frequently Asked Questions"
-            title="Got Questions? We Have Answers"
-            subtitle="Everything you need to know about placing an order, delivery timelines, storage tips, and bulk procurement."
-            align="center"
-          />
+      {/* SECTION 10 — BLOG / PRODUCT RECIPES SECTION */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+                Culinary Inspiration
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140] mt-1">
+                Delicious Ways to Enjoy Every Spoon
+              </h2>
+            </div>
+            <Link
+              to="/recipes"
+              className="text-xs font-bold text-[#2E7D32] hover:underline inline-flex items-center gap-1"
+            >
+              <span>View All Recipes</span>
+              <ArrowRight size={14} />
+            </Link>
+          </div>
 
-          <FAQAccordion items={FAQS} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {RECIPES.slice(0, 3).map((recipe) => (
+              <div
+                key={recipe.id}
+                className="group rounded-2xl bg-[#F7F3E8] border border-stone-200/80 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative h-48 overflow-hidden bg-stone-100">
+                    <img
+                      src={recipe.image}
+                      alt={recipe.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-3 left-3 bg-[#1E2140]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
+                      {recipe.category}
+                    </span>
+                    <span className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-stone-800 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Clock size={11} />
+                      <span>{recipe.prepTime}</span>
+                    </span>
+                  </div>
+
+                  <div className="p-5 space-y-2">
+                    <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors line-clamp-1">
+                      {recipe.title}
+                    </h3>
+                    <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                      {recipe.summary}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="px-5 pb-5">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRecipe(recipe)}
+                    className="w-full py-2.5 rounded-xl bg-white border border-stone-200 text-[#1E2140] hover:bg-[#2E7D32] hover:text-white hover:border-[#2E7D32] text-xs font-bold transition-all"
+                  >
+                    Read Recipe
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CORE VALUES STRIP - P U R E L I V A */}
-      <section className="py-16 bg-[#1E2140] text-pureliva-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* SECTION 11 — CERTIFICATIONS & ACCREDITATIONS STRIP */}
+      <section className="py-12 bg-stone-50 border-t border-stone-200/60">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-xl mx-auto mb-8 space-y-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#2E7D32]">
+              Accreditations & Compliance
+            </span>
+            <h3 className="font-heading text-2xl font-bold text-[#1E2140]">
+              Certified for Safe Food Processing
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 items-center justify-center max-w-3xl mx-auto">
+            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#2E7D32] block">FSSAI</span>
+              <span className="text-[10px] text-stone-500 font-semibold">Reg. 21424170000414</span>
+            </div>
+            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#1E2140] block">ISO 22000</span>
+              <span className="text-[10px] text-stone-500 font-semibold">Food Safety Standard</span>
+            </div>
+            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#2E7D32] block">GMP</span>
+              <span className="text-[10px] text-stone-500 font-semibold">Good Manufacturing</span>
+            </div>
+            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#1E2140] block">HACCP</span>
+              <span className="text-[10px] text-stone-500 font-semibold">Hazard Control Certified</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 12 — CORE VALUES STRIP (P U R E L I V A) */}
+      <section className="py-16 bg-[#1E2140] text-white">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-300">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
               Our Principles
             </span>
             <h2 className="font-heading text-3xl font-bold text-white">
               What We Stand For, From P to A
             </h2>
             <p className="text-xs sm:text-sm text-stone-300">
-              Eight core values rooted in our farming soil and everyday integrity.
+              Eight foundational principles spelled out through our name.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
             {[
               { l: "P", t: "Purity", s: "& Integrity" },
               { l: "U", t: "Quality", s: "Uncompromising" },
@@ -856,7 +791,7 @@ export const Home: React.FC = () => {
             ].map((v) => (
               <div
                 key={v.l}
-                className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center hover:bg-white/10 transition-colors"
+                className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center hover:bg-white/10 transition-colors"
               >
                 <span className="font-heading font-black text-2xl sm:text-3xl text-emerald-400 mb-1">
                   {v.l}
@@ -873,69 +808,76 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* NEWSLETTER SIGNUP */}
-      <section className="py-16 bg-white border-t border-stone-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
-            Stay Connected
-          </span>
-          <h2 className="font-heading text-3xl font-bold text-stone-900">
-            Wholesome Wellness in Your Inbox
-          </h2>
-          <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto">
-            Subscribe for seasonal recipes, seed benefits, and first access to our upcoming naturally sweet treats.
-          </p>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Thank you for subscribing to Pureliva!");
-            }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-2 max-w-md mx-auto pt-2"
+      {/* RECIPE DETAIL MODAL */}
+      {selectedRecipe && (
+        <div
+          className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedRecipe(null)}
+        >
+          <div
+            className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
           >
-            <input
-              type="email"
-              required
-              placeholder="Enter your email address..."
-              className="w-full px-4 py-3 rounded-2xl border border-stone-300 text-xs sm:text-sm focus:outline-none focus:border-pureliva-green bg-stone-50"
-            />
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-pureliva-green hover:bg-emerald-800 text-white font-semibold text-xs whitespace-nowrap shadow-soft transition-colors"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </section>
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#2E7D32]">
+                {selectedRecipe.category} • {selectedRecipe.prepTime}
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedRecipe(null)}
+                className="p-1 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100"
+              >
+                ✕
+              </button>
+            </div>
 
-      {/* 11. INSTAGRAM CTA */}
-      <section className="py-16 bg-pureliva-cream border-t border-stone-200/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
-          <div className="inline-flex p-3 rounded-full bg-pink-100 text-pink-600 mb-2">
-            <Instagram size={24} />
-          </div>
-          <h2 className="font-heading text-3xl font-bold text-pureliva-heading">
-            Join Our Community of Mindful Eaters
-          </h2>
-          <p className="text-sm sm:text-base text-pureliva-body max-w-xl mx-auto">
-            Show your Pureliva creation to us on Instagram. Tag us in your smoothies, morning bowls, and wholesome recipes!
-          </p>
-          <div className="pt-2">
-            <a
-              href={SITE_CONFIG.instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-pureliva-green text-white font-semibold text-sm hover:bg-pureliva-green-hover transition-colors shadow-soft"
-            >
-              <span>Follow @purelivafoods</span>
-              <ExternalLink size={15} />
-            </a>
+            <div className="mt-4 space-y-4">
+              <img
+                src={selectedRecipe.image}
+                alt={selectedRecipe.title}
+                className="w-full h-44 object-cover rounded-2xl"
+              />
+
+              <h3 className="font-heading text-xl font-bold text-[#1E2140]">
+                {selectedRecipe.title}
+              </h3>
+
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+                  Ingredients:
+                </h4>
+                <ul className="text-xs text-stone-600 space-y-1 list-disc list-inside">
+                  {selectedRecipe.ingredients.map((ing, i) => (
+                    <li key={i}>{ing}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+                  Preparation Steps:
+                </h4>
+                <ol className="text-xs text-stone-600 space-y-1.5 list-decimal list-inside">
+                  {selectedRecipe.steps.map((step, i) => (
+                    <li key={i}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="pt-2">
+                <WhatsAppButton
+                  href={buildWhatsAppLink(`Hello Pureliva, I loved the recipe '${selectedRecipe.title}' and want to order the seeds used in it.`)}
+                  text="Order Seeds on WhatsApp"
+                  size="sm"
+                  className="w-full justify-center"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      )}
     </>
   );
 };
 
 export default Home;
-
