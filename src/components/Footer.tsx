@@ -44,10 +44,10 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#1C0026] text-white relative overflow-hidden border-t-4 border-amber-400">
+    <footer className="bg-[#680183] text-white relative overflow-hidden border-t-4 border-amber-400">
       {/* Subtle background ambient texture */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#680183]/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Footer Container */}
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 pb-10 sm:pb-12 relative z-10">
@@ -371,20 +371,22 @@ export const Footer: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Bar: Copyright & Admin Shortcut */}
-        <div className="mt-12 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-purple-200">
-          <p>© 2026 Pureliva Foods (Patidar Enterprises). All rights reserved.</p>
+      {/* Full-width Bottom Bar: Clean light background with royal purple text matching Gomoswa Foods */}
+      <div className="bg-[#FAF7F2] text-[#680183] py-4 px-4 sm:px-6 lg:px-8 border-t border-purple-200/50 relative z-10">
+        <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium">
+          <p className="text-stone-700">© 2026 Pureliva Foods (Patidar Enterprises). All rights reserved.</p>
           <div className="flex items-center gap-4">
             <Link
               to="/admin"
-              className="text-purple-200 hover:text-white underline text-[11px] transition-colors flex items-center gap-1"
+              className="text-[#680183] hover:text-[#4F0164] underline text-[11px] font-bold transition-colors flex items-center gap-1"
             >
-              <Lock size={11} />
+              <Lock size={12} />
               <span>Admin Login</span>
             </Link>
-            <span className="text-white/30">•</span>
-            <span className="text-[11px]">Khandwa, Madhya Pradesh</span>
+            <span className="text-stone-300">•</span>
+            <span className="text-[11px] text-stone-600">Khandwa, Madhya Pradesh</span>
           </div>
         </div>
       </div>

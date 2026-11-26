@@ -126,18 +126,18 @@ export const Home: React.FC = () => {
         <link rel="canonical" href="https://purelivafoods.com" />
       </Helmet>
 
-      {/* SECTION 1 — HERO BANNER SLIDESHOW (WARM LUXURY GOURMET CANVAS) */}
-      <section className="relative min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] pt-28 sm:pt-36 pb-12 sm:pb-16 bg-gradient-to-b from-[#FDFBF7] via-[#F8F4EC] to-[#F1EBE1] text-[#1A0022] overflow-hidden flex items-center border-b border-stone-200/80">
+      {/* SECTION 1 — HERO BANNER SLIDESHOW (ROYAL PURPLE & GOLD BRAND CANVAS) */}
+      <section className="relative min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] pt-28 sm:pt-36 pb-12 sm:pb-16 bg-gradient-to-r from-[#53016A] via-[#680183] to-[#4F0164] text-white overflow-hidden flex items-center border-b-2 border-amber-400/40">
         {/* Ambient atmospheric organic glows */}
-        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-amber-200/25 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-purple-200/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-amber-100/30 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-amber-400/15 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-purple-400/20 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-amber-300/10 blur-3xl pointer-events-none" />
 
         {/* Desktop Prev / Next Navigation Arrows */}
         <button
           type="button"
           onClick={prevSlide}
-          className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/90 hover:bg-white text-stone-800 border border-stone-200 shadow-md transition-all z-20 hover:scale-105"
+          className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md shadow-lg transition-all z-20 hover:scale-105"
           aria-label="Previous Slide"
         >
           <ChevronLeft size={22} />
@@ -146,7 +146,7 @@ export const Home: React.FC = () => {
         <button
           type="button"
           onClick={nextSlide}
-          className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/90 hover:bg-white text-stone-800 border border-stone-200 shadow-md transition-all z-20 hover:scale-105"
+          className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md shadow-lg transition-all z-20 hover:scale-105"
           aria-label="Next Slide"
         >
           <ChevronRight size={22} />
@@ -165,19 +165,19 @@ export const Home: React.FC = () => {
               {/* Left Column: Headlines, Trust & CTAs */}
               <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100/80 text-[#680183] border border-purple-200/80 text-xs font-extrabold uppercase tracking-wider shadow-xs">
-                  <Sparkles size={14} className="text-[#680183]" />
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400 text-stone-950 border border-amber-300 text-xs font-extrabold uppercase tracking-wider shadow-sm">
+                  <Sparkles size={14} className="text-stone-950" />
                   <span>{activeHero.badge}</span>
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-[#1A0022]">
+                <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-white">
                   {activeHero.title.replace(activeHero.highlight, "")}
-                  <span className="text-[#680183] italic block sm:inline"> {activeHero.highlight}</span>
+                  <span className="text-amber-300 italic block sm:inline"> {activeHero.highlight}</span>
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-xs sm:text-base lg:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                <p className="text-xs sm:text-base lg:text-lg text-purple-100/90 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
                   {activeHero.subtitle}
                 </p>
 
@@ -185,7 +185,7 @@ export const Home: React.FC = () => {
                 <div className="pt-2 flex flex-row items-center justify-center lg:justify-start gap-3 max-w-md mx-auto lg:mx-0">
                   <Link
                     to={activeHero.ctaLink}
-                    className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 sm:py-4 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                    className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 sm:py-4 bg-amber-400 hover:bg-amber-300 text-stone-950 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                   >
                     <span>{activeHero.ctaText}</span>
                     <ArrowRight size={16} />
@@ -202,33 +202,33 @@ export const Home: React.FC = () => {
                 </div>
 
                 {/* 3 Trust Points Strip below CTAs */}
-                <div className="pt-3 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-stone-600 font-medium flex-wrap">
+                <div className="pt-3 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-purple-200/95 font-medium flex-wrap">
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle size={14} className="text-[#680183] shrink-0" />
+                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
                     <span>Resealable Freshness Zipper</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle size={14} className="text-[#680183] shrink-0" />
+                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
                     <span>Zero Added Refined Sugar</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle size={14} className="text-[#680183] shrink-0" />
+                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
                     <span>Fast Delivery Pan India</span>
                   </span>
                 </div>
               </div>
 
-              {/* Right Column: Pack Pouch + Bowl Studio Composition (Grounded, High Contrast on Gourmet Canvas) */}
+              {/* Right Column: Pack Pouch + Bowl Studio Composition (Grounded, High Contrast on Royal Purple Canvas) */}
               <div className="lg:col-span-5 flex items-center justify-center relative">
                 <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] aspect-[4/3.5] flex items-center justify-center">
                   {/* Subtle warm studio backlight */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400/25 via-purple-300/20 to-transparent blur-3xl pointer-events-none" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400/20 via-purple-300/15 to-transparent blur-3xl pointer-events-none" />
 
                   {/* Grounding Base Shadow */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-stone-900/20 rounded-full blur-xl pointer-events-none" />
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-black/40 rounded-full blur-xl pointer-events-none" />
 
                   {/* Main Product Pack (Standing Pouch) - Solid Grounded */}
-                  <div className="relative z-10 w-44 sm:w-56 h-56 sm:h-72 -mr-6 sm:-mr-8 flex items-center justify-center filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.18)]">
+                  <div className="relative z-10 w-44 sm:w-56 h-56 sm:h-72 -mr-6 sm:-mr-8 flex items-center justify-center filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.35)]">
                     <img
                       src={activeHero.packImage}
                       alt={activeHero.title}
@@ -238,7 +238,7 @@ export const Home: React.FC = () => {
                   </div>
 
                   {/* Seed Bowl (Resting in front right) - Solid Grounded */}
-                  <div className="relative z-20 w-36 sm:w-48 h-36 sm:h-48 -ml-6 sm:-ml-8 mt-12 sm:mt-16 flex items-center justify-center filter drop-shadow-[0_16px_20px_rgba(0,0,0,0.22)]">
+                  <div className="relative z-20 w-36 sm:w-48 h-36 sm:h-48 -ml-6 sm:-ml-8 mt-12 sm:mt-16 flex items-center justify-center filter drop-shadow-[0_16px_20px_rgba(0,0,0,0.38)]">
                     <img
                       src={activeHero.bowlImage}
                       alt={`${activeHero.title} Bowl`}
@@ -252,7 +252,7 @@ export const Home: React.FC = () => {
           </AnimatePresence>
 
           {/* Bottom Tabs Slide Selector (Modern Shopify/Minimog Style) */}
-          <div className="mt-8 sm:mt-12 pt-6 border-t border-stone-200/80 flex items-center justify-between gap-4">
+          <div className="mt-8 sm:mt-12 pt-6 border-t border-white/15 flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar w-full sm:w-auto">
               {heroSlides.map((slide, idx) => (
                 <button
@@ -261,8 +261,8 @@ export const Home: React.FC = () => {
                   onClick={() => setCurrentSlide(idx)}
                   className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 ${
                     currentSlide === idx
-                      ? "bg-[#680183] text-white shadow-md"
-                      : "bg-white/80 hover:bg-white text-stone-700 border border-stone-200/60"
+                      ? "bg-amber-400 text-stone-950 shadow-md"
+                      : "bg-white/10 hover:bg-white/20 text-purple-100 border border-white/15 backdrop-blur-xs"
                   }`}
                 >
                   <span className="font-mono text-[10px] opacity-75">0{idx + 1}</span>
@@ -272,8 +272,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Slide counter */}
-            <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-stone-500">
-              <strong className="text-[#680183]">0{currentSlide + 1}</strong>
+            <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-purple-200/80">
+              <strong className="text-amber-300">0{currentSlide + 1}</strong>
               <span className="opacity-40">/</span>
               <span>0{heroSlides.length}</span>
             </div>
