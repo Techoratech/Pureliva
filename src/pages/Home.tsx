@@ -897,74 +897,156 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* RECIPE DETAIL MODAL */}
-      {selectedRecipe && (
-        <div
-          className="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedRecipe(null)}
-        >
-          <div
-            className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183]">
-                {selectedRecipe.category} • {selectedRecipe.prepTime}
-              </span>
-              <button
-                type="button"
-                onClick={() => setSelectedRecipe(null)}
-                className="p-1 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100"
-              >
-                ✕
-              </button>
-            </div>
+      {/* RECIPE DETAIL MODAL — CENTERED WITH ANIMATION & BLUR */}
+      <AnimatePresence>
+        {selectedRecipe && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+            {/* Backdrop with Deep Blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setSelectedRecipe(null)}
+              className="fixed inset-0 bg-stone-950/70 backdrop-blur-md"
+            />
 
-            <div className="mt-4 space-y-4">
-              <img
-                src={selectedRecipe.image}
-                alt={selectedRecipe.title}
-                className="w-full h-44 object-cover rounded-2xl"
-              />
-
-              <h3 className="font-heading text-xl font-bold text-[#1A0022]">
-                {selectedRecipe.title}
-              </h3>
-
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
-                  Ingredients:
-                </h4>
-                <ul className="text-xs text-stone-600 space-y-1 list-disc list-inside">
-                  {selectedRecipe.ingredients.map((ing, i) => (
-                    <li key={i}>{ing}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
-                  Preparation Steps:
-                </h4>
-                <ol className="text-xs text-stone-600 space-y-1.5 list-decimal list-inside">
-                  {selectedRecipe.steps.map((step, i) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </ol>
-              </div>
-
-              <div className="pt-2">
-                <WhatsAppButton
-                  href={buildWhatsAppLink(`Hello Pureliva, I loved the recipe '${selectedRecipe.title}' and want to order the seeds used in it.`)}
-                  text="Order Seeds on WhatsApp"
-                  size="sm"
-                  className="w-full justify-center"
+            {/* Modal Dialog Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl z-10 overflow-hidden border border-purple-100 max-h-[90vh] flex flex-col my-auto"
+            >
+              {/* Cover Image & Close Floating Header */}
+              <div className="relative h-48 sm:h-56 w-full bg-stone-900 shrink-0">
+                <img
+                  src={selectedRecipe.image}
+                  alt={selectedRecipe.title}
+                  className="w-full h-full object-cover brightness-95"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                {/* Floating Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedRecipe(null)}
+                  className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 hover:rotate-90 z-20 shadow-md"
+                  aria-label="Close Modal"
+                >
+                  ✕
+                </button>
+
+                {/* Badges on Banner */}
+                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-2 text-white">
+                  <div>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#680183] text-amber-300 border border-amber-400/30 shadow-sm inline-block mb-1.5">
+                      {selectedRecipe.category} • Hero: {selectedRecipe.featuredSeed}
+                    </span>
+                    <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-white leading-tight drop-shadow-sm">
+                      {selectedRecipe.title}
+                    </h3>
+                  </div>
+                  <span className="shrink-0 bg-white/20 backdrop-blur-md text-[11px] font-semibold px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <Clock size={13} />
+                    <span>{selectedRecipe.prepTime}</span>
+                  </span>
+                </div>
               </div>
-            </div>
+
+              {/* Scrollable Modal Content */}
+              <div className="p-5 sm:p-7 overflow-y-auto space-y-6">
+                {/* Nutrition Callout */}
+                <div className="p-3.5 rounded-2xl bg-[#FBF8FD] border border-purple-100 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#680183] text-amber-300 flex items-center justify-center shrink-0">
+                    <Sparkles size={18} />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183] block">
+                      Nutritional Superpower
+                    </span>
+                    <p className="text-xs sm:text-sm font-semibold text-stone-800">
+                      {selectedRecipe.nutritionCallout}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Summary */}
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  {selectedRecipe.summary}
+                </p>
+
+                {/* Ingredients */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between pb-1 border-b border-stone-100">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#680183] flex items-center gap-1.5">
+                      <span>Required Ingredients</span>
+                    </h4>
+                    <span className="text-[11px] text-stone-400 font-semibold">
+                      Yields {selectedRecipe.servings}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {selectedRecipe.ingredients.map((ing, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-2 p-2.5 rounded-xl bg-purple-50/40 border border-purple-100 text-xs text-stone-800"
+                      >
+                        <CheckCircle size={14} className="text-[#680183] flex-shrink-0 mt-0.5" />
+                        <span>{ing}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step-by-Step Instructions */}
+                <div className="space-y-3">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#680183] flex items-center gap-1.5 pb-1 border-b border-stone-100">
+                    <span>Preparation Method</span>
+                  </h4>
+
+                  <ol className="space-y-3">
+                    {selectedRecipe.steps.map((st, i) => (
+                      <li
+                        key={i}
+                        className="flex items-start gap-3 p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 text-xs sm:text-sm text-stone-700 hover:border-purple-200 transition-colors"
+                      >
+                        <span className="w-6 h-6 rounded-full bg-[#680183] text-white text-xs font-bold flex items-center justify-center shrink-0 font-mono shadow-xs mt-0.5">
+                          {i + 1}
+                        </span>
+                        <p className="leading-relaxed text-stone-800 font-normal">{st}</p>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </div>
+
+              {/* Modal Footer Sticky Action Bar */}
+              <div className="p-4 sm:p-5 bg-stone-50 border-t border-stone-200/80 flex flex-col sm:flex-row items-center gap-3 shrink-0">
+                <WhatsAppButton
+                  href={buildWhatsAppLink(
+                    `Hello Pureliva, I saw your recipe '${selectedRecipe.title}' and want to order ${selectedRecipe.featuredSeed}!`
+                  )}
+                  text={`Order ${selectedRecipe.featuredSeed} on WhatsApp`}
+                  size="md"
+                  className="w-full sm:flex-1 justify-center"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedRecipe(null)}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs sm:text-sm font-semibold transition-colors"
+                >
+                  Close Recipe
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 };
