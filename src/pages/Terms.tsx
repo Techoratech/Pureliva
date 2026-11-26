@@ -65,7 +65,7 @@ export const Terms: React.FC = () => {
                 5. Contact & Support
               </h3>
               <p>
-                For questions regarding these Terms & Conditions, please contact us at [EMAIL] or [PHONE].
+                For questions regarding these Terms & Conditions, please contact us at info@purelivafoods.com or +91 97525 99343.
               </p>
             </section>
           </div>

@@ -148,6 +148,11 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/news-events" className="hover:text-emerald-400 transition-colors">
+                  News, Events & Recipes
+                </Link>
+              </li>
+              <li>
                 <Link
                   to="/track-order"
                   className="text-emerald-400 font-semibold hover:underline flex items-center gap-1.5"
@@ -226,10 +231,10 @@ export const Footer: React.FC = () => {
               )}
             </form>
 
-            <div className="pt-2 border-t border-white/10 text-xs text-stone-400 space-y-1">
-              <p>Phone: [PHONE]</p>
-              <p>Email: [EMAIL]</p>
-              <p>Address: [ADDRESS]</p>
+            <div className="pt-2 border-t border-white/10 text-xs text-stone-300 space-y-1">
+              <p>Phone: <a href={`tel:${SITE_CONFIG.phone}`} className="hover:text-emerald-400">{SITE_CONFIG.phone}</a></p>
+              <p>Email: <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-emerald-400">{SITE_CONFIG.email}</a></p>
+              <p>Address: {SITE_CONFIG.address}</p>
             </div>
           </div>
         </div>

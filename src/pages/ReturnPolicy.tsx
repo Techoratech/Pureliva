@@ -38,7 +38,7 @@ export const ReturnPolicy: React.FC = () => {
                 2. Damaged or Tampered Parcels
               </h3>
               <p>
-                In the rare event that your package arrives visibly damaged, punctured, or compromised in transit, please share an unboxing photo or video with our team within 48 hours of delivery at [EMAIL] or via WhatsApp at [WHATSAPP_NUMBER].
+                In the rare event that your package arrives visibly damaged, punctured, or compromised in transit, please share an unboxing photo or video with our team within 48 hours of delivery at info@purelivafoods.com or via WhatsApp at +91 97525 99343.
               </p>
             </section>
 

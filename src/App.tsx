@@ -22,6 +22,7 @@ import Home from "./pages/Home";
 import Collections from "./pages/Collections";
 import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
+import NewsEvents from "./pages/NewsEvents";
 import BulkExport from "./pages/BulkExport";
 import Order from "./pages/Order";
 import Contact from "./pages/Contact";
@@ -185,6 +186,22 @@ export const App: React.FC = () => {
                       element={
                         <PageTransition>
                           <About />
+                        </PageTransition>
+                      }
+                    />
+                    <Route
+                      path="/news-events"
+                      element={
+                        <PageTransition>
+                          <NewsEvents />
+                        </PageTransition>
+                      }
+                    />
+                    <Route
+                      path="/recipes"
+                      element={
+                        <PageTransition>
+                          <NewsEvents />
                         </PageTransition>
                       }
                     />

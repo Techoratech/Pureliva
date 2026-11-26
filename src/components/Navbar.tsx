@@ -74,7 +74,7 @@ export const Navbar: React.FC = () => {
         {/* Top Announcement & Contact Bar */}
         <div className="bg-[#1E2140] text-pureliva-cream text-[11px] sm:text-xs py-1.5 px-4 sm:px-6 lg:px-8 border-b border-white/10">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
-            {/* Left: Contact Info Placeholders / Values */}
+            {/* Left: Contact Info */}
             <div className="flex items-center gap-4 sm:gap-6">
               <a
                 href={`tel:${SITE_CONFIG.phone}`}
@@ -82,7 +82,7 @@ export const Navbar: React.FC = () => {
                 title="Call Pureliva Customer Care"
               >
                 <Phone size={11} className="text-emerald-400" />
-                <span>[PHONE]</span>
+                <span>{SITE_CONFIG.phone}</span>
               </a>
               <a
                 href={`mailto:${SITE_CONFIG.email}`}
@@ -90,7 +90,7 @@ export const Navbar: React.FC = () => {
                 title="Email Pureliva"
               >
                 <Mail size={11} className="text-emerald-400" />
-                <span>[EMAIL]</span>
+                <span>{SITE_CONFIG.email}</span>
               </a>
             </div>
 
@@ -266,6 +266,19 @@ export const Navbar: React.FC = () => {
                 }
               >
                 About Us
+              </NavLink>
+
+              <NavLink
+                to="/news-events"
+                className={({ isActive }) =>
+                  `px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
+                    isActive
+                      ? "text-pureliva-green bg-pureliva-green/10"
+                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                  }`
+                }
+              >
+                News & Recipes
               </NavLink>
 
               <NavLink
@@ -446,6 +459,14 @@ export const Navbar: React.FC = () => {
                 </Link>
 
                 <Link
+                  to="/news-events"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
+                >
+                  News, Events & Recipes
+                </Link>
+
+                <Link
                   to="/contact"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
@@ -491,8 +512,8 @@ export const Navbar: React.FC = () => {
                 </a>
 
                 <div className="text-[11px] text-stone-500 space-y-1 pt-1">
-                  <p>Phone: [PHONE]</p>
-                  <p>Email: [EMAIL]</p>
+                  <p>Phone: {SITE_CONFIG.phone}</p>
+                  <p>Email: {SITE_CONFIG.email}</p>
                 </div>
               </div>
             </motion.div>
