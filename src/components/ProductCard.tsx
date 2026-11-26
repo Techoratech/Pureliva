@@ -61,19 +61,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
         transition={{ duration: 0.4 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`group relative bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between ${className}`}
+        className={`group relative bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between ${className}`}
       >
         <div>
           {/* Top Badges & Actions */}
-          <div className="flex items-center justify-between gap-2 mb-3">
-            <div className="flex items-center gap-1.5 flex-wrap">
+          <div className="flex items-center justify-between gap-1.5 mb-2 sm:mb-3">
+            <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
               {discountPercent > 0 && (
-                <span className="px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-extrabold bg-rose-600 text-white tracking-wide">
+                <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[11px] font-extrabold bg-rose-600 text-white tracking-wide">
                   -{discountPercent}%
                 </span>
               )}
               <span
-                className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase"
+                className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] font-bold tracking-wider uppercase truncate max-w-[90px] sm:max-w-none"
                 style={{
                   backgroundColor: `${product.accent}15`,
                   color: product.accentTextDark ? "#855800" : product.accent,
@@ -83,23 +83,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
-              {/* Quick View Button */}
+            <div className="flex items-center gap-0.5 sm:gap-1">
+              {/* Quick View Button (Desktop only on hover) */}
               <button
                 type="button"
                 onClick={handleOpenQuickView}
-                className="p-2 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors opacity-90 sm:opacity-0 sm:group-hover:opacity-100"
+                className="hidden sm:flex p-1.5 sm:p-2 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors opacity-0 group-hover:opacity-100"
                 aria-label={`Quick view ${product.name}`}
                 title="Quick View"
               >
-                <Eye size={16} />
+                <Eye size={15} />
               </button>
 
               {/* Wishlist Button */}
               <button
                 type="button"
                 onClick={handleToggleWishlist}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-1.5 sm:p-2 rounded-full transition-colors ${
                   inWishlist
                     ? "text-rose-500 bg-rose-50"
                     : "text-stone-400 hover:text-rose-500 hover:bg-stone-50"
@@ -107,7 +107,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
                 aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
                 title="Wishlist"
               >
-                <Heart size={16} fill={inWishlist ? "currentColor" : "none"} />
+                <Heart size={15} fill={inWishlist ? "currentColor" : "none"} />
               </button>
             </div>
           </div>
@@ -115,12 +115,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
           {/* Product Image Container with Front/Back hover flip */}
           <Link
             to={`/product/${product.slug}`}
-            className="block relative w-full h-56 sm:h-64 my-1 flex items-center justify-center overflow-hidden rounded-2xl bg-stone-50/60 p-2"
+            className="block relative w-full h-36 sm:h-52 lg:h-60 my-1 flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-stone-50/60 p-1.5 sm:p-2"
             aria-label={`View ${product.name} details`}
           >
             {/* Subtle accent glow on hover */}
             <div
-              className="absolute w-40 h-40 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
+              className="absolute w-32 sm:w-40 h-32 sm:h-40 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
               style={{ backgroundColor: product.accent }}
             />
 
@@ -149,41 +149,41 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
             )}
 
             {/* Quick Resealable Zipper Badge */}
-            <span className="absolute bottom-2 left-2 bg-stone-900/75 backdrop-blur-sm text-white text-[9px] font-semibold px-2 py-0.5 rounded-full">
-              Zipper Pouch • {product.netWeight}
+            <span className="absolute bottom-1.5 left-1.5 bg-stone-900/75 backdrop-blur-sm text-white text-[8px] sm:text-[9px] font-semibold px-1.5 sm:px-2 py-0.5 rounded-full">
+              Zipper • {product.netWeight}
             </span>
           </Link>
 
           {/* Details */}
-          <div className="mt-3 space-y-1">
-            <div className="flex items-center justify-between text-[11px] text-stone-500 font-medium">
-              <span>{product.category}</span>
-              <span className="font-mono text-stone-600">
-                {product.nutrients[1]?.label}: {product.nutrients[1]?.per100g}g
+          <div className="mt-2.5 sm:mt-3 space-y-1">
+            <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-stone-500 font-medium">
+              <span className="truncate">{product.category}</span>
+              <span className="font-mono text-stone-600 shrink-0">
+                {product.nutrients[1]?.per100g}g protein
               </span>
             </div>
 
-            <h3 className="font-heading text-base sm:text-lg font-bold text-stone-900 group-hover:text-[#680183] transition-colors leading-tight">
+            <h3 className="font-heading text-sm sm:text-base lg:text-lg font-bold text-stone-900 group-hover:text-[#680183] transition-colors leading-tight line-clamp-1">
               <Link to={`/product/${product.slug}`}>
                 {product.name}
               </Link>
             </h3>
 
-            <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">
+            <p className="hidden sm:block text-xs text-stone-500 line-clamp-2 leading-relaxed">
               {product.description}
             </p>
 
-            <div className="pt-2 flex items-baseline gap-2 flex-wrap">
-              <span className="font-heading text-base font-bold text-stone-900">
+            <div className="pt-1 sm:pt-2 flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
+              <span className="font-heading text-sm sm:text-base font-bold text-stone-900">
                 {product.pricePlaceholder || (product.price ? `₹${product.price}` : "[PRICE]")}
               </span>
               {product.mrp && (
-                <span className="text-xs text-stone-400 line-through">
+                <span className="text-[10px] sm:text-xs text-stone-400 line-through">
                   ₹{product.mrp}
                 </span>
               )}
               {savings > 0 && (
-                <span className="text-[11px] text-[#680183] font-bold bg-purple-50 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] sm:text-[11px] text-[#680183] font-bold bg-purple-50 px-1 sm:px-1.5 py-0.5 rounded">
                   Save ₹{savings}
                 </span>
               )}
@@ -192,12 +192,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-4 pt-3 border-t border-stone-100 flex items-center gap-2">
+        <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-stone-100 flex items-center gap-1.5 sm:gap-2">
           {/* Add to Cart */}
           <button
             type="button"
             onClick={handleAddToCart}
-            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+            className={`flex-1 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-[11px] sm:text-xs font-semibold flex items-center justify-center gap-1 sm:gap-1.5 transition-all ${
               addedAnimation
                 ? "bg-[#4F0164] text-white"
                 : "bg-[#680183] hover:bg-[#4F0164] text-white shadow-soft"
@@ -205,13 +205,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
           >
             {addedAnimation ? (
               <>
-                <Check size={14} />
+                <Check size={13} />
                 <span>Added!</span>
               </>
             ) : (
               <>
-                <ShoppingBag size={14} />
-                <span>Add to Cart</span>
+                <ShoppingBag size={13} />
+                <span>Add</span>
               </>
             )}
           </button>
@@ -221,10 +221,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
             href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2.5 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white transition-colors"
+            className="p-2 sm:p-2.5 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white transition-colors shrink-0"
             title={`Order ${product.name} on WhatsApp`}
           >
-            <WhatsAppIcon size={16} fill="#FFFFFF" />
+            <WhatsAppIcon size={14} fill="#FFFFFF" />
           </a>
         </div>
       </motion.div>
