@@ -110,20 +110,20 @@ export const Collections: React.FC = () => {
 
       <div className="pt-28 sm:pt-32 pb-24 min-h-screen bg-white">
         {/* Breadcrumb Bar */}
-        <div className="bg-[#F7F3E8] py-3 border-b border-stone-200/60 mb-8">
+        <div className="bg-[#FAF7FC] py-3 border-b border-purple-100 mb-8">
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-stone-500 font-medium">
-              <Link to="/" className="hover:text-[#2E7D32] transition-colors">
+              <Link to="/" className="hover:text-[#680183] transition-colors">
                 Home
               </Link>
               <ChevronRight size={13} className="text-stone-400" />
-              <Link to="/collections" className="hover:text-[#2E7D32] transition-colors">
+              <Link to="/collections" className="hover:text-[#680183] transition-colors">
                 Collections
               </Link>
               {activeCategory !== "All" && (
                 <>
                   <ChevronRight size={13} className="text-stone-400" />
-                  <span className="text-[#1E2140] font-bold">{activeCategory}</span>
+                  <span className="text-[#680183] font-bold">{activeCategory}</span>
                 </>
               )}
             </nav>
@@ -132,15 +132,15 @@ export const Collections: React.FC = () => {
 
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Collection Header Banner */}
-          <div className="rounded-3xl bg-gradient-to-r from-[#1E2140] to-[#2E7D32] p-8 sm:p-10 text-white mb-10 shadow-soft relative overflow-hidden">
+          <div className="rounded-3xl bg-gradient-to-r from-[#680183] to-[#4F0164] p-8 sm:p-10 text-white mb-10 shadow-soft relative overflow-hidden">
             <div className="max-w-2xl space-y-2 relative z-10">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
                 100% Natural Farm Direct
               </span>
               <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white">
                 {activeCategory === "All" ? "All Natural Seeds" : activeCategory}
               </h1>
-              <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
+              <p className="text-xs sm:text-sm text-purple-100 leading-relaxed">
                 Wholesome raw and slow dry-roasted seeds in convenient 100g resealable pouches. Zero added white sugar, zero chemical preservatives, high in plant protein and dietary fibre.
               </p>
             </div>
@@ -151,8 +151,8 @@ export const Collections: React.FC = () => {
             {/* Desktop Left Sidebar (300px) */}
             <aside className="hidden lg:block lg:col-span-3 space-y-6 bg-white p-6 rounded-3xl border border-stone-200 sticky top-36">
               <div className="flex items-center justify-between pb-4 border-b border-stone-100">
-                <span className="font-heading font-bold text-base text-[#1E2140] flex items-center gap-2">
-                  <SlidersHorizontal size={16} className="text-[#2E7D32]" />
+                <span className="font-heading font-bold text-base text-[#1A0022] flex items-center gap-2">
+                  <SlidersHorizontal size={16} className="text-[#680183]" />
                   <span>Filters</span>
                 </span>
                 {(activeCategory !== "All" || selectedSize !== "all" || searchQuery) && (
@@ -163,7 +163,7 @@ export const Collections: React.FC = () => {
                       setSelectedSize("all");
                       setSearchQuery("");
                     }}
-                    className="text-[11px] font-bold text-[#2E7D32] hover:underline"
+                    className="text-[11px] font-bold text-[#680183] hover:underline"
                   >
                     Clear All
                   </button>
@@ -193,8 +193,8 @@ export const Collections: React.FC = () => {
                           !cat.available
                             ? "opacity-50 cursor-not-allowed text-stone-400"
                             : isSelected
-                            ? "bg-[#2E7D32] text-white font-bold"
-                            : "text-stone-700 hover:bg-stone-50"
+                            ? "bg-[#680183] text-white font-bold"
+                            : "text-stone-700 hover:bg-purple-50"
                         }`}
                       >
                         <span>{cat.name}</span>
@@ -262,7 +262,7 @@ export const Collections: React.FC = () => {
             {/* Right Column: Toolbar & Product Grid */}
             <main className="lg:col-span-9 space-y-6">
               {/* Toolbar: Search, Sort, Grid Switcher */}
-              <div className="p-4 rounded-2xl bg-[#F7F3E8] border border-stone-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-[#FAF7FC] border border-purple-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 {/* Search */}
                 <div className="relative w-full sm:w-72">
                   <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
@@ -271,7 +271,7 @@ export const Collections: React.FC = () => {
                     placeholder="Search seeds..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-9 pr-4 py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:border-[#2E7D32] bg-white"
+                    className="w-full pl-9 pr-4 py-2 rounded-xl border border-stone-300 text-xs focus:outline-none focus:border-[#680183] bg-white"
                   />
                 </div>
 
@@ -311,7 +311,7 @@ export const Collections: React.FC = () => {
                       type="button"
                       onClick={() => setGridCols(2)}
                       className={`p-1.5 rounded-lg transition-colors ${
-                        gridCols === 2 ? "bg-[#1E2140] text-white" : "text-stone-400 hover:text-stone-700"
+                        gridCols === 2 ? "bg-[#680183] text-white" : "text-stone-400 hover:text-stone-700"
                       }`}
                       title="2 Columns"
                     >
@@ -321,7 +321,7 @@ export const Collections: React.FC = () => {
                       type="button"
                       onClick={() => setGridCols(3)}
                       className={`p-1.5 rounded-lg transition-colors ${
-                        gridCols === 3 ? "bg-[#1E2140] text-white" : "text-stone-400 hover:text-stone-700"
+                        gridCols === 3 ? "bg-[#680183] text-white" : "text-stone-400 hover:text-stone-700"
                       }`}
                       title="3 Columns"
                     >
@@ -347,7 +347,7 @@ export const Collections: React.FC = () => {
                       setActiveCategory("All");
                       setSelectedSize("all");
                     }}
-                    className="px-5 py-2.5 rounded-xl bg-[#2E7D32] text-white text-xs font-bold"
+                    className="px-5 py-2.5 rounded-xl bg-[#680183] text-white text-xs font-bold"
                   >
                     Reset All Filters
                   </button>
@@ -368,12 +368,12 @@ export const Collections: React.FC = () => {
 
               {/* Recently Viewed Shelf (matching gomoswafoods) */}
               {recentlyViewed.length > 0 && (
-                <div className="mt-16 pt-12 border-t border-stone-200">
+                <div className="mt-16 pt-12 border-t border-purple-100">
                   <div className="mb-6">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#2E7D32]">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#680183]">
                       Your Browsing History
                     </span>
-                    <h3 className="font-heading text-2xl font-bold text-[#1E2140] mt-1">
+                    <h3 className="font-heading text-2xl font-bold text-[#1A0022] mt-1">
                       Recently Viewed
                     </h3>
                   </div>

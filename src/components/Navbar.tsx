@@ -72,37 +72,37 @@ export const Navbar: React.FC = () => {
         }`}
       >
         {/* Top Announcement & Contact Bar */}
-        <div className="bg-[#1E2140] text-pureliva-cream text-[11px] sm:text-xs py-1.5 px-4 sm:px-6 lg:px-8 border-b border-white/10">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="bg-[#680183] text-white text-[11px] sm:text-xs py-2 px-4 sm:px-6 lg:px-8 border-b border-purple-900/30">
+          <div className="max-w-[1200px] mx-auto flex items-center justify-between">
             {/* Left: Contact Info */}
             <div className="flex items-center gap-4 sm:gap-6">
               <a
                 href={`tel:${SITE_CONFIG.phone}`}
-                className="flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                className="flex items-center gap-1.5 hover:text-amber-300 transition-colors"
                 title="Call Pureliva Customer Care"
               >
-                <Phone size={11} className="text-emerald-400" />
-                <span>{SITE_CONFIG.phone}</span>
+                <Phone size={11} className="text-amber-300" />
+                <span className="font-medium">{SITE_CONFIG.phone}</span>
               </a>
               <a
                 href={`mailto:${SITE_CONFIG.email}`}
-                className="hidden sm:flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                className="hidden sm:flex items-center gap-1.5 hover:text-amber-300 transition-colors"
                 title="Email Pureliva"
               >
-                <Mail size={11} className="text-emerald-400" />
-                <span>{SITE_CONFIG.email}</span>
+                <Mail size={11} className="text-amber-300" />
+                <span className="font-medium">{SITE_CONFIG.email}</span>
               </a>
             </div>
 
             {/* Center / Right: Tagline / Order Tracking Link */}
             <div className="flex items-center gap-4">
-              <span className="hidden md:inline font-script text-emerald-300 text-sm">
+              <span className="hidden md:inline font-script text-amber-200 text-sm">
                 Pure Nutrition in Every Spoon
               </span>
               <span className="text-white/20 hidden md:inline">|</span>
               <Link
                 to="/track-order"
-                className="text-stone-300 hover:text-white transition-colors underline-offset-2 hover:underline"
+                className="text-purple-100 hover:text-white transition-colors underline-offset-2 hover:underline font-medium"
               >
                 Track Your Order
               </Link>
@@ -397,21 +397,11 @@ export const Navbar: React.FC = () => {
               >
                 <ShoppingBag size={20} />
                 {totalItems > 0 && (
-                  <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-pureliva-green text-white text-[10px] font-bold flex items-center justify-center animate-pulse">
+                  <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#680183] text-white text-[10px] font-bold flex items-center justify-center animate-pulse">
                     {totalItems}
                   </span>
                 )}
               </button>
-
-              {/* Admin Portal shortcut */}
-              <Link
-                to="/admin"
-                className="hidden sm:flex p-2 sm:p-2.5 rounded-full text-stone-500 hover:text-pureliva-green hover:bg-stone-100 transition-colors"
-                aria-label="Admin Portal"
-                title="Admin Portal"
-              >
-                <User size={19} />
-              </Link>
 
               {/* Mobile Hamburger Toggle */}
               <button
@@ -552,14 +542,6 @@ export const Navbar: React.FC = () => {
                   className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-stone-50 transition-colors"
                 >
                   Custom Seed Box
-                </Link>
-
-                <Link
-                  to="/admin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-xs font-medium text-stone-500 hover:bg-stone-50 transition-colors"
-                >
-                  Admin Portal
                 </Link>
               </div>
 

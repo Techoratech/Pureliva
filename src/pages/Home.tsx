@@ -103,10 +103,10 @@ export const Home: React.FC = () => {
       </Helmet>
 
       {/* SECTION 1 — HERO BANNER SLIDESHOW */}
-      <section className="relative min-h-[580px] lg:min-h-[660px] pt-28 sm:pt-32 pb-16 bg-[#F7F3E8] overflow-hidden flex items-center">
+      <section className="relative min-h-[580px] lg:min-h-[660px] pt-28 sm:pt-32 pb-16 bg-[#FAF7FC] overflow-hidden flex items-center">
         {/* Decorative background ambient glows */}
-        <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-emerald-200/40 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 -right-20 w-80 h-80 rounded-full bg-amber-200/40 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-purple-200/40 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -right-20 w-80 h-80 rounded-full bg-amber-200/30 blur-3xl pointer-events-none" />
 
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
           <AnimatePresence mode="wait">
@@ -120,12 +120,12 @@ export const Home: React.FC = () => {
             >
               {/* Left Column: Headlines & CTA */}
               <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1E2140]/10 text-[#1E2140] text-xs font-bold tracking-wider uppercase">
-                  <Sparkles size={13} className="text-[#2E7D32]" />
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#680183]/10 text-[#680183] text-xs font-bold tracking-wider uppercase">
+                  <Sparkles size={13} className="text-[#680183]" />
                   <span>{heroSlides[currentSlide].badge}</span>
                 </div>
 
-                <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1E2140] tracking-tight leading-[1.12]">
+                <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1A0022] tracking-tight leading-[1.12]">
                   {heroSlides[currentSlide].title}
                 </h1>
 
@@ -136,7 +136,7 @@ export const Home: React.FC = () => {
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
                   <Link
                     to={heroSlides[currentSlide].ctaLink}
-                    className="w-full sm:w-auto px-7 py-3.5 bg-[#2E7D32] hover:bg-emerald-900 text-white rounded-xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-7 py-3.5 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2"
                   >
                     <span>{heroSlides[currentSlide].ctaText}</span>
                     <ArrowRight size={16} />
@@ -198,10 +198,10 @@ export const Home: React.FC = () => {
       <section className="py-16 sm:py-20 bg-white border-b border-stone-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
               Curated Collections
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140]">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A0022]">
               Shop by Categories
             </h2>
             <p className="text-xs sm:text-sm text-stone-500">
@@ -213,20 +213,20 @@ export const Home: React.FC = () => {
             {/* 1. Raw Seeds */}
             <Link
               to="/collections/raw-seeds"
-              className="group p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 hover:border-[#2E7D32]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              className="group p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
             >
-              <div className="w-16 h-16 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-purple-100 text-[#680183] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Leaf size={28} />
               </div>
               <div className="space-y-1">
-                <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors">
+                <h3 className="font-heading text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
                   Raw Seeds
                 </h3>
                 <p className="text-xs text-stone-500 line-clamp-2">
                   Unroasted Chia Seeds rich in dietary fibre, omega-3, and antioxidants for smoothies.
                 </p>
               </div>
-              <span className="mt-5 text-xs font-bold text-[#2E7D32] group-hover:underline inline-flex items-center gap-1">
+              <span className="mt-5 text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
                 <span>View Products</span>
                 <ArrowRight size={13} />
               </span>
@@ -235,20 +235,20 @@ export const Home: React.FC = () => {
             {/* 2. Roasted Seeds */}
             <Link
               to="/collections/roasted-seeds"
-              className="group p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 hover:border-[#2E7D32]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              className="group p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
             >
               <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Flame size={28} />
               </div>
               <div className="space-y-1">
-                <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors">
+                <h3 className="font-heading text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
                   Roasted Seeds
                 </h3>
                 <p className="text-xs text-stone-500 line-clamp-2">
                   Slow dry-roasted Pumpkin, Sunflower, and Flax seeds with savory natural crunch.
                 </p>
               </div>
-              <span className="mt-5 text-xs font-bold text-[#2E7D32] group-hover:underline inline-flex items-center gap-1">
+              <span className="mt-5 text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
                 <span>View Products</span>
                 <ArrowRight size={13} />
               </span>
@@ -257,20 +257,20 @@ export const Home: React.FC = () => {
             {/* 3. Seed Mix */}
             <Link
               to="/collections/seed-mix"
-              className="group p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 hover:border-[#2E7D32]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              className="group p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
             >
               <div className="w-16 h-16 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Layers size={28} />
               </div>
               <div className="space-y-1">
-                <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors">
+                <h3 className="font-heading text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
                   5-in-1 Seed Mix
                 </h3>
                 <p className="text-xs text-stone-500 line-clamp-2">
                   Balanced blend of 5 powerhouse seeds formulated for daily plant protein & stamina.
                 </p>
               </div>
-              <span className="mt-5 text-xs font-bold text-[#2E7D32] group-hover:underline inline-flex items-center gap-1">
+              <span className="mt-5 text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
                 <span>View Products</span>
                 <ArrowRight size={13} />
               </span>
@@ -304,10 +304,10 @@ export const Home: React.FC = () => {
       <section className="py-16 sm:py-20 bg-stone-50/70">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
               The Pureliva Standard
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140]">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A0022]">
               Why Choose Pureliva?
             </h2>
             <p className="text-xs sm:text-sm text-stone-500">
@@ -354,10 +354,10 @@ export const Home: React.FC = () => {
                   key={idx}
                   className="p-6 sm:p-7 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg transition-all duration-300"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-[#2E7D32]/10 text-[#2E7D32] flex items-center justify-center mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-[#680183]/10 text-[#680183] flex items-center justify-center mb-5">
                     <Icon size={24} />
                   </div>
-                  <h3 className="font-heading text-lg font-bold text-[#1E2140] mb-2">
+                  <h3 className="font-heading text-lg font-bold text-[#1A0022] mb-2">
                     {item.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-500 leading-relaxed">
@@ -375,16 +375,16 @@ export const Home: React.FC = () => {
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-10 pb-6 border-b border-stone-100">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
                 Customer Favorites
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140] mt-1">
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A0022] mt-1">
                 Best Seller Products
               </h2>
             </div>
 
             {/* Filter Tabs */}
-            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#F7F3E8] border border-stone-200/70 overflow-x-auto max-w-full">
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#FBF8FD] border border-purple-100 overflow-x-auto max-w-full">
               {[
                 { id: "all", label: "All Seeds" },
                 { id: "raw", label: "Raw Seeds" },
@@ -397,7 +397,7 @@ export const Home: React.FC = () => {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
                     activeTab === tab.id
-                      ? "bg-[#2E7D32] text-white shadow-sm"
+                      ? "bg-[#680183] text-white shadow-sm"
                       : "text-stone-600 hover:text-stone-900"
                   }`}
                 >
@@ -418,7 +418,7 @@ export const Home: React.FC = () => {
           <div className="text-center mt-12">
             <Link
               to="/collections"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#1E2140] hover:bg-stone-900 text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md"
             >
               <span>View All 5 Seed Varieties</span>
               <ArrowRight size={15} />
@@ -428,19 +428,19 @@ export const Home: React.FC = () => {
       </section>
 
       {/* SECTION 5 — BRAND STORY BANNER (Split 2-Column) */}
-      <section className="py-16 sm:py-20 bg-[#F7F3E8] relative overflow-hidden">
+      <section className="py-16 sm:py-20 bg-[#FBF8FD] relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             {/* Left Column: Image with Natural Aesthetic */}
             <div className="lg:col-span-5 relative">
-              <div className="relative w-full aspect-square max-w-md mx-auto rounded-3xl overflow-hidden bg-white p-6 shadow-soft border border-stone-200/80 flex items-center justify-center">
+              <div className="relative w-full aspect-square max-w-md mx-auto rounded-3xl overflow-hidden bg-white p-6 shadow-soft border border-purple-100 flex items-center justify-center">
                 <Img
                   src="/images/products/chia-seed-bowl"
                   alt="Pureliva Natural Seeds Heritage"
                   transparent
                   className="w-full h-full object-contain filter drop-shadow-xl"
                 />
-                <span className="absolute bottom-4 left-4 right-4 bg-[#1E2140]/90 backdrop-blur-md text-white text-[11px] font-semibold py-2 px-4 rounded-xl text-center">
+                <span className="absolute bottom-4 left-4 right-4 bg-[#680183]/90 backdrop-blur-md text-white text-[11px] font-semibold py-2 px-4 rounded-xl text-center">
                   Patidar Enterprises • Khandwa, Madhya Pradesh
                 </span>
               </div>
@@ -448,11 +448,11 @@ export const Home: React.FC = () => {
 
             {/* Right Column: Founder Story */}
             <div className="lg:col-span-7 space-y-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
                 Our Roots & Heritage
               </span>
 
-              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1E2140] leading-tight">
+              <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1A0022] leading-tight">
                 Rooted in Farming. Built on Trust.
               </h2>
 
@@ -465,8 +465,8 @@ export const Home: React.FC = () => {
               </p>
 
               {/* Quote Block */}
-              <div className="p-5 rounded-2xl bg-white border-l-4 border-[#2E7D32] shadow-sm">
-                <blockquote className="font-heading text-base sm:text-lg italic text-[#1E2140]">
+              <div className="p-5 rounded-2xl bg-white border-l-4 border-[#680183] shadow-sm">
+                <blockquote className="font-heading text-base sm:text-lg italic text-[#1A0022]">
                   "When the soil is your teacher, purity is your only promise."
                 </blockquote>
                 <span className="block mt-2 text-xs font-semibold text-stone-500 uppercase tracking-wider">
@@ -477,7 +477,7 @@ export const Home: React.FC = () => {
               <div className="pt-2">
                 <Link
                   to="/about"
-                  className="inline-flex items-center gap-2 text-[#2E7D32] font-bold text-sm hover:underline"
+                  className="inline-flex items-center gap-2 text-[#680183] font-bold text-sm hover:underline"
                 >
                   <span>Read our full story & mission</span>
                   <ArrowRight size={16} />
@@ -489,7 +489,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* SECTION 6 — TEXT MARQUEE TICKER */}
-      <div className="py-4 bg-[#1E2140] text-[#F7F3E8] overflow-hidden whitespace-nowrap border-y border-white/10">
+      <div className="py-4 bg-[#680183] text-white overflow-hidden whitespace-nowrap border-y border-purple-900/30">
         <div className="inline-flex items-center gap-8 animate-marquee text-xs font-bold tracking-widest uppercase">
           {[
             "100% FARM DIRECT",
@@ -509,7 +509,7 @@ export const Home: React.FC = () => {
             "OPTICAL SORTED PURITY",
             "•",
           ].map((item, i) => (
-            <span key={i} className={item === "•" ? "text-emerald-400" : ""}>
+            <span key={i} className={item === "•" ? "text-amber-300" : ""}>
               {item}
             </span>
           ))}
@@ -531,7 +531,7 @@ export const Home: React.FC = () => {
             "OPTICAL SORTED PURITY",
             "•",
           ].map((item, i) => (
-            <span key={`dup-${i}`} className={item === "•" ? "text-emerald-400" : ""}>
+            <span key={`dup-${i}`} className={item === "•" ? "text-amber-300" : ""}>
               {item}
             </span>
           ))}
@@ -542,10 +542,10 @@ export const Home: React.FC = () => {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
               Our Devotion
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140]">
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A0022]">
               Our Promise in Every Spoon
             </h2>
             <p className="text-xs sm:text-sm text-stone-500">
@@ -580,12 +580,12 @@ export const Home: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="p-6 rounded-2xl bg-[#F7F3E8] border border-stone-200/80 text-center flex flex-col items-center justify-between"
+                  className="p-6 rounded-2xl bg-[#FBF8FD] border border-purple-100 text-center flex flex-col items-center justify-between"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-[#2E7D32] text-white flex items-center justify-center mb-4 shadow-sm">
+                  <div className="w-14 h-14 rounded-2xl bg-[#680183] text-white flex items-center justify-center mb-4 shadow-sm">
                     <Icon size={24} />
                   </div>
-                  <h3 className="font-heading text-base font-bold text-[#1E2140] mb-2">
+                  <h3 className="font-heading text-base font-bold text-[#1A0022] mb-2">
                     {card.title}
                   </h3>
                   <p className="text-xs text-stone-500 leading-relaxed">
@@ -599,7 +599,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* SECTION 8 — KEY FEATURES BADGES STRIP */}
-      <section className="py-10 bg-stone-50 border-y border-stone-200/60">
+      <section className="py-10 bg-purple-50/40 border-y border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
             {[
@@ -612,10 +612,10 @@ export const Home: React.FC = () => {
             ].map((badge, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl bg-white border border-stone-200/80 shadow-xs flex flex-col items-center justify-center"
+                className="p-3.5 rounded-xl bg-white border border-purple-100 shadow-xs flex flex-col items-center justify-center"
               >
-                <CheckCircle size={18} className="text-[#2E7D32] mb-1.5" />
-                <span className="text-xs font-bold text-[#1E2140] leading-tight block">
+                <CheckCircle size={18} className="text-[#680183] mb-1.5" />
+                <span className="text-xs font-bold text-[#1A0022] leading-tight block">
                   {badge.label}
                 </span>
                 <span className="text-[10px] text-stone-400 block mt-0.5">
@@ -628,17 +628,17 @@ export const Home: React.FC = () => {
       </section>
 
       {/* SECTION 9 — BULK & EXPORT ORDER BANNER */}
-      <section className="py-16 sm:py-20 bg-[#1E2140] text-white relative overflow-hidden">
+      <section className="py-16 sm:py-20 bg-[#4F0164] text-white relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
-              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
                 B2B & Commercial Agro Supply
               </span>
               <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                 Bulk Agro Supply & Export Ready
               </h2>
-              <p className="text-sm sm:text-base text-stone-300 max-w-2xl leading-relaxed">
+              <p className="text-sm sm:text-base text-purple-100 max-w-2xl leading-relaxed">
                 Also supplying bulk quantities of Chia Seeds, Flax Seeds, Dehydrated Onion Flakes, Garlic Powder, and Dry Garlic to domestic manufacturers, wholesale distributors, and global importers.
               </p>
             </div>
@@ -646,7 +646,7 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center lg:items-end gap-3.5">
               <Link
                 to="/bulk-export"
-                className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#1E2140] hover:bg-stone-100 rounded-xl font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all"
+                className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#4F0164] hover:bg-stone-100 rounded-xl font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all"
               >
                 View Bulk Specifications
               </Link>
@@ -667,16 +667,16 @@ export const Home: React.FC = () => {
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2E7D32]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
                 Culinary Inspiration
               </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2140] mt-1">
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A0022] mt-1">
                 Delicious Ways to Enjoy Every Spoon
               </h2>
             </div>
             <Link
               to="/recipes"
-              className="text-xs font-bold text-[#2E7D32] hover:underline inline-flex items-center gap-1"
+              className="text-xs font-bold text-[#680183] hover:underline inline-flex items-center gap-1"
             >
               <span>View All Recipes</span>
               <ArrowRight size={14} />
@@ -687,7 +687,7 @@ export const Home: React.FC = () => {
             {RECIPES.slice(0, 3).map((recipe) => (
               <div
                 key={recipe.id}
-                className="group rounded-2xl bg-[#F7F3E8] border border-stone-200/80 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between"
+                className="group rounded-2xl bg-[#FBF8FD] border border-purple-100 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   <div className="relative h-48 overflow-hidden bg-stone-100">
@@ -696,7 +696,7 @@ export const Home: React.FC = () => {
                       alt={recipe.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <span className="absolute top-3 left-3 bg-[#1E2140]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
+                    <span className="absolute top-3 left-3 bg-[#680183]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
                       {recipe.category}
                     </span>
                     <span className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-stone-800 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -706,7 +706,7 @@ export const Home: React.FC = () => {
                   </div>
 
                   <div className="p-5 space-y-2">
-                    <h3 className="font-heading text-lg font-bold text-[#1E2140] group-hover:text-[#2E7D32] transition-colors line-clamp-1">
+                    <h3 className="font-heading text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors line-clamp-1">
                       {recipe.title}
                     </h3>
                     <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
@@ -719,7 +719,7 @@ export const Home: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedRecipe(recipe)}
-                    className="w-full py-2.5 rounded-xl bg-white border border-stone-200 text-[#1E2140] hover:bg-[#2E7D32] hover:text-white hover:border-[#2E7D32] text-xs font-bold transition-all"
+                    className="w-full py-2.5 rounded-xl bg-white border border-purple-200 text-[#680183] hover:bg-[#680183] hover:text-white hover:border-[#680183] text-xs font-bold transition-all"
                   >
                     Read Recipe
                   </button>
@@ -731,32 +731,32 @@ export const Home: React.FC = () => {
       </section>
 
       {/* SECTION 11 — CERTIFICATIONS & ACCREDITATIONS STRIP */}
-      <section className="py-12 bg-stone-50 border-t border-stone-200/60">
+      <section className="py-12 bg-purple-50/30 border-t border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-xl mx-auto mb-8 space-y-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#2E7D32]">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#680183]">
               Accreditations & Compliance
             </span>
-            <h3 className="font-heading text-2xl font-bold text-[#1E2140]">
+            <h3 className="font-heading text-2xl font-bold text-[#1A0022]">
               Certified for Safe Food Processing
             </h3>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 items-center justify-center max-w-3xl mx-auto">
-            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#2E7D32] block">FSSAI</span>
+            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#680183] block">FSSAI</span>
               <span className="text-[10px] text-stone-500 font-semibold">Reg. 21424170000414</span>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#1E2140] block">ISO 22000</span>
+            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#4F0164] block">ISO 22000</span>
               <span className="text-[10px] text-stone-500 font-semibold">Food Safety Standard</span>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#2E7D32] block">GMP</span>
+            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#680183] block">GMP</span>
               <span className="text-[10px] text-stone-500 font-semibold">Good Manufacturing</span>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-stone-200/80 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#1E2140] block">HACCP</span>
+            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
+              <span className="font-heading font-black text-xl text-[#4F0164] block">HACCP</span>
               <span className="text-[10px] text-stone-500 font-semibold">Hazard Control Certified</span>
             </div>
           </div>
@@ -764,16 +764,16 @@ export const Home: React.FC = () => {
       </section>
 
       {/* SECTION 12 — CORE VALUES STRIP (P U R E L I V A) */}
-      <section className="py-16 bg-[#1E2140] text-white">
+      <section className="py-16 bg-[#680183] text-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
               Our Principles
             </span>
             <h2 className="font-heading text-3xl font-bold text-white">
               What We Stand For, From P to A
             </h2>
-            <p className="text-xs sm:text-sm text-stone-300">
+            <p className="text-xs sm:text-sm text-purple-200">
               Eight foundational principles spelled out through our name.
             </p>
           </div>
@@ -791,15 +791,15 @@ export const Home: React.FC = () => {
             ].map((v) => (
               <div
                 key={v.l}
-                className="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 flex flex-col items-center justify-center hover:bg-white/10 transition-colors"
+                className="p-3 sm:p-4 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center justify-center hover:bg-white/20 transition-colors"
               >
-                <span className="font-heading font-black text-2xl sm:text-3xl text-emerald-400 mb-1">
+                <span className="font-heading font-black text-2xl sm:text-3xl text-amber-300 mb-1">
                   {v.l}
                 </span>
                 <span className="text-xs font-bold text-white block leading-tight">
                   {v.t}
                 </span>
-                <span className="text-[10px] text-stone-400 block mt-0.5">
+                <span className="text-[10px] text-purple-200 block mt-0.5">
                   {v.s}
                 </span>
               </div>
@@ -819,7 +819,7 @@ export const Home: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#2E7D32]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183]">
                 {selectedRecipe.category} • {selectedRecipe.prepTime}
               </span>
               <button
@@ -838,7 +838,7 @@ export const Home: React.FC = () => {
                 className="w-full h-44 object-cover rounded-2xl"
               />
 
-              <h3 className="font-heading text-xl font-bold text-[#1E2140]">
+              <h3 className="font-heading text-xl font-bold text-[#1A0022]">
                 {selectedRecipe.title}
               </h3>
 

@@ -170,7 +170,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                   <span className="text-xs font-semibold text-stone-700 block mb-1.5">
                     Size:
                   </span>
-                  <div className="inline-block px-3 py-1 rounded-lg border-2 border-pureliva-green text-xs font-bold text-pureliva-green bg-emerald-50/50">
+                  <div className="inline-block px-3 py-1 rounded-lg border-2 border-[#680183] text-xs font-bold text-[#680183] bg-purple-50">
                     {product.netWeight}
                   </div>
                 </div>
@@ -208,8 +208,8 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                     onClick={handleAddToCart}
                     className={`py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                       added
-                        ? "bg-emerald-600 text-white"
-                        : "bg-stone-900 hover:bg-stone-800 text-white"
+                        ? "bg-[#4F0164] text-white"
+                        : "bg-[#680183] hover:bg-[#4F0164] text-white"
                     }`}
                   >
                     {added ? <Check size={14} /> : <ShoppingBag size={14} />}
@@ -244,7 +244,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
                   <Link
                     to={`/product/${product.slug}`}
                     onClick={onClose}
-                    className="text-xs text-pureliva-green font-semibold hover:underline inline-flex items-center gap-1"
+                    className="text-xs text-[#680183] font-semibold hover:underline inline-flex items-center gap-1"
                   >
                     <span>View full product details</span>
                     <ArrowRight size={12} />

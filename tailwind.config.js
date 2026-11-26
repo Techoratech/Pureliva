@@ -8,16 +8,22 @@ export default {
     extend: {
       colors: {
         pureliva: {
-          navy: "#1E2140",
-          green: "#2E7D32",
-          "green-hover": "#256629",
-          "green-dark": "#1B4D1F",
+          purple: "#680183",
+          "purple-dark": "#4F0164",
+          "purple-hover": "#7E039E",
+          "purple-light": "#F8F2FA",
+          navy: "#680183", // mapped to reference purple
+          green: "#680183", // primary brand color mapped to reference purple
+          "green-hover": "#7E039E",
+          "green-dark": "#4F0164",
           brown: "#B5652A",
-          cream: "#F7F3E8",
-          heading: "#1E2140",
-          body: "#4A4D57",
-          muted: "#767676",
-          border: "#E7E5E4",
+          cream: "#FBF8FD",
+          heading: "#1A0022",
+          body: "#4A4550",
+          muted: "#767080",
+          border: "#E9E3ED",
+          gold: "#FFD700",
+          sale: "#E84E4E",
         },
         whatsapp: {
           DEFAULT: "#25D366",

@@ -347,8 +347,8 @@ export const ProductDetail: React.FC = () => {
                     onClick={handleAddToCart}
                     className={`py-3.5 px-4 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-soft ${
                       addedAnimation
-                        ? "bg-emerald-600 text-white"
-                        : "bg-pureliva-green hover:bg-emerald-900 text-white"
+                        ? "bg-[#4F0164] text-white"
+                        : "bg-[#680183] hover:bg-[#4F0164] text-white"
                     }`}
                   >
                     {addedAnimation ? (
@@ -367,7 +367,7 @@ export const ProductDetail: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleBuyNow}
-                    className="py-3.5 px-4 rounded-2xl bg-[#1E2140] hover:bg-stone-800 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-soft"
+                    className="py-3.5 px-4 rounded-2xl bg-[#4F0164] hover:bg-purple-950 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-soft"
                   >
                     <Zap size={18} />
                     <span>Buy Now</span>

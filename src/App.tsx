@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useLenis } from "./hooks/useLenis";
@@ -11,10 +11,8 @@ import { AdminAuthProvider } from "./admin/context/AdminAuthContext";
 // Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Preloader from "./components/Preloader";
 import PageTransition from "./components/PageTransition";
 import ScrollProgress from "./components/ScrollProgress";
-import CustomCursor from "./components/CustomCursor";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
 
 // Public Pages
@@ -66,30 +64,13 @@ export const App: React.FC = () => {
   // Initialize Lenis smooth scroll for public customer pages
   useLenis();
 
-  // Check sessionStorage for first load intro animation
-  const [showPreloader, setShowPreloader] = useState<boolean>(() => {
-    try {
-      return sessionStorage.getItem("pureliva_intro_seen") !== "true";
-    } catch {
-      return true;
-    }
-  });
-
   return (
     <AdminAuthProvider>
       <CartProvider>
         <WishlistProvider>
           <div className="min-h-screen flex flex-col bg-white text-pureliva-body selection:bg-pureliva-green selection:text-white">
-            {/* First-load Intro Animation (Hidden on admin routes) */}
-            {showPreloader && !isAdminRoute && (
-              <Preloader onComplete={() => setShowPreloader(false)} />
-            )}
-
             {/* Top Green Scroll Progress Bar (Hidden on admin routes) */}
             {!isAdminRoute && <ScrollProgress />}
-
-            {/* Custom Desktop Interactive Cursor (Hidden on admin routes) */}
-            {!isAdminRoute && <CustomCursor />}
 
             {/* Scroll to Top on route change */}
             <ScrollToTop />

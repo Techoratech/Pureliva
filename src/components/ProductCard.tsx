@@ -163,7 +163,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
               </span>
             </div>
 
-            <h3 className="font-heading text-base sm:text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors leading-tight">
+            <h3 className="font-heading text-base sm:text-lg font-bold text-stone-900 group-hover:text-[#680183] transition-colors leading-tight">
               <Link to={`/product/${product.slug}`}>
                 {product.name}
               </Link>
@@ -183,7 +183,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
                 </span>
               )}
               {savings > 0 && (
-                <span className="text-[11px] text-emerald-700 font-medium bg-emerald-50 px-1.5 py-0.2 rounded">
+                <span className="text-[11px] text-[#680183] font-bold bg-purple-50 px-1.5 py-0.5 rounded">
                   Save ₹{savings}
                 </span>
               )}
@@ -199,8 +199,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
             onClick={handleAddToCart}
             className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
               addedAnimation
-                ? "bg-emerald-600 text-white"
-                : "bg-pureliva-green hover:bg-emerald-900 text-white shadow-soft"
+                ? "bg-[#4F0164] text-white"
+                : "bg-[#680183] hover:bg-[#4F0164] text-white shadow-soft"
             }`}
           >
             {addedAnimation ? (
