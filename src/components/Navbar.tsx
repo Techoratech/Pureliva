@@ -137,8 +137,8 @@ export const Navbar: React.FC = () => {
                 className={({ isActive }) =>
                   `px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     isActive
-                      ? "text-pureliva-green bg-pureliva-green/10"
-                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                      ? "text-[#680183] bg-purple-50"
+                      : "text-stone-700 hover:text-[#680183] hover:bg-stone-50"
                   }`
                 }
               >
@@ -150,8 +150,8 @@ export const Navbar: React.FC = () => {
                 className={({ isActive }) =>
                   `px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     isActive
-                      ? "text-pureliva-green bg-pureliva-green/10"
-                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                      ? "text-[#680183] bg-purple-50"
+                      : "text-stone-700 hover:text-[#680183] hover:bg-stone-50"
                   }`
                 }
               >
@@ -170,8 +170,8 @@ export const Navbar: React.FC = () => {
                   onClick={() => setShopDropdownOpen(!shopDropdownOpen)}
                   className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     shopDropdownOpen
-                      ? "text-pureliva-green bg-pureliva-green/10"
-                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                      ? "text-[#680183] bg-purple-50"
+                      : "text-stone-700 hover:text-[#680183] hover:bg-stone-50"
                   }`}
                   aria-expanded={shopDropdownOpen}
                 >
@@ -196,20 +196,20 @@ export const Navbar: React.FC = () => {
                       <div className="grid grid-cols-12 gap-6">
                         {/* Column 1: Shop by Category */}
                         <div className="col-span-4 space-y-3">
-                          <span className="text-[11px] font-bold uppercase tracking-wider text-pureliva-green block border-b border-stone-100 pb-2">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#680183] block border-b border-stone-100 pb-2">
                             Shop by Category
                           </span>
                           <div className="space-y-1">
                             <Link
                               to="/collections/raw-seeds"
                               onClick={() => setShopDropdownOpen(false)}
-                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-all"
+                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-all"
                             >
                               <div>
                                 <span className="block font-bold">Raw Seeds</span>
                                 <span className="text-[10px] text-stone-400 font-normal">Pure unroasted seeds</span>
                               </div>
-                              <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-medium">
+                              <span className="text-[10px] bg-purple-100 text-[#680183] px-2 py-0.5 rounded-full font-bold">
                                 Chia
                               </span>
                             </Link>
@@ -217,13 +217,13 @@ export const Navbar: React.FC = () => {
                             <Link
                               to="/collections/roasted-seeds"
                               onClick={() => setShopDropdownOpen(false)}
-                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-all"
+                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-all"
                             >
                               <div>
                                 <span className="block font-bold">Roasted Seeds</span>
                                 <span className="text-[10px] text-stone-400 font-normal">Gently dry roasted</span>
                               </div>
-                              <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-medium">
+                              <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">
                                 3 varieties
                               </span>
                             </Link>
@@ -231,13 +231,13 @@ export const Navbar: React.FC = () => {
                             <Link
                               to="/collections/seed-mix"
                               onClick={() => setShopDropdownOpen(false)}
-                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-all"
+                              className="group flex items-center justify-between p-2 rounded-xl text-xs font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-all"
                             >
                               <div>
                                 <span className="block font-bold">Seed Mix (5-in-1)</span>
                                 <span className="text-[10px] text-stone-400 font-normal">Synergistic power blend</span>
                               </div>
-                              <span className="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-medium">
+                              <span className="text-[10px] bg-rose-100 text-rose-800 px-2 py-0.5 rounded-full font-bold">
                                 Best Seller
                               </span>
                             </Link>
@@ -261,7 +261,7 @@ export const Navbar: React.FC = () => {
 
                         {/* Column 2: Pureliva Specials (5 products) */}
                         <div className="col-span-4 space-y-3 border-l border-stone-100 pl-6">
-                          <span className="text-[11px] font-bold uppercase tracking-wider text-pureliva-green block border-b border-stone-100 pb-2">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#680183] block border-b border-stone-100 pb-2">
                             Pureliva Specials
                           </span>
                           <div className="space-y-1.5">
@@ -282,23 +282,23 @@ export const Navbar: React.FC = () => {
                                   <span className="font-semibold text-stone-900 block">{prod.name}</span>
                                   <span className="text-[10px] text-stone-400">{prod.sub}</span>
                                 </div>
-                                <span className="font-mono font-bold text-pureliva-green text-[11px]">{prod.price}</span>
+                                <span className="font-mono font-bold text-[#680183] text-[11px]">{prod.price}</span>
                               </Link>
                             ))}
                           </div>
                         </div>
 
                         {/* Column 3: Featured Collection Promo Banner */}
-                        <div className="col-span-4 flex flex-col justify-between rounded-2xl bg-gradient-to-br from-[#1E2140] to-[#2E7D32] p-5 text-white relative overflow-hidden">
+                        <div className="col-span-4 flex flex-col justify-between rounded-2xl bg-gradient-to-br from-[#2D003B] via-[#4F0164] to-[#680183] p-5 text-white relative overflow-hidden">
                           <div className="relative z-10 space-y-2">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-300 bg-white/10 px-2 py-0.5 rounded-full inline-block">
+                            <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 bg-white/15 px-2.5 py-0.5 rounded-full inline-block border border-amber-300/30">
                               Farm Direct
                             </span>
                             <h4 className="font-heading text-lg font-bold leading-tight">
                               Pure Nutrition in Every Spoon
                             </h4>
-                            <p className="text-[11px] text-white/80 leading-relaxed">
-                              No artificial colours, preservatives or added refined sugars.
+                            <p className="text-[11px] text-purple-100/80 leading-relaxed">
+                              No artificial colours, chemical preservatives or refined sugars. 100% natural.
                             </p>
                           </div>
 
@@ -306,7 +306,7 @@ export const Navbar: React.FC = () => {
                             <Link
                               to="/collections"
                               onClick={() => setShopDropdownOpen(false)}
-                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-pureliva-navy hover:bg-emerald-50 rounded-xl text-xs font-bold transition-all shadow-md"
+                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-400 hover:bg-amber-300 text-stone-950 rounded-xl text-xs font-bold transition-all shadow-md"
                             >
                               <span>Explore All Seeds</span>
                               <ArrowRight size={13} />
@@ -324,8 +324,8 @@ export const Navbar: React.FC = () => {
                 className={({ isActive }) =>
                   `px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     isActive
-                      ? "text-pureliva-green bg-pureliva-green/10"
-                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                      ? "text-[#680183] bg-purple-50"
+                      : "text-stone-700 hover:text-[#680183] hover:bg-stone-50"
                   }`
                 }
               >
@@ -337,8 +337,8 @@ export const Navbar: React.FC = () => {
                 className={({ isActive }) =>
                   `px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     isActive
-                      ? "text-pureliva-green bg-pureliva-green/10"
-                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                      ? "text-[#680183] bg-purple-50"
+                      : "text-stone-700 hover:text-[#680183] hover:bg-stone-50"
                   }`
                 }
               >
@@ -350,8 +350,8 @@ export const Navbar: React.FC = () => {
                 className={({ isActive }) =>
                   `px-3.5 py-2 rounded-full text-sm font-semibold transition-colors ${
                     isActive
-                      ? "text-pureliva-green bg-pureliva-green/10"
-                      : "text-stone-700 hover:text-pureliva-green hover:bg-stone-100"
+                      ? "text-[#680183] bg-purple-50"
+                      : "text-stone-700 hover:text-[#680183] hover:bg-stone-50"
                   }`
                 }
               >
@@ -463,7 +463,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-colors"
                 >
                   Home
                 </Link>
@@ -471,43 +471,43 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/collections"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-colors"
                 >
                   All Products
                 </Link>
 
                 {/* Subcategories */}
-                <div className="pl-4 py-1 space-y-1 border-l-2 border-emerald-100 ml-4 my-2">
+                <div className="pl-4 py-1 space-y-1 border-l-2 border-purple-200 ml-4 my-2">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block px-2 py-1">
                     Shop Categories
                   </span>
                   <Link
                     to="/collections/raw-seeds"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-2 py-1.5 text-xs font-medium text-stone-600 hover:text-pureliva-green"
+                    className="block px-2 py-1.5 text-xs font-medium text-stone-600 hover:text-[#680183]"
                   >
                     • Raw Seeds (Chia)
                   </Link>
                   <Link
                     to="/collections/roasted-seeds"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-2 py-1.5 text-xs font-medium text-stone-600 hover:text-pureliva-green"
+                    className="block px-2 py-1.5 text-xs font-medium text-stone-600 hover:text-[#680183]"
                   >
                     • Roasted Seeds (Pumpkin, Sunflower, Flax)
                   </Link>
                   <Link
                     to="/collections/seed-mix"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block px-2 py-1.5 text-xs font-medium text-stone-600 hover:text-pureliva-green"
+                    className="block px-2 py-1.5 text-xs font-medium text-stone-600 hover:text-[#680183]"
                   >
-                    • Seed Mix (6-in-1 Blend)
+                    • Seed Mix (5-in-1 Blend)
                   </Link>
                 </div>
 
                 <Link
                   to="/about"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-colors"
                 >
                   About Us
                 </Link>
@@ -515,7 +515,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/news-events"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-colors"
                 >
                   News, Events & Recipes
                 </Link>
@@ -523,7 +523,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-emerald-50 hover:text-pureliva-green transition-colors"
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-stone-800 hover:bg-purple-50 hover:text-[#680183] transition-colors"
                 >
                   Contact
                 </Link>
@@ -531,7 +531,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   to="/track-order"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-emerald-800 bg-emerald-50/70 hover:bg-emerald-100 transition-colors"
+                  className="block px-4 py-3 rounded-2xl text-sm font-semibold text-[#680183] bg-purple-50 hover:bg-purple-100 transition-colors"
                 >
                   Track Your Order
                 </Link>

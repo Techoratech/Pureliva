@@ -44,9 +44,9 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-[#56016D] via-[#430055] to-[#2B0037] text-white relative overflow-hidden border-t-4 border-amber-400">
+    <footer className="bg-[#1C0026] text-white relative overflow-hidden border-t-4 border-amber-400">
       {/* Subtle background ambient texture */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#680183]/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Footer Container */}

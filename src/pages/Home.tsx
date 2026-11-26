@@ -28,11 +28,14 @@ import {
   Flame,
   ThumbsUp,
   X,
+  Star,
+  ChevronDown,
 } from "lucide-react";
 
 export const Home: React.FC = () => {
   // 1. Hero Slideshow State
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const heroSlides = [
     {
@@ -123,18 +126,18 @@ export const Home: React.FC = () => {
         <link rel="canonical" href="https://purelivafoods.com" />
       </Helmet>
 
-      {/* SECTION 1 — HERO BANNER SLIDESHOW (GOMOSWA-STYLE LUXURY E-COMMERCE HERO) */}
-      <section className="relative min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] pt-28 sm:pt-36 pb-12 sm:pb-16 bg-gradient-to-r from-[#240030] via-[#440057] to-[#5D0176] text-white overflow-hidden flex items-center border-t-2 border-amber-400/30">
-        {/* Ambient atmospheric glows */}
-        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-purple-900/50 blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-amber-400/15 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-purple-600/20 blur-3xl pointer-events-none" />
+      {/* SECTION 1 — HERO BANNER SLIDESHOW (WARM LUXURY GOURMET CANVAS) */}
+      <section className="relative min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] pt-28 sm:pt-36 pb-12 sm:pb-16 bg-gradient-to-b from-[#FDFBF7] via-[#F8F4EC] to-[#F1EBE1] text-[#1A0022] overflow-hidden flex items-center border-b border-stone-200/80">
+        {/* Ambient atmospheric organic glows */}
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-amber-200/25 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-purple-200/20 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-amber-100/30 blur-3xl pointer-events-none" />
 
         {/* Desktop Prev / Next Navigation Arrows */}
         <button
           type="button"
           onClick={prevSlide}
-          className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md transition-all z-20 shadow-lg hover:scale-105"
+          className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/90 hover:bg-white text-stone-800 border border-stone-200 shadow-md transition-all z-20 hover:scale-105"
           aria-label="Previous Slide"
         >
           <ChevronLeft size={22} />
@@ -143,7 +146,7 @@ export const Home: React.FC = () => {
         <button
           type="button"
           onClick={nextSlide}
-          className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md transition-all z-20 shadow-lg hover:scale-105"
+          className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/90 hover:bg-white text-stone-800 border border-stone-200 shadow-md transition-all z-20 hover:scale-105"
           aria-label="Next Slide"
         >
           <ChevronRight size={22} />
@@ -162,19 +165,19 @@ export const Home: React.FC = () => {
               {/* Left Column: Headlines, Trust & CTAs */}
               <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400 text-stone-950 text-xs font-extrabold uppercase tracking-wider shadow-sm">
-                  <Sparkles size={14} className="text-stone-950" />
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100/80 text-[#680183] border border-purple-200/80 text-xs font-extrabold uppercase tracking-wider shadow-xs">
+                  <Sparkles size={14} className="text-[#680183]" />
                   <span>{activeHero.badge}</span>
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-white">
+                <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-[#1A0022]">
                   {activeHero.title.replace(activeHero.highlight, "")}
-                  <span className="text-amber-300 italic block sm:inline"> {activeHero.highlight}</span>
+                  <span className="text-[#680183] italic block sm:inline"> {activeHero.highlight}</span>
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-xs sm:text-base lg:text-lg text-purple-100/90 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+                <p className="text-xs sm:text-base lg:text-lg text-stone-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
                   {activeHero.subtitle}
                 </p>
 
@@ -182,7 +185,7 @@ export const Home: React.FC = () => {
                 <div className="pt-2 flex flex-row items-center justify-center lg:justify-start gap-3 max-w-md mx-auto lg:mx-0">
                   <Link
                     to={activeHero.ctaLink}
-                    className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 sm:py-4 bg-amber-400 hover:bg-amber-300 text-stone-950 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                    className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 sm:py-4 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                   >
                     <span>{activeHero.ctaText}</span>
                     <ArrowRight size={16} />
@@ -194,38 +197,38 @@ export const Home: React.FC = () => {
                     )}
                     text={activeHero.waText}
                     size="md"
-                    className="flex-1 sm:flex-initial shadow-lg text-xs sm:text-sm py-3.5 sm:py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
+                    className="flex-1 sm:flex-initial shadow-md text-xs sm:text-sm py-3.5 sm:py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
                   />
                 </div>
 
                 {/* 3 Trust Points Strip below CTAs */}
-                <div className="pt-3 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-purple-200/90 font-medium flex-wrap">
+                <div className="pt-3 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-stone-600 font-medium flex-wrap">
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
+                    <CheckCircle size={14} className="text-[#680183] shrink-0" />
                     <span>Resealable Freshness Zipper</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
+                    <CheckCircle size={14} className="text-[#680183] shrink-0" />
                     <span>Zero Added Refined Sugar</span>
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
+                    <CheckCircle size={14} className="text-[#680183] shrink-0" />
                     <span>Fast Delivery Pan India</span>
                   </span>
                 </div>
               </div>
 
-              {/* Right Column: Pack Pouch + Bowl Studio Composition (Grounded, Professional, No Floating) */}
+              {/* Right Column: Pack Pouch + Bowl Studio Composition (Grounded, High Contrast on Gourmet Canvas) */}
               <div className="lg:col-span-5 flex items-center justify-center relative">
                 <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] aspect-[4/3.5] flex items-center justify-center">
                   {/* Subtle warm studio backlight */}
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400/20 via-purple-400/10 to-transparent blur-3xl pointer-events-none" />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400/25 via-purple-300/20 to-transparent blur-3xl pointer-events-none" />
 
                   {/* Grounding Base Shadow */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-black/40 rounded-full blur-xl pointer-events-none" />
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-stone-900/20 rounded-full blur-xl pointer-events-none" />
 
                   {/* Main Product Pack (Standing Pouch) - Solid Grounded */}
-                  <div className="relative z-10 w-44 sm:w-56 h-56 sm:h-72 -mr-6 sm:-mr-8 flex items-center justify-center filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.6)]">
+                  <div className="relative z-10 w-44 sm:w-56 h-56 sm:h-72 -mr-6 sm:-mr-8 flex items-center justify-center filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.18)]">
                     <img
                       src={activeHero.packImage}
                       alt={activeHero.title}
@@ -235,7 +238,7 @@ export const Home: React.FC = () => {
                   </div>
 
                   {/* Seed Bowl (Resting in front right) - Solid Grounded */}
-                  <div className="relative z-20 w-36 sm:w-48 h-36 sm:h-48 -ml-6 sm:-ml-8 mt-12 sm:mt-16 flex items-center justify-center filter drop-shadow-[0_16px_20px_rgba(0,0,0,0.7)]">
+                  <div className="relative z-20 w-36 sm:w-48 h-36 sm:h-48 -ml-6 sm:-ml-8 mt-12 sm:mt-16 flex items-center justify-center filter drop-shadow-[0_16px_20px_rgba(0,0,0,0.22)]">
                     <img
                       src={activeHero.bowlImage}
                       alt={`${activeHero.title} Bowl`}
@@ -249,7 +252,7 @@ export const Home: React.FC = () => {
           </AnimatePresence>
 
           {/* Bottom Tabs Slide Selector (Modern Shopify/Minimog Style) */}
-          <div className="mt-8 sm:mt-12 pt-6 border-t border-white/10 flex items-center justify-between gap-4">
+          <div className="mt-8 sm:mt-12 pt-6 border-t border-stone-200/80 flex items-center justify-between gap-4">
             <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar w-full sm:w-auto">
               {heroSlides.map((slide, idx) => (
                 <button
@@ -258,8 +261,8 @@ export const Home: React.FC = () => {
                   onClick={() => setCurrentSlide(idx)}
                   className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 ${
                     currentSlide === idx
-                      ? "bg-amber-400 text-stone-950 shadow-md"
-                      : "bg-white/10 hover:bg-white/20 text-purple-200"
+                      ? "bg-[#680183] text-white shadow-md"
+                      : "bg-white/80 hover:bg-white text-stone-700 border border-stone-200/60"
                   }`}
                 >
                   <span className="font-mono text-[10px] opacity-75">0{idx + 1}</span>
@@ -269,8 +272,8 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Slide counter */}
-            <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-purple-200">
-              <strong className="text-amber-300">0{currentSlide + 1}</strong>
+            <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-stone-500">
+              <strong className="text-[#680183]">0{currentSlide + 1}</strong>
               <span className="opacity-40">/</span>
               <span>0{heroSlides.length}</span>
             </div>
@@ -906,6 +909,110 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* SECTION 10.5 — VERIFIED CUSTOMER REVIEWS & SOCIAL PROOF */}
+      <section className="py-16 sm:py-24 bg-stone-50/80 border-t border-stone-200/60">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 space-y-2.5"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 text-[#680183] text-xs font-extrabold uppercase tracking-wider border border-amber-400/40">
+              <Star size={13} className="fill-amber-400 text-amber-500" />
+              <span>4.9 / 5 Overall Customer Rating</span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
+              Loved by 10,000+ Health Enthusiasts
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500">
+              Honest experiences from families and wellness seekers who made Pureliva seeds part of their daily life.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
+          >
+            {[
+              {
+                name: "Dr. Rajesh Sharma",
+                city: "Indore, M.P.",
+                product: "Roasted Pumpkin & Flax",
+                rating: 5,
+                review:
+                  "The crunch on the roasted pumpkin seeds is unmatched. You can taste the genuine farm harvest, and having zero refined sugar is a blessing for daily snacking.",
+                date: "Verified Buyer",
+              },
+              {
+                name: "Pooja Agarwal",
+                city: "Mumbai, MH",
+                product: "Raw Chia Seeds",
+                rating: 5,
+                review:
+                  "Best Chia Seeds I have used for my morning overnight puddings. Gel consistency is thick, perfectly clean optical sorted with zero dirt or foreign stones.",
+                date: "Verified Buyer",
+              },
+              {
+                name: "Kavita Mehta",
+                city: "Pune, MH",
+                product: "5-in-1 Seed Mix",
+                rating: 5,
+                review:
+                  "The resealable moisture zipper actually keeps them super crunchy weeks after opening. WhatsApp ordering took less than 2 minutes to confirm. Super satisfied!",
+                date: "Verified Buyer",
+              },
+              {
+                name: "Sunil Patidar",
+                city: "Ahmedabad, GJ",
+                product: "Commercial Bulk Agro Supply",
+                rating: 5,
+                review:
+                  "Procured metric-ton bulk flax seeds and dry onion flakes for our bakery facility. Clean packaging, genuine factory rates, and prompt dispatch from Khandwa.",
+                date: "B2B Buyer",
+              },
+            ].map((rev, idx) => (
+              <div
+                key={idx}
+                className="p-5 sm:p-6 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  {/* Stars Row */}
+                  <div className="flex items-center gap-1 text-amber-400">
+                    {[...Array(rev.rating)].map((_, i) => (
+                      <Star key={i} size={14} className="fill-amber-400" />
+                    ))}
+                  </div>
+
+                  {/* Review Text */}
+                  <p className="text-xs sm:text-[13px] text-stone-700 leading-relaxed font-normal italic">
+                    "{rev.review}"
+                  </p>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-stone-100 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-heading font-bold text-xs sm:text-sm text-[#1A0022]">
+                      {rev.name}
+                    </h4>
+                    <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <Check size={10} /> Verified
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-stone-400">
+                    {rev.city} • <span className="text-[#680183] font-medium">{rev.product}</span>
+                  </p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* SECTION 11 — CERTIFICATIONS & ACCREDITATIONS STRIP (Silky Smooth Scroll Reveal) */}
       <section className="py-12 bg-purple-50/30 border-t border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -948,6 +1055,111 @@ export const Home: React.FC = () => {
               </div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 11.5 — FREQUENTLY ASKED QUESTIONS */}
+      <section className="py-16 sm:py-24 bg-white border-t border-stone-200/70">
+        <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
+              Got Questions?
+            </span>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500">
+              Clear answers about our Khandwa farm sourcing, optical sorting purity, and ordering.
+            </p>
+          </motion.div>
+
+          <div className="space-y-3">
+            {[
+              {
+                q: "Where are Pureliva seeds harvested and processed?",
+                a: "All Pureliva seeds and agro supplies are sourced directly from fertile agricultural fields in Khandwa, Madhya Pradesh by Patidar Enterprises. Processing and triple optical sorting take place in accredited clean facilities adhering to strict FSSAI safety protocols.",
+              },
+              {
+                q: "Do you add any artificial preservatives, white sugar, or colours?",
+                a: "No, absolutely none. Our seeds are 100% pure and unadulterated. The raw varieties are untouched, and the roasted seeds are slow dry-roasted without artificial flavorings, synthetic colors, or added refined sugars.",
+              },
+              {
+                q: "How should I store the seeds to keep them crunchy?",
+                a: "All our packs feature an airtight food-grade resealable moisture zipper. Simply zip the pouch tightly after every spoon and store in a cool, dry place away from direct sunlight. No refrigeration is required.",
+              },
+              {
+                q: "How does ordering on WhatsApp work?",
+                a: "Clicking 'Order on WhatsApp' opens a direct chat with our Khandwa team with your selected seed and quantity pre-filled. We confirm your delivery address, provide instant order summary, and dispatch via express courier pan-India.",
+              },
+              {
+                q: "Do you supply metric tons for commercial wholesale and export?",
+                a: "Yes! Patidar Enterprises specializes in B2B bulk supply of Chia Seeds, Flax Seeds, Dehydrated Onion Flakes, and Dry Garlic in 25kg / 50kg bags for food manufacturers, distributors, and global export houses. You can request specifications via our Bulk Export page.",
+              },
+            ].map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  className="rounded-2xl border border-stone-200/80 overflow-hidden bg-[#FBF8FD] transition-all"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-heading font-bold text-sm sm:text-base text-[#1A0022] hover:text-[#680183] transition-colors"
+                  >
+                    <span>{faq.q}</span>
+                    <span
+                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
+                        isOpen ? "bg-[#680183] text-white rotate-180" : "bg-purple-100 text-[#680183]"
+                      }`}
+                    >
+                      <ChevronDown size={16} />
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-stone-600 leading-relaxed border-t border-purple-100/60 mt-1">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Quick Help Card */}
+          <div className="mt-8 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-[#39004B] to-[#590172] text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="space-y-1 text-center sm:text-left">
+              <h4 className="font-heading font-bold text-sm sm:text-base text-amber-300">
+                Have a specific question or bulk requirement?
+              </h4>
+              <p className="text-xs text-purple-100/80">
+                Our farm specialists in Khandwa are available 9 AM – 7 PM on WhatsApp.
+              </p>
+            </div>
+            <WhatsAppButton
+              href={buildWhatsAppLink("Hello Pureliva, I have a question about your seeds.")}
+              text="Ask on WhatsApp"
+              size="sm"
+              className="w-full sm:w-auto shrink-0 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
+            />
+          </div>
         </div>
       </section>
 

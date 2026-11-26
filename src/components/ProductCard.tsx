@@ -53,15 +53,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
 
   return (
     <>
-      <motion.div
-        layout
-        initial={{ opacity: 0, y: 15 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-20px" }}
-        transition={{ duration: 0.4 }}
+      <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`group relative bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between ${className}`}
+        className={`group relative bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 ${className}`}
       >
         <div>
           {/* Top Badges & Actions */}
@@ -227,7 +222,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
             <WhatsAppIcon size={14} fill="#FFFFFF" />
           </a>
         </div>
-      </motion.div>
+      </div>
 
       {/* Quick View Modal */}
       {showQuickView && (
