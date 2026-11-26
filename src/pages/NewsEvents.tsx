@@ -381,7 +381,7 @@ export const NewsEvents: React.FC = () => {
         </div>
       </div>
 
-      {/* RECIPE DETAIL MODAL — CENTERED WITH ANIMATION & BLUR */}
+      {/* RECIPE DETAIL MODAL — EDITORIAL COOKBOOK LAYOUT */}
       <AnimatePresence>
         {selectedRecipe && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
@@ -390,144 +390,193 @@ export const NewsEvents: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.25 }}
               onClick={() => setSelectedRecipe(null)}
-              className="fixed inset-0 bg-stone-950/70 backdrop-blur-md"
+              className="fixed inset-0 bg-stone-950/75 backdrop-blur-md"
             />
 
             {/* Modal Dialog Card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ type: "spring", damping: 28, stiffness: 350 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl z-10 overflow-hidden border border-purple-100 max-h-[90vh] flex flex-col my-auto"
+              className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl z-10 overflow-hidden border border-stone-200 max-h-[92vh] flex flex-col my-auto"
             >
-              {/* Cover Image & Close Floating Header */}
-              <div className="relative h-48 sm:h-56 w-full bg-stone-900 shrink-0">
-                <img
-                  src={selectedRecipe.image}
-                  alt={selectedRecipe.title}
-                  className="w-full h-full object-cover brightness-95"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-                {/* Floating Close Button */}
+              {/* Editorial Header */}
+              <div className="p-6 sm:p-8 border-b border-stone-100 bg-[#FDFBF7] relative">
                 <button
                   type="button"
                   onClick={() => setSelectedRecipe(null)}
-                  className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 hover:rotate-90 z-20 shadow-md"
-                  aria-label="Close Modal"
+                  className="absolute top-5 right-5 w-9 h-9 rounded-full bg-stone-200/70 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition-colors"
+                  aria-label="Close"
                 >
                   <X size={18} />
                 </button>
 
-                {/* Badges on Banner */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-2 text-white">
-                  <div>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#680183] text-amber-300 border border-amber-400/30 shadow-sm inline-block mb-1.5">
-                      {selectedRecipe.category} • Hero: {selectedRecipe.featuredSeed}
+                <div className="max-w-xl space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#680183]">
+                      Pureliva Kitchen Collection
                     </span>
-                    <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-white leading-tight drop-shadow-sm">
-                      {selectedRecipe.title}
-                    </h3>
+                    <span className="text-stone-300">•</span>
+                    <span className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+                      {selectedRecipe.category}
+                    </span>
                   </div>
-                  <span className="shrink-0 bg-white/20 backdrop-blur-md text-[11px] font-semibold px-3 py-1 rounded-full flex items-center gap-1.5">
-                    <Clock size={13} />
-                    <span>{selectedRecipe.prepTime}</span>
-                  </span>
+
+                  <h3 className="font-heading font-serif text-2xl sm:text-3xl font-bold text-stone-900 leading-snug">
+                    {selectedRecipe.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                    {selectedRecipe.summary}
+                  </p>
+                </div>
+
+                {/* Culinary Meta Strip */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-stone-200/80">
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Prep Time
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-stone-900 block mt-0.5">
+                      {selectedRecipe.prepTime}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Cook Time
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-stone-900 block mt-0.5">
+                      {selectedRecipe.cookTime}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Servings
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-stone-900 block mt-0.5">
+                      {selectedRecipe.servings}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Hero Ingredient
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-[#680183] truncate block mt-0.5">
+                      {selectedRecipe.featuredSeed.split("(")[0]}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Scrollable Modal Content */}
-              <div className="p-5 sm:p-7 overflow-y-auto space-y-6">
-                {/* Nutrition Callout */}
-                <div className="p-3.5 rounded-2xl bg-[#FBF8FD] border border-purple-100 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#680183] text-amber-300 flex items-center justify-center shrink-0">
-                    <Sparkles size={18} />
+              {/* Scrollable Editorial Content (Two-Column Desktop) */}
+              <div className="p-6 sm:p-8 overflow-y-auto">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                  {/* Left Column: Ingredients (5 cols) */}
+                  <div className="md:col-span-5 space-y-4">
+                    <div className="flex items-center justify-between pb-2 border-b-2 border-stone-900">
+                      <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-stone-900">
+                        Ingredients
+                      </h4>
+                      <span className="text-[11px] font-mono text-stone-400">
+                        {selectedRecipe.ingredients.length} items
+                      </span>
+                    </div>
+
+                    <ul className="space-y-2.5 text-xs sm:text-sm text-stone-700">
+                      {selectedRecipe.ingredients.map((ing, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 leading-snug py-1 border-b border-stone-100 last:border-b-0"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#680183] shrink-0 mt-1.5" />
+                          <span>{ing}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Featured Seed Recommendation Card */}
+                    <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 mt-6">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183] block">
+                        Recommended Product
+                      </span>
+                      <p className="text-xs font-bold text-stone-900 mt-1">
+                        {selectedRecipe.featuredSeed}
+                      </p>
+                      <p className="text-[11px] text-stone-500 mt-1 leading-relaxed">
+                        Packed in an airtight moisture-lock pouch to preserve maximum natural crunch and active enzymes.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183] block">
-                      Nutritional Superpower
-                    </span>
-                    <p className="text-xs sm:text-sm font-semibold text-stone-800">
-                      {selectedRecipe.nutritionCallout}
-                    </p>
+
+                  {/* Right Column: Method & Notes (7 cols) */}
+                  <div className="md:col-span-7 space-y-5">
+                    <div className="pb-2 border-b-2 border-stone-900">
+                      <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-stone-900">
+                        Method of Preparation
+                      </h4>
+                    </div>
+
+                    <div className="space-y-4">
+                      {selectedRecipe.steps.map((st, i) => (
+                        <div key={i} className="flex items-start gap-3.5">
+                          <span className="font-mono text-xs font-bold text-stone-400 shrink-0 mt-0.5">
+                            0{i + 1}
+                          </span>
+                          <p className="text-xs sm:text-sm text-stone-800 leading-relaxed">
+                            {st}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Editorial Nutrition Note */}
+                    <div className="mt-8 p-4 rounded-2xl bg-[#FDFBF7] border-l-4 border-amber-400 shadow-xs">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 block">
+                        Chef's Nutritional Note
+                      </span>
+                      <p className="text-xs sm:text-sm text-stone-700 mt-1 italic leading-relaxed">
+                        "{selectedRecipe.nutritionCallout}"
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                {/* Summary */}
-                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                  {selectedRecipe.summary}
-                </p>
-
-                {/* Ingredients */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between pb-1 border-b border-stone-100">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#680183] flex items-center gap-1.5">
-                      <Utensils size={14} />
-                      <span>Required Ingredients</span>
-                    </h4>
-                    <span className="text-[11px] text-stone-400 font-semibold">
-                      Yields {selectedRecipe.servings}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {selectedRecipe.ingredients.map((ing, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2 p-2.5 rounded-xl bg-purple-50/40 border border-purple-100 text-xs text-stone-800"
-                      >
-                        <CheckCircle2 size={14} className="text-[#680183] flex-shrink-0 mt-0.5" />
-                        <span>{ing}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Step-by-Step Instructions */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#680183] flex items-center gap-1.5 pb-1 border-b border-stone-100">
-                    <ChefHat size={14} />
-                    <span>Preparation Method</span>
-                  </h4>
-
-                  <ol className="space-y-3">
-                    {selectedRecipe.steps.map((st, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-3 p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 text-xs sm:text-sm text-stone-700 hover:border-purple-200 transition-colors"
-                      >
-                        <span className="w-6 h-6 rounded-full bg-[#680183] text-white text-xs font-bold flex items-center justify-center shrink-0 font-mono shadow-xs mt-0.5">
-                          {i + 1}
-                        </span>
-                        <p className="leading-relaxed text-stone-800 font-normal">{st}</p>
-                      </li>
-                    ))}
-                  </ol>
                 </div>
               </div>
 
-              {/* Modal Footer Sticky Action Bar */}
-              <div className="p-4 sm:p-5 bg-stone-50 border-t border-stone-200/80 flex flex-col sm:flex-row items-center gap-3 shrink-0">
+              {/* Action Footer */}
+              <div className="p-4 sm:p-6 bg-stone-50 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
                 <button
                   type="button"
                   onClick={() => handleOrderSeedForRecipe(selectedRecipe)}
-                  className="w-full sm:flex-1 py-3 px-5 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md transition-all"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
-                  <WhatsAppIcon size={18} fill="#FFFFFF" />
-                  <span>Order {selectedRecipe.featuredSeed} on WhatsApp</span>
+                  <WhatsAppIcon size={16} fill="#FFFFFF" />
+                  <span>Order {selectedRecipe.featuredSeed.split("(")[0]} on WhatsApp</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedRecipe(null)}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs sm:text-sm font-semibold transition-colors"
-                >
-                  Close Recipe
-                </button>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="flex-1 sm:flex-initial px-4 py-3 rounded-xl bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs font-semibold transition-colors"
+                  >
+                    Print Recipe
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRecipe(null)}
+                    className="flex-1 sm:flex-initial px-5 py-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-semibold transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

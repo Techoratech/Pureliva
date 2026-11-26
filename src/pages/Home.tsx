@@ -27,6 +27,7 @@ import {
   Zap,
   Flame,
   ThumbsUp,
+  X,
 } from "lucide-react";
 
 export const Home: React.FC = () => {
@@ -35,61 +36,52 @@ export const Home: React.FC = () => {
 
   const heroSlides = [
     {
-      badge: "Farm-to-Table Purity",
+      badge: "100% Farm Direct • Khandwa, M.P.",
       title: "Pure Nutrition in Every Spoon",
+      highlight: "Every Spoon",
       subtitle:
-        "Artisanal raw and dry-roasted seeds harvested with generational farming care in Khandwa, Madhya Pradesh. No added sugars, zero preservatives, 100% natural wellness.",
+        "Artisanal raw and dry-roasted seeds harvested with generational farming care in Khandwa, Madhya Pradesh. Zero added sugar, no chemical preservatives, 100% natural wellness.",
       ctaText: "Explore Collections",
       ctaLink: "/collections",
       waText: "Order on WhatsApp",
-      image: "/images/products/seed-mix-bowl",
-      theme: "light" as const,
-      bgClass: "bg-gradient-to-br from-[#FAF5EC] via-[#F4EDE0] to-[#EAE0CF]",
-      titleColor: "text-[#1A0022]",
-      subtitleColor: "text-stone-700",
-      badgeClass: "bg-[#2E7D32]/10 text-[#2E7D32] border border-[#2E7D32]/25",
-      badgeIconColor: "text-[#2E7D32]",
-      ctaClass: "bg-[#680183] hover:bg-[#4F0164] text-white shadow-md",
-      ringColor: "border-[#2E7D32]/30",
-      glowColor: "bg-amber-300/30",
+      packImage: "/images/products/seedmix-front.webp",
+      bowlImage: "/images/products/seed-mix-bowl.webp",
+      tag1: "🌿 100% Farm Purity",
+      tag2: "💪 High Vegan Protein",
+      tag3: "🛡️ FSSAI Reg. 21424170000414",
+      label: "5-in-1 Seed Mix",
     },
     {
-      badge: "Healthy Everyday Crunch",
-      title: "Gently Roasted to Perfection",
+      badge: "Slow Dry-Roasted • Heart Vitality",
+      title: "Wholesome Crunch, Zero Guilt",
+      highlight: "Zero Guilt",
       subtitle:
-        "Wholesome Pumpkin, Sunflower, and Flax seeds crafted for sustained energy and heart health. Packed with plant protein, essential omega-3, and dietary fibre.",
+        "Slow dry-roasted Pumpkin, Sunflower, and Flax seeds crafted for sustained energy and heart health. Naturally packed with essential plant protein, dietary fibre, and omega-3.",
       ctaText: "Shop Roasted Seeds",
       ctaLink: "/collections/roasted-seeds",
       waText: "Chat on WhatsApp",
-      image: "/images/products/pumpkin-seeds-bowl",
-      theme: "light" as const,
-      bgClass: "bg-gradient-to-br from-[#FFF7F0] via-[#F8ECE0] to-[#F1DFC8]",
-      titleColor: "text-[#1A0022]",
-      subtitleColor: "text-stone-700",
-      badgeClass: "bg-amber-600/10 text-amber-900 border border-amber-600/25",
-      badgeIconColor: "text-amber-800",
-      ctaClass: "bg-[#680183] hover:bg-[#4F0164] text-white shadow-md",
-      ringColor: "border-amber-600/30",
-      glowColor: "bg-orange-300/30",
+      packImage: "/images/products/pumpkin-front.webp",
+      bowlImage: "/images/products/pumpkin-seeds-bowl.webp",
+      tag1: "✨ Crispy & Savory",
+      tag2: "❤️ Omega-3 & Zinc",
+      tag3: "🔒 Resealable Zipper",
+      label: "Roasted Pumpkin & Flax",
     },
     {
-      badge: "B2B & Commercial Supply",
+      badge: "B2B Commercial Agro Supply & Export",
       title: "Bulk Agro Supply & Export Ready",
+      highlight: "Export Ready",
       subtitle:
-        "Supplying top-grade Chia, Flax, Onion Flakes, and Garlic to commercial food processors, exporters, and retailers across India and worldwide.",
+        "Supplying metric tons of premium Chia, Flax, Dehydrated Onion Flakes, and Dry Garlic to commercial food processors, exporters, and retailers across India and worldwide.",
       ctaText: "Bulk Specifications",
       ctaLink: "/bulk-export",
       waText: "Bulk Enquiry",
-      image: "/images/products/chia-seed-bowl",
-      theme: "dark" as const,
-      bgClass: "bg-gradient-to-br from-[#240030] via-[#430055] to-[#5C0175]",
-      titleColor: "text-white",
-      subtitleColor: "text-purple-100",
-      badgeClass: "bg-amber-400 text-stone-950 font-extrabold border border-amber-300 shadow-sm",
-      badgeIconColor: "text-stone-950",
-      ctaClass: "bg-white hover:bg-amber-50 text-[#430055] font-extrabold shadow-lg",
-      ringColor: "border-amber-400/40",
-      glowColor: "bg-amber-400/25",
+      packImage: "/images/products/chia-front.webp",
+      bowlImage: "/images/products/chia-seed-bowl.webp",
+      tag1: "⚡ Triple Optical Sorted",
+      tag2: "🌍 Global Export Ready",
+      tag3: "🏭 Direct Factory Rates",
+      label: "Bulk Agro & Export",
     },
   ];
 
@@ -131,85 +123,69 @@ export const Home: React.FC = () => {
         <link rel="canonical" href="https://purelivafoods.com" />
       </Helmet>
 
-      {/* SECTION 1 — HERO BANNER SLIDESHOW */}
-      <section
-        className={`relative min-h-[520px] sm:min-h-[580px] lg:min-h-[660px] pt-24 sm:pt-32 pb-12 sm:pb-16 ${activeHero.bgClass} transition-colors duration-700 overflow-hidden flex items-center`}
-      >
-        {/* Decorative background ambient glows */}
-        <div
-          className={`absolute top-1/4 -left-20 w-80 h-80 rounded-full ${activeHero.glowColor} blur-3xl pointer-events-none transition-colors duration-700`}
-        />
-        <div
-          className={`absolute top-1/3 -right-20 w-80 h-80 rounded-full ${
-            activeHero.theme === "dark" ? "bg-purple-900/40" : "bg-amber-200/30"
-          } blur-3xl pointer-events-none transition-colors duration-700`}
-        />
+      {/* SECTION 1 — HERO BANNER SLIDESHOW (GOMOSWA-STYLE LUXURY E-COMMERCE HERO) */}
+      <section className="relative min-h-[580px] sm:min-h-[620px] lg:min-h-[660px] pt-28 sm:pt-36 pb-12 sm:pb-16 bg-gradient-to-r from-[#240030] via-[#440057] to-[#5D0176] text-white overflow-hidden flex items-center border-t-2 border-amber-400/30">
+        {/* Ambient atmospheric glows */}
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-purple-900/50 blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-amber-400/15 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-80 h-80 rounded-full bg-purple-600/20 blur-3xl pointer-events-none" />
 
         {/* Desktop Prev / Next Navigation Arrows */}
         <button
           type="button"
           onClick={prevSlide}
-          className={`hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-20 ${
-            activeHero.theme === "dark"
-              ? "bg-white/10 hover:bg-white/20 text-white border border-white/20"
-              : "bg-white/70 hover:bg-white text-stone-800 border border-stone-200/60 shadow-sm"
-          }`}
+          className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md transition-all z-20 shadow-lg hover:scale-105"
           aria-label="Previous Slide"
         >
-          <ChevronLeft size={20} />
+          <ChevronLeft size={22} />
         </button>
 
         <button
           type="button"
           onClick={nextSlide}
-          className={`hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center transition-all z-20 ${
-            activeHero.theme === "dark"
-              ? "bg-white/10 hover:bg-white/20 text-white border border-white/20"
-              : "bg-white/70 hover:bg-white text-stone-800 border border-stone-200/60 shadow-sm"
-          }`}
+          className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center bg-white/10 hover:bg-white/25 text-white border border-white/20 backdrop-blur-md transition-all z-20 shadow-lg hover:scale-105"
           aria-label="Next Slide"
         >
-          <ChevronRight size={20} />
+          <ChevronRight size={22} />
         </button>
 
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 25 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              exit={{ opacity: 0, x: -25 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
             >
-              {/* Left Column: Headlines & CTA */}
+              {/* Left Column: Headlines, Trust & CTAs */}
               <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
-                <div
-                  className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase transition-colors ${activeHero.badgeClass}`}
-                >
-                  <Sparkles size={13} className={activeHero.badgeIconColor} />
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400 text-stone-950 text-xs font-extrabold uppercase tracking-wider shadow-sm">
+                  <Sparkles size={14} className="text-stone-950" />
                   <span>{activeHero.badge}</span>
                 </div>
 
-                <h1
-                  className={`font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] transition-colors ${activeHero.titleColor}`}
-                >
-                  {activeHero.title}
+                {/* Main Heading */}
+                <h1 className="font-heading text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12] text-white">
+                  {activeHero.title.replace(activeHero.highlight, "")}
+                  <span className="text-amber-300 italic block sm:inline"> {activeHero.highlight}</span>
                 </h1>
 
-                <p
-                  className={`text-xs sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed transition-colors ${activeHero.subtitleColor}`}
-                >
+                {/* Subtitle */}
+                <p className="text-xs sm:text-base lg:text-lg text-purple-100/90 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
                   {activeHero.subtitle}
                 </p>
 
-                <div className="pt-2 flex flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3.5 max-w-md mx-auto lg:mx-0">
+                {/* Buttons Row */}
+                <div className="pt-2 flex flex-row items-center justify-center lg:justify-start gap-3 max-w-md mx-auto lg:mx-0">
                   <Link
                     to={activeHero.ctaLink}
-                    className={`flex-1 sm:flex-initial px-4 sm:px-7 py-3 sm:py-3.5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 sm:gap-2 ${activeHero.ctaClass}`}
+                    className="flex-1 sm:flex-initial px-6 sm:px-8 py-3.5 sm:py-4 bg-amber-400 hover:bg-amber-300 text-stone-950 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                   >
                     <span>{activeHero.ctaText}</span>
-                    <ArrowRight size={15} />
+                    <ArrowRight size={16} />
                   </Link>
 
                   <WhatsAppButton
@@ -218,69 +194,100 @@ export const Home: React.FC = () => {
                     )}
                     text={activeHero.waText}
                     size="md"
-                    className="flex-1 sm:flex-initial shadow-md text-xs sm:text-sm py-3 sm:py-3.5"
+                    className="flex-1 sm:flex-initial shadow-lg text-xs sm:text-sm py-3.5 sm:py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
                   />
+                </div>
+
+                {/* 3 Trust Points Strip below CTAs */}
+                <div className="pt-3 flex items-center justify-center lg:justify-start gap-4 sm:gap-6 text-[11px] sm:text-xs text-purple-200/90 font-medium flex-wrap">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
+                    <span>Resealable Freshness Zipper</span>
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
+                    <span>Zero Added Refined Sugar</span>
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle size={14} className="text-amber-300 shrink-0" />
+                    <span>Fast Delivery Pan India</span>
+                  </span>
                 </div>
               </div>
 
-              {/* Right Column: Featured Image with Floating Animation */}
+              {/* Right Column: Pack Pouch + Bowl Studio Composition (Grounded, Professional, No Floating) */}
               <div className="lg:col-span-5 flex items-center justify-center relative">
-                <div className="relative w-52 h-52 sm:w-72 sm:h-72 lg:w-96 lg:h-96 flex items-center justify-center">
-                  {/* Subtle ring */}
-                  <div
-                    className={`absolute inset-2 sm:inset-4 rounded-full border-2 border-dashed ${activeHero.ringColor} animate-spin-slow`}
-                  />
+                <div className="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[460px] aspect-[4/3.5] flex items-center justify-center">
+                  {/* Subtle warm studio backlight */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400/20 via-purple-400/10 to-transparent blur-3xl pointer-events-none" />
 
-                  {/* Spotlight background behind bowl */}
-                  <div
-                    className={`absolute inset-4 rounded-full ${activeHero.glowColor} blur-2xl`}
-                  />
+                  {/* Grounding Base Shadow */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-black/40 rounded-full blur-xl pointer-events-none" />
 
-                  <motion.div
-                    animate={{ y: [0, -8, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="relative z-10 w-full h-full flex items-center justify-center"
-                  >
-                    <Img
-                      src={activeHero.image}
+                  {/* Main Product Pack (Standing Pouch) - Solid Grounded */}
+                  <div className="relative z-10 w-44 sm:w-56 h-56 sm:h-72 -mr-6 sm:-mr-8 flex items-center justify-center filter drop-shadow-[0_20px_25px_rgba(0,0,0,0.6)]">
+                    <img
+                      src={activeHero.packImage}
                       alt={activeHero.title}
-                      transparent
-                      priority
-                      className="w-full h-full object-contain filter drop-shadow-2xl"
+                      className="w-full h-full object-contain"
+                      loading="eager"
                     />
-                  </motion.div>
+                  </div>
+
+                  {/* Seed Bowl (Resting in front right) - Solid Grounded */}
+                  <div className="relative z-20 w-36 sm:w-48 h-36 sm:h-48 -ml-6 sm:-ml-8 mt-12 sm:mt-16 flex items-center justify-center filter drop-shadow-[0_16px_20px_rgba(0,0,0,0.7)]">
+                    <img
+                      src={activeHero.bowlImage}
+                      alt={`${activeHero.title} Bowl`}
+                      className="w-full h-full object-contain"
+                      loading="eager"
+                    />
+                  </div>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Slider Pagination Controls */}
-          <div className="flex items-center justify-center lg:justify-start gap-2.5 mt-6 sm:mt-10">
-            {heroSlides.map((slide, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => setCurrentSlide(idx)}
-                className={`transition-all duration-300 rounded-full h-2.5 ${
-                  currentSlide === idx
-                    ? activeHero.theme === "dark"
-                      ? "w-8 bg-amber-400"
-                      : "w-8 bg-[#680183]"
-                    : activeHero.theme === "dark"
-                    ? "w-2.5 bg-white/40 hover:bg-white/70"
-                    : "w-2.5 bg-stone-300 hover:bg-stone-400"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
+          {/* Bottom Tabs Slide Selector (Modern Shopify/Minimog Style) */}
+          <div className="mt-8 sm:mt-12 pt-6 border-t border-white/10 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar w-full sm:w-auto">
+              {heroSlides.map((slide, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 ${
+                    currentSlide === idx
+                      ? "bg-amber-400 text-stone-950 shadow-md"
+                      : "bg-white/10 hover:bg-white/20 text-purple-200"
+                  }`}
+                >
+                  <span className="font-mono text-[10px] opacity-75">0{idx + 1}</span>
+                  <span>{slide.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Slide counter */}
+            <div className="hidden sm:flex items-center gap-1.5 text-xs font-mono text-purple-200">
+              <strong className="text-amber-300">0{currentSlide + 1}</strong>
+              <span className="opacity-40">/</span>
+              <span>0{heroSlides.length}</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2 — SHOP BY CATEGORIES (4 Tiles Grid) */}
+      {/* SECTION 2 — SHOP BY CATEGORIES (4 Tiles Grid with Silky Smooth Scroll Animation) */}
       <section className="py-12 sm:py-20 bg-white border-b border-stone-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2"
+          >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
               Curated Collections
             </span>
@@ -290,107 +297,127 @@ export const Home: React.FC = () => {
             <p className="text-xs sm:text-sm text-stone-500">
               Explore our wholesome range of nutrient-packed raw seeds, lightly roasted crunch, and power mixes.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
+          >
             {/* 1. Raw Seeds */}
-            <Link
-              to="/collections/raw-seeds"
-              className="group p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-purple-100 text-[#680183] flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Leaf size={22} className="sm:hidden" />
-                <Leaf size={28} className="hidden sm:block" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="font-heading text-sm sm:text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
-                  Raw Seeds
-                </h3>
-                <p className="hidden sm:block text-xs text-stone-500 line-clamp-2">
-                  Unroasted Chia Seeds rich in dietary fibre, omega-3, and antioxidants for smoothies.
-                </p>
-              </div>
-              <span className="mt-2.5 sm:mt-5 text-[11px] sm:text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
-                <span>View</span>
-                <ArrowRight size={12} />
-              </span>
-            </Link>
+            <div className="h-full">
+              <Link
+                to="/collections/raw-seeds"
+                className="group h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-purple-100 text-[#680183] flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                  <Leaf size={22} className="sm:hidden" />
+                  <Leaf size={28} className="hidden sm:block" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-heading text-sm sm:text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
+                    Raw Seeds
+                  </h3>
+                  <p className="hidden sm:block text-xs text-stone-500 line-clamp-2">
+                    Unroasted Chia Seeds rich in dietary fibre, omega-3, and antioxidants for smoothies.
+                  </p>
+                </div>
+                <span className="mt-2.5 sm:mt-5 text-[11px] sm:text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
+                  <span>View</span>
+                  <ArrowRight size={12} />
+                </span>
+              </Link>
+            </div>
 
             {/* 2. Roasted Seeds */}
-            <Link
-              to="/collections/roasted-seeds"
-              className="group p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Flame size={22} className="sm:hidden" />
-                <Flame size={28} className="hidden sm:block" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="font-heading text-sm sm:text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
-                  Roasted Seeds
-                </h3>
-                <p className="hidden sm:block text-xs text-stone-500 line-clamp-2">
-                  Slow dry-roasted Pumpkin, Sunflower, and Flax seeds with savory natural crunch.
-                </p>
-              </div>
-              <span className="mt-2.5 sm:mt-5 text-[11px] sm:text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
-                <span>View</span>
-                <ArrowRight size={12} />
-              </span>
-            </Link>
+            <div className="h-full">
+              <Link
+                to="/collections/roasted-seeds"
+                className="group h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                  <Flame size={22} className="sm:hidden" />
+                  <Flame size={28} className="hidden sm:block" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-heading text-sm sm:text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
+                    Roasted Seeds
+                  </h3>
+                  <p className="hidden sm:block text-xs text-stone-500 line-clamp-2">
+                    Slow dry-roasted Pumpkin, Sunflower, and Flax seeds with savory natural crunch.
+                  </p>
+                </div>
+                <span className="mt-2.5 sm:mt-5 text-[11px] sm:text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
+                  <span>View</span>
+                  <ArrowRight size={12} />
+                </span>
+              </Link>
+            </div>
 
             {/* 3. Seed Mix */}
-            <Link
-              to="/collections/seed-mix"
-              className="group p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
-                <Layers size={22} className="sm:hidden" />
-                <Layers size={28} className="hidden sm:block" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="font-heading text-sm sm:text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
-                  5-in-1 Seed Mix
-                </h3>
-                <p className="hidden sm:block text-xs text-stone-500 line-clamp-2">
-                  Balanced blend of 5 powerhouse seeds formulated for daily plant protein & stamina.
-                </p>
-              </div>
-              <span className="mt-2.5 sm:mt-5 text-[11px] sm:text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
-                <span>View</span>
-                <ArrowRight size={12} />
-              </span>
-            </Link>
+            <div className="h-full">
+              <Link
+                to="/collections/seed-mix"
+                className="group h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
+              >
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform">
+                  <Layers size={22} className="sm:hidden" />
+                  <Layers size={28} className="hidden sm:block" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-heading text-sm sm:text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors">
+                    5-in-1 Seed Mix
+                  </h3>
+                  <p className="hidden sm:block text-xs text-stone-500 line-clamp-2">
+                    Balanced blend of 5 powerhouse seeds formulated for daily plant protein & stamina.
+                  </p>
+                </div>
+                <span className="mt-2.5 sm:mt-5 text-[11px] sm:text-xs font-bold text-[#680183] group-hover:underline inline-flex items-center gap-1">
+                  <span>View</span>
+                  <ArrowRight size={12} />
+                </span>
+              </Link>
+            </div>
 
             {/* 4. Healthy Snacks & Sweets (Coming Soon) */}
-            <div className="p-3.5 sm:p-6 rounded-2xl bg-stone-50 border border-stone-200/60 text-center flex flex-col items-center justify-between opacity-75">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-stone-200 text-stone-500 flex items-center justify-center mb-3 sm:mb-4">
-                <Heart size={22} className="sm:hidden" />
-                <Heart size={28} className="hidden sm:block" />
-              </div>
-              <div className="space-y-1">
-                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-stone-200 text-stone-600 px-2 py-0.5 rounded-full inline-block">
-                  Coming Soon
+            <div className="h-full">
+              <div className="h-full p-3.5 sm:p-6 rounded-2xl bg-stone-50 border border-stone-200/60 text-center flex flex-col items-center justify-between opacity-75">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-stone-200 text-stone-500 flex items-center justify-center mb-3 sm:mb-4">
+                  <Heart size={22} className="sm:hidden" />
+                  <Heart size={28} className="hidden sm:block" />
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-stone-200 text-stone-600 px-2 py-0.5 rounded-full inline-block">
+                    Coming Soon
+                  </span>
+                  <h3 className="font-heading text-sm sm:text-lg font-bold text-stone-700">
+                    Healthy Sweets
+                  </h3>
+                  <p className="hidden sm:block text-xs text-stone-400 line-clamp-2">
+                    Naturally sweetened artisan bites made with pure seeds and jaggery, zero refined sugar.
+                  </p>
+                </div>
+                <span className="mt-2.5 sm:mt-5 text-[10px] sm:text-xs font-semibold text-stone-400">
+                  In Development
                 </span>
-                <h3 className="font-heading text-sm sm:text-lg font-bold text-stone-700">
-                  Healthy Sweets
-                </h3>
-                <p className="hidden sm:block text-xs text-stone-400 line-clamp-2">
-                  Naturally sweetened artisan bites made with pure seeds and jaggery, zero refined sugar.
-                </p>
               </div>
-              <span className="mt-2.5 sm:mt-5 text-[10px] sm:text-xs font-semibold text-stone-400">
-                In Development
-              </span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 3 — WHY CHOOSE US (6 Icon Row) */}
+      {/* SECTION 3 — WHY CHOOSE US (6 Icon Row with Silky Smooth Scroll Animation) */}
       <section className="py-12 sm:py-20 bg-stone-50/70">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2"
+          >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
               The Pureliva Standard
             </span>
@@ -400,9 +427,15 @@ export const Home: React.FC = () => {
             <p className="text-xs sm:text-sm text-stone-500">
               Clean ethics, unadulterated farming purity, and science-backed nutrition in every spoonful.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
+          >
             {[
               {
                 icon: Leaf,
@@ -454,14 +487,20 @@ export const Home: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 4 — BEST SELLER WITH FILTER TABS */}
+      {/* SECTION 4 — BEST SELLER WITH FILTER TABS (Silky Smooth Scroll Animation) */}
       <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 pb-6 border-b border-stone-100">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10 pb-6 border-b border-stone-100"
+          >
             <div className="text-center md:text-left">
               <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
                 Customer Favorites
@@ -493,20 +532,26 @@ export const Home: React.FC = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Products Grid — 2 Columns on Mobile, 3 on Desktop */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          {/* Products Grid — 2 Columns on Mobile, 3 on Desktop with Silky Smooth Reveal */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
+          >
             {filteredProducts.map((product) => (
               <ProductCard key={product.slug} product={product} />
             ))}
-          </div>
+          </motion.div>
 
           {/* Explore all link */}
           <div className="text-center mt-12">
             <Link
               to="/collections"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md hover:scale-105"
             >
               <span>View All 5 Seed Varieties</span>
               <ArrowRight size={15} />
@@ -515,10 +560,16 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 5 — BRAND STORY BANNER (Split 2-Column) */}
+      {/* SECTION 5 — BRAND STORY BANNER (Split 2-Column with Silky Smooth Scroll Reveal) */}
       <section className="py-16 sm:py-20 bg-[#FBF8FD] relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.08 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
+          >
             {/* Left Column: Image with Natural Aesthetic */}
             <div className="lg:col-span-5 relative">
               <div className="relative w-full aspect-square max-w-md mx-auto rounded-3xl overflow-hidden bg-white p-6 shadow-soft border border-purple-100 flex items-center justify-center">
@@ -572,7 +623,7 @@ export const Home: React.FC = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -626,10 +677,16 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
-      {/* SECTION 7 — OUR DEVOTION / OUR PROMISE (4 Feature Cards) */}
+      {/* SECTION 7 — OUR DEVOTION / OUR PROMISE (Silky Smooth Scroll Animation) */}
       <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2"
+          >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
               Our Devotion
             </span>
@@ -639,9 +696,15 @@ export const Home: React.FC = () => {
             <p className="text-xs sm:text-sm text-stone-500">
               Four unshakable commitments that guide every harvest, sorting pass, and pack we ship.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
+          >
             {[
               {
                 icon: ShieldCheck,
@@ -668,7 +731,7 @@ export const Home: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-purple-100 text-center flex flex-col items-center justify-between"
+                  className="p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-purple-100 text-center flex flex-col items-center justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#680183] text-white flex items-center justify-center mb-3 sm:mb-4 shadow-sm">
                     <Icon size={20} className="sm:hidden" />
@@ -683,14 +746,20 @@ export const Home: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 8 — KEY FEATURES BADGES STRIP */}
+      {/* SECTION 8 — KEY FEATURES BADGES STRIP (Silky Smooth Fade-up) */}
       <section className="py-8 sm:py-10 bg-purple-50/40 border-y border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center"
+          >
             {[
               { label: "FSSAI Accredited", sub: "Govt Certified" },
               { label: "100% Vegetarian", sub: "Pure Plant-Based" },
@@ -701,7 +770,7 @@ export const Home: React.FC = () => {
             ].map((badge, idx) => (
               <div
                 key={idx}
-                className="p-2.5 sm:p-3.5 rounded-xl bg-white border border-purple-100 shadow-xs flex flex-col items-center justify-center"
+                className="p-2.5 sm:p-3.5 rounded-xl bg-white border border-purple-100 shadow-xs flex flex-col items-center justify-center hover:border-purple-300 transition-colors"
               >
                 <CheckCircle size={16} className="text-[#680183] mb-1" />
                 <span className="text-[11px] sm:text-xs font-bold text-[#1A0022] leading-tight block">
@@ -712,14 +781,20 @@ export const Home: React.FC = () => {
                 </span>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 9 — BULK & EXPORT ORDER BANNER */}
+      {/* SECTION 9 — BULK & EXPORT ORDER BANNER (Silky Smooth Scroll Reveal) */}
       <section className="py-16 sm:py-20 bg-[#4F0164] text-white relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+          >
             <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
               <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
                 B2B & Commercial Agro Supply
@@ -735,7 +810,7 @@ export const Home: React.FC = () => {
             <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center lg:items-end gap-3.5">
               <Link
                 to="/bulk-export"
-                className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#4F0164] hover:bg-stone-100 rounded-xl font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all"
+                className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#4F0164] hover:bg-stone-100 rounded-xl font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all hover:scale-105"
               >
                 View Bulk Specifications
               </Link>
@@ -747,14 +822,20 @@ export const Home: React.FC = () => {
                 className="w-full sm:w-auto shadow-sm"
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 10 — BLOG / PRODUCT RECIPES SECTION */}
+      {/* SECTION 10 — BLOG / PRODUCT RECIPES SECTION (Silky Smooth Scroll Animation) */}
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12"
+          >
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
                 Culinary Inspiration
@@ -770,13 +851,19 @@ export const Home: React.FC = () => {
               <span>View All Recipes</span>
               <ArrowRight size={14} />
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
             {RECIPES.slice(0, 3).map((recipe) => (
               <div
                 key={recipe.id}
-                className="group rounded-2xl bg-[#FBF8FD] border border-purple-100 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between"
+                className="group rounded-2xl bg-[#FBF8FD] border border-purple-100 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
               >
                 <div>
                   <div className="relative h-48 overflow-hidden bg-stone-100">
@@ -808,54 +895,72 @@ export const Home: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setSelectedRecipe(recipe)}
-                    className="w-full py-2.5 rounded-xl bg-white border border-purple-200 text-[#680183] hover:bg-[#680183] hover:text-white hover:border-[#680183] text-xs font-bold transition-all"
+                    className="w-full py-2.5 rounded-xl bg-white border border-purple-200 text-[#680183] hover:bg-[#680183] hover:text-white hover:border-[#680183] text-xs font-bold transition-all shadow-xs"
                   >
                     Read Recipe
                   </button>
                 </div>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 11 — CERTIFICATIONS & ACCREDITATIONS STRIP */}
+      {/* SECTION 11 — CERTIFICATIONS & ACCREDITATIONS STRIP (Silky Smooth Scroll Reveal) */}
       <section className="py-12 bg-purple-50/30 border-t border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-xl mx-auto mb-8 space-y-1">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-xl mx-auto mb-8 space-y-1"
+          >
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#680183]">
               Accreditations & Compliance
             </span>
             <h3 className="font-heading text-2xl font-bold text-[#1A0022]">
               Certified for Safe Food Processing
             </h3>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 items-center justify-center max-w-3xl mx-auto">
-            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#680183] block">FSSAI</span>
-              <span className="text-[10px] text-stone-500 font-semibold">Reg. 21424170000414</span>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#4F0164] block">ISO 22000</span>
-              <span className="text-[10px] text-stone-500 font-semibold">Food Safety Standard</span>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#680183] block">GMP</span>
-              <span className="text-[10px] text-stone-500 font-semibold">Good Manufacturing</span>
-            </div>
-            <div className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs">
-              <span className="font-heading font-black text-xl text-[#4F0164] block">HACCP</span>
-              <span className="text-[10px] text-stone-500 font-semibold">Hazard Control Certified</span>
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 items-center justify-center max-w-3xl mx-auto"
+          >
+            {[
+              { title: "FSSAI", sub: "Reg. 21424170000414", color: "text-[#680183]" },
+              { title: "ISO 22000", sub: "Food Safety Standard", color: "text-[#4F0164]" },
+              { title: "GMP", sub: "Good Manufacturing", color: "text-[#680183]" },
+              { title: "HACCP", sub: "Hazard Control Certified", color: "text-[#4F0164]" },
+            ].map((cert, idx) => (
+              <div
+                key={idx}
+                className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs hover:border-[#680183]/40 transition-colors"
+              >
+                <span className={`font-heading font-black text-xl ${cert.color} block`}>
+                  {cert.title}
+                </span>
+                <span className="text-[10px] text-stone-500 font-semibold">{cert.sub}</span>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 12 — CORE VALUES STRIP (P U R E L I V A) */}
+      {/* SECTION 12 — CORE VALUES STRIP (Silky Smooth Scroll Reveal) */}
       <section className="py-16 bg-[#680183] text-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center max-w-2xl mx-auto mb-10 space-y-2"
+          >
             <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
               Our Principles
             </span>
@@ -865,9 +970,15 @@ export const Home: React.FC = () => {
             <p className="text-xs sm:text-sm text-purple-200">
               Eight foundational principles spelled out through our name.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center"
+          >
             {[
               { l: "P", t: "Purity", s: "& Integrity" },
               { l: "U", t: "Quality", s: "Uncompromising" },
@@ -880,7 +991,7 @@ export const Home: React.FC = () => {
             ].map((v) => (
               <div
                 key={v.l}
-                className="p-3 sm:p-4 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center justify-center hover:bg-white/20 transition-colors"
+                className="p-3 sm:p-4 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center justify-center hover:bg-white/20 transition-all hover:-translate-y-1"
               >
                 <span className="font-heading font-black text-2xl sm:text-3xl text-amber-300 mb-1">
                   {v.l}
@@ -893,11 +1004,11 @@ export const Home: React.FC = () => {
                 </span>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* RECIPE DETAIL MODAL — CENTERED WITH ANIMATION & BLUR */}
+      {/* RECIPE DETAIL MODAL — PROFESSIONAL COOKBOOK EDITORIAL */}
       <AnimatePresence>
         {selectedRecipe && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
@@ -906,142 +1017,193 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.25 }}
               onClick={() => setSelectedRecipe(null)}
-              className="fixed inset-0 bg-stone-950/70 backdrop-blur-md"
+              className="fixed inset-0 bg-stone-950/75 backdrop-blur-md"
             />
 
             {/* Modal Dialog Card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              exit={{ opacity: 0, scale: 0.94, y: 20 }}
+              transition={{ type: "spring", damping: 28, stiffness: 350 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl z-10 overflow-hidden border border-purple-100 max-h-[90vh] flex flex-col my-auto"
+              className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl z-10 overflow-hidden border border-stone-200 max-h-[92vh] flex flex-col my-auto"
             >
-              {/* Cover Image & Close Floating Header */}
-              <div className="relative h-48 sm:h-56 w-full bg-stone-900 shrink-0">
-                <img
-                  src={selectedRecipe.image}
-                  alt={selectedRecipe.title}
-                  className="w-full h-full object-cover brightness-95"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-                {/* Floating Close Button */}
+              {/* Editorial Header */}
+              <div className="p-6 sm:p-8 border-b border-stone-100 bg-[#FDFBF7] relative">
                 <button
                   type="button"
                   onClick={() => setSelectedRecipe(null)}
-                  className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 hover:rotate-90 z-20 shadow-md"
-                  aria-label="Close Modal"
+                  className="absolute top-5 right-5 w-9 h-9 rounded-full bg-stone-200/70 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition-colors"
+                  aria-label="Close"
                 >
-                  ✕
+                  <X size={18} />
                 </button>
 
-                {/* Badges on Banner */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-2 text-white">
-                  <div>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#680183] text-amber-300 border border-amber-400/30 shadow-sm inline-block mb-1.5">
-                      {selectedRecipe.category} • Hero: {selectedRecipe.featuredSeed}
+                <div className="max-w-xl space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#680183]">
+                      Pureliva Kitchen Collection
                     </span>
-                    <h3 className="font-heading text-xl sm:text-2xl font-extrabold text-white leading-tight drop-shadow-sm">
-                      {selectedRecipe.title}
-                    </h3>
+                    <span className="text-stone-300">•</span>
+                    <span className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+                      {selectedRecipe.category}
+                    </span>
                   </div>
-                  <span className="shrink-0 bg-white/20 backdrop-blur-md text-[11px] font-semibold px-3 py-1 rounded-full flex items-center gap-1.5">
-                    <Clock size={13} />
-                    <span>{selectedRecipe.prepTime}</span>
-                  </span>
+
+                  <h3 className="font-heading font-serif text-2xl sm:text-3xl font-bold text-stone-900 leading-snug">
+                    {selectedRecipe.title}
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                    {selectedRecipe.summary}
+                  </p>
+                </div>
+
+                {/* Culinary Meta Strip */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-5 border-t border-stone-200/80">
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Prep Time
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-stone-900 block mt-0.5">
+                      {selectedRecipe.prepTime}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Cook Time
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-stone-900 block mt-0.5">
+                      {selectedRecipe.cookTime}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Servings
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-stone-900 block mt-0.5">
+                      {selectedRecipe.servings}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/70 text-center sm:text-left">
+                    <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Hero Ingredient
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-[#680183] truncate block mt-0.5">
+                      {selectedRecipe.featuredSeed.split("(")[0]}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Scrollable Modal Content */}
-              <div className="p-5 sm:p-7 overflow-y-auto space-y-6">
-                {/* Nutrition Callout */}
-                <div className="p-3.5 rounded-2xl bg-[#FBF8FD] border border-purple-100 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#680183] text-amber-300 flex items-center justify-center shrink-0">
-                    <Sparkles size={18} />
+              {/* Scrollable Editorial Content (Two-Column Desktop) */}
+              <div className="p-6 sm:p-8 overflow-y-auto">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                  {/* Left Column: Ingredients (5 cols) */}
+                  <div className="md:col-span-5 space-y-4">
+                    <div className="flex items-center justify-between pb-2 border-b-2 border-stone-900">
+                      <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-stone-900">
+                        Ingredients
+                      </h4>
+                      <span className="text-[11px] font-mono text-stone-400">
+                        {selectedRecipe.ingredients.length} items
+                      </span>
+                    </div>
+
+                    <ul className="space-y-2.5 text-xs sm:text-sm text-stone-700">
+                      {selectedRecipe.ingredients.map((ing, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2.5 leading-snug py-1 border-b border-stone-100 last:border-b-0"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#680183] shrink-0 mt-1.5" />
+                          <span>{ing}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Featured Seed Recommendation Card */}
+                    <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 mt-6">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183] block">
+                        Recommended Product
+                      </span>
+                      <p className="text-xs font-bold text-stone-900 mt-1">
+                        {selectedRecipe.featuredSeed}
+                      </p>
+                      <p className="text-[11px] text-stone-500 mt-1 leading-relaxed">
+                        Packed in an airtight moisture-lock pouch to preserve maximum natural crunch and active enzymes.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#680183] block">
-                      Nutritional Superpower
-                    </span>
-                    <p className="text-xs sm:text-sm font-semibold text-stone-800">
-                      {selectedRecipe.nutritionCallout}
-                    </p>
+
+                  {/* Right Column: Method & Notes (7 cols) */}
+                  <div className="md:col-span-7 space-y-5">
+                    <div className="pb-2 border-b-2 border-stone-900">
+                      <h4 className="font-heading font-bold text-xs uppercase tracking-widest text-stone-900">
+                        Method of Preparation
+                      </h4>
+                    </div>
+
+                    <div className="space-y-4">
+                      {selectedRecipe.steps.map((st, i) => (
+                        <div key={i} className="flex items-start gap-3.5">
+                          <span className="font-mono text-xs font-bold text-stone-400 shrink-0 mt-0.5">
+                            0{i + 1}
+                          </span>
+                          <p className="text-xs sm:text-sm text-stone-800 leading-relaxed">
+                            {st}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Editorial Nutrition Note */}
+                    <div className="mt-8 p-4 rounded-2xl bg-[#FDFBF7] border-l-4 border-amber-400 shadow-xs">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 block">
+                        Chef's Nutritional Note
+                      </span>
+                      <p className="text-xs sm:text-sm text-stone-700 mt-1 italic leading-relaxed">
+                        "{selectedRecipe.nutritionCallout}"
+                      </p>
+                    </div>
                   </div>
-                </div>
-
-                {/* Summary */}
-                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                  {selectedRecipe.summary}
-                </p>
-
-                {/* Ingredients */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between pb-1 border-b border-stone-100">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#680183] flex items-center gap-1.5">
-                      <span>Required Ingredients</span>
-                    </h4>
-                    <span className="text-[11px] text-stone-400 font-semibold">
-                      Yields {selectedRecipe.servings}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {selectedRecipe.ingredients.map((ing, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-2 p-2.5 rounded-xl bg-purple-50/40 border border-purple-100 text-xs text-stone-800"
-                      >
-                        <CheckCircle size={14} className="text-[#680183] flex-shrink-0 mt-0.5" />
-                        <span>{ing}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Step-by-Step Instructions */}
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#680183] flex items-center gap-1.5 pb-1 border-b border-stone-100">
-                    <span>Preparation Method</span>
-                  </h4>
-
-                  <ol className="space-y-3">
-                    {selectedRecipe.steps.map((st, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-3 p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 text-xs sm:text-sm text-stone-700 hover:border-purple-200 transition-colors"
-                      >
-                        <span className="w-6 h-6 rounded-full bg-[#680183] text-white text-xs font-bold flex items-center justify-center shrink-0 font-mono shadow-xs mt-0.5">
-                          {i + 1}
-                        </span>
-                        <p className="leading-relaxed text-stone-800 font-normal">{st}</p>
-                      </li>
-                    ))}
-                  </ol>
                 </div>
               </div>
 
-              {/* Modal Footer Sticky Action Bar */}
-              <div className="p-4 sm:p-5 bg-stone-50 border-t border-stone-200/80 flex flex-col sm:flex-row items-center gap-3 shrink-0">
+              {/* Action Footer */}
+              <div className="p-4 sm:p-6 bg-stone-50 border-t border-stone-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
                 <WhatsAppButton
                   href={buildWhatsAppLink(
                     `Hello Pureliva, I saw your recipe '${selectedRecipe.title}' and want to order ${selectedRecipe.featuredSeed}!`
                   )}
-                  text={`Order ${selectedRecipe.featuredSeed} on WhatsApp`}
+                  text={`Order ${selectedRecipe.featuredSeed.split("(")[0]} on WhatsApp`}
                   size="md"
-                  className="w-full sm:flex-1 justify-center"
+                  className="w-full sm:w-auto shadow-sm"
                 />
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedRecipe(null)}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs sm:text-sm font-semibold transition-colors"
-                >
-                  Close Recipe
-                </button>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="flex-1 sm:flex-initial px-4 py-3 rounded-xl bg-white border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs font-semibold transition-colors"
+                  >
+                    Print Recipe
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRecipe(null)}
+                    className="flex-1 sm:flex-initial px-5 py-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-semibold transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

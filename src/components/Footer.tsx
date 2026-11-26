@@ -309,7 +309,7 @@ export const Footer: React.FC = () => {
                     className="text-purple-200/80 hover:text-white transition-colors flex items-center gap-1.5 pt-1"
                   >
                     <Lock size={12} />
-                    <span>Staff / Admin Portal</span>
+                    <span>Admin Login</span>
                   </Link>
                 </p>
               </div>
@@ -381,7 +381,7 @@ export const Footer: React.FC = () => {
               className="text-purple-200 hover:text-white underline text-[11px] transition-colors flex items-center gap-1"
             >
               <Lock size={11} />
-              <span>Staff Login</span>
+              <span>Admin Login</span>
             </Link>
             <span className="text-white/30">•</span>
             <span className="text-[11px]">Khandwa, Madhya Pradesh</span>
