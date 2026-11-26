@@ -32,6 +32,67 @@ import {
   ChevronDown,
 } from "lucide-react";
 
+// Staggered Scroll Animation Variants for Silky Smooth Luxury Flow
+const staggerGrid = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const staggerCard = {
+  hidden: { opacity: 0, y: 26, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.65,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const sectionHeader = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const slideLeft = {
+  hidden: { opacity: 0, x: -35 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const slideRight = {
+  hidden: { opacity: 0, x: 35 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.75,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
 export const Home: React.FC = () => {
   // 1. Hero Slideshow State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -285,10 +346,10 @@ export const Home: React.FC = () => {
       <section className="py-12 sm:py-20 bg-white border-b border-stone-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2"
           >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
@@ -297,20 +358,21 @@ export const Home: React.FC = () => {
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
               Shop by Categories
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500">
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mt-1.5" />
+            <p className="text-xs sm:text-sm text-stone-500 pt-1">
               Explore our wholesome range of nutrient-packed raw seeds, lightly roasted crunch, and power mixes.
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
           >
             {/* 1. Raw Seeds */}
-            <div className="h-full">
+            <motion.div variants={staggerCard} className="h-full">
               <Link
                 to="/collections/raw-seeds"
                 className="group h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
@@ -332,10 +394,10 @@ export const Home: React.FC = () => {
                   <ArrowRight size={12} />
                 </span>
               </Link>
-            </div>
+            </motion.div>
 
             {/* 2. Roasted Seeds */}
-            <div className="h-full">
+            <motion.div variants={staggerCard} className="h-full">
               <Link
                 to="/collections/roasted-seeds"
                 className="group h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
@@ -357,10 +419,10 @@ export const Home: React.FC = () => {
                   <ArrowRight size={12} />
                 </span>
               </Link>
-            </div>
+            </motion.div>
 
             {/* 3. Seed Mix */}
-            <div className="h-full">
+            <motion.div variants={staggerCard} className="h-full">
               <Link
                 to="/collections/seed-mix"
                 className="group h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-stone-200/70 hover:border-[#680183]/50 shadow-sm hover:shadow-soft-lg transition-all duration-300 text-center flex flex-col items-center justify-between hover:-translate-y-1"
@@ -382,10 +444,10 @@ export const Home: React.FC = () => {
                   <ArrowRight size={12} />
                 </span>
               </Link>
-            </div>
+            </motion.div>
 
             {/* 4. Healthy Snacks & Sweets (Coming Soon) */}
-            <div className="h-full">
+            <motion.div variants={staggerCard} className="h-full">
               <div className="h-full p-3.5 sm:p-6 rounded-2xl bg-stone-50 border border-stone-200/60 text-center flex flex-col items-center justify-between opacity-75">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-stone-200 text-stone-500 flex items-center justify-center mb-3 sm:mb-4">
                   <Heart size={22} className="sm:hidden" />
@@ -406,7 +468,7 @@ export const Home: React.FC = () => {
                   In Development
                 </span>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -415,10 +477,10 @@ export const Home: React.FC = () => {
       <section className="py-12 sm:py-20 bg-stone-50/70">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2"
           >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
@@ -427,16 +489,17 @@ export const Home: React.FC = () => {
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
               Why Choose Pureliva?
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500">
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mt-1.5" />
+            <p className="text-xs sm:text-sm text-stone-500 pt-1">
               Clean ethics, unadulterated farming purity, and science-backed nutrition in every spoonful.
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
           >
             {[
@@ -473,21 +536,24 @@ export const Home: React.FC = () => {
             ].map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div
+                <motion.div
                   key={idx}
-                  className="p-3.5 sm:p-7 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg transition-all duration-300"
+                  variants={staggerCard}
+                  className="h-full"
                 >
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#680183]/10 text-[#680183] flex items-center justify-center mb-3 sm:mb-5">
-                    <Icon size={20} className="sm:hidden" />
-                    <Icon size={24} className="hidden sm:block" />
+                  <div className="h-full p-3.5 sm:p-7 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#680183]/10 text-[#680183] flex items-center justify-center mb-3 sm:mb-5">
+                      <Icon size={20} className="sm:hidden" />
+                      <Icon size={24} className="hidden sm:block" />
+                    </div>
+                    <h3 className="font-heading text-xs sm:text-lg font-bold text-[#1A0022] mb-1 sm:mb-2 leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-[11px] sm:text-sm text-stone-500 leading-relaxed">
+                      {item.desc}
+                    </p>
                   </div>
-                  <h3 className="font-heading text-xs sm:text-lg font-bold text-[#1A0022] mb-1 sm:mb-2 leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-[11px] sm:text-sm text-stone-500 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>
@@ -539,19 +605,27 @@ export const Home: React.FC = () => {
 
           {/* Products Grid — 2 Columns on Mobile, 3 on Desktop with Silky Smooth Reveal */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"
           >
             {filteredProducts.map((product) => (
-              <ProductCard key={product.slug} product={product} />
+              <motion.div key={product.slug} variants={staggerCard}>
+                <ProductCard product={product} />
+              </motion.div>
             ))}
           </motion.div>
 
           {/* Explore all link */}
-          <div className="text-center mt-12">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-center mt-12"
+          >
             <Link
               to="/collections"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#680183] hover:bg-[#4F0164] text-white rounded-xl text-xs font-bold tracking-wider uppercase transition-all shadow-md hover:scale-105"
@@ -559,22 +633,22 @@ export const Home: React.FC = () => {
               <span>View All 5 Seed Varieties</span>
               <ArrowRight size={15} />
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* SECTION 5 — BRAND STORY BANNER (Split 2-Column with Silky Smooth Scroll Reveal) */}
       <section className="py-16 sm:py-20 bg-[#FBF8FD] relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.08 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             {/* Left Column: Image with Natural Aesthetic */}
-            <div className="lg:col-span-5 relative">
+            <motion.div
+              variants={slideLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className="lg:col-span-5 relative"
+            >
               <div className="relative w-full aspect-square max-w-md mx-auto rounded-3xl overflow-hidden bg-white p-6 shadow-soft border border-purple-100 flex items-center justify-center">
                 <Img
                   src="/images/products/chia-seed-bowl"
@@ -586,10 +660,16 @@ export const Home: React.FC = () => {
                   Patidar Enterprises • Khandwa, Madhya Pradesh
                 </span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Right Column: Founder Story */}
-            <div className="lg:col-span-7 space-y-5">
+            <motion.div
+              variants={slideRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className="lg:col-span-7 space-y-5"
+            >
               <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
                 Our Roots & Heritage
               </span>
@@ -597,6 +677,7 @@ export const Home: React.FC = () => {
               <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-[#1A0022] leading-tight">
                 Rooted in Farming. Built on Trust.
               </h2>
+              <div className="w-16 h-1 bg-amber-400 rounded-full" />
 
               <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
                 Pureliva is an agro-wellness brand by <strong>Patidar Enterprises</strong>, located in the fertile agricultural heartland of Khandwa, Madhya Pradesh. Our founders were raised in farming families, learning the true value of soil, crop cycles, and honest harvest long before wellness became an industry.
@@ -625,8 +706,8 @@ export const Home: React.FC = () => {
                   <ArrowRight size={16} />
                 </Link>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -684,10 +765,10 @@ export const Home: React.FC = () => {
       <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 space-y-2"
           >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
@@ -696,16 +777,17 @@ export const Home: React.FC = () => {
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
               Our Promise in Every Spoon
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500">
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mt-1.5" />
+            <p className="text-xs sm:text-sm text-stone-500 pt-1">
               Four unshakable commitments that guide every harvest, sorting pass, and pack we ship.
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"
           >
             {[
@@ -732,21 +814,20 @@ export const Home: React.FC = () => {
             ].map((card, idx) => {
               const Icon = card.icon;
               return (
-                <div
-                  key={idx}
-                  className="p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-purple-100 text-center flex flex-col items-center justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300"
-                >
-                  <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#680183] text-white flex items-center justify-center mb-3 sm:mb-4 shadow-sm">
-                    <Icon size={20} className="sm:hidden" />
-                    <Icon size={24} className="hidden sm:block" />
+                <motion.div key={idx} variants={staggerCard} className="h-full">
+                  <div className="h-full p-3.5 sm:p-6 rounded-2xl bg-[#FBF8FD] border border-purple-100 text-center flex flex-col items-center justify-between hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300">
+                    <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-[#680183] text-white flex items-center justify-center mb-3 sm:mb-4 shadow-sm">
+                      <Icon size={20} className="sm:hidden" />
+                      <Icon size={24} className="hidden sm:block" />
+                    </div>
+                    <h3 className="font-heading text-xs sm:text-base font-bold text-[#1A0022] mb-1 sm:mb-2 leading-tight">
+                      {card.title}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed">
+                      {card.desc}
+                    </p>
                   </div>
-                  <h3 className="font-heading text-xs sm:text-base font-bold text-[#1A0022] mb-1 sm:mb-2 leading-tight">
-                    {card.title}
-                  </h3>
-                  <p className="text-[11px] sm:text-xs text-stone-500 leading-relaxed">
-                    {card.desc}
-                  </p>
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>
@@ -757,10 +838,10 @@ export const Home: React.FC = () => {
       <section className="py-8 sm:py-10 bg-purple-50/40 border-y border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center"
           >
             {[
@@ -771,9 +852,10 @@ export const Home: React.FC = () => {
               { label: "Resealable Pouch", sub: "Freshness Sealed" },
               { label: "Proudly Indian", sub: "Khandwa, M.P." },
             ].map((badge, idx) => (
-              <div
+              <motion.div
                 key={idx}
-                className="p-2.5 sm:p-3.5 rounded-xl bg-white border border-purple-100 shadow-xs flex flex-col items-center justify-center hover:border-purple-300 transition-colors"
+                variants={staggerCard}
+                className="p-2.5 sm:p-3.5 rounded-xl bg-white border border-purple-100 shadow-xs flex flex-col items-center justify-center hover:border-purple-300 hover:-translate-y-0.5 transition-all"
               >
                 <CheckCircle size={16} className="text-[#680183] mb-1" />
                 <span className="text-[11px] sm:text-xs font-bold text-[#1A0022] leading-tight block">
@@ -782,7 +864,7 @@ export const Home: React.FC = () => {
                 <span className="text-[9px] sm:text-[10px] text-stone-400 block mt-0.5">
                   {badge.sub}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -791,26 +873,33 @@ export const Home: React.FC = () => {
       {/* SECTION 9 — BULK & EXPORT ORDER BANNER (Silky Smooth Scroll Reveal) */}
       <section className="py-16 sm:py-20 bg-[#4F0164] text-white relative overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
-          >
-            <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <motion.div
+              variants={slideLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className="lg:col-span-8 space-y-4 text-center lg:text-left"
+            >
               <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
                 B2B & Commercial Agro Supply
               </span>
               <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                 Bulk Agro Supply & Export Ready
               </h2>
+              <div className="w-16 h-1 bg-amber-400 rounded-full mx-auto lg:mx-0" />
               <p className="text-sm sm:text-base text-purple-100 max-w-2xl leading-relaxed">
                 Also supplying bulk quantities of Chia Seeds, Flax Seeds, Dehydrated Onion Flakes, Garlic Powder, and Dry Garlic to domestic manufacturers, wholesale distributors, and global importers.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center lg:items-end gap-3.5">
+            <motion.div
+              variants={slideRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+              className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center lg:items-end gap-3.5"
+            >
               <Link
                 to="/bulk-export"
                 className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#4F0164] hover:bg-stone-100 rounded-xl font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all hover:scale-105"
@@ -824,8 +913,8 @@ export const Home: React.FC = () => {
                 size="md"
                 className="w-full sm:w-auto shadow-sm"
               />
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -833,10 +922,10 @@ export const Home: React.FC = () => {
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-12"
           >
             <div>
@@ -846,6 +935,7 @@ export const Home: React.FC = () => {
               <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1A0022] mt-1">
                 Delicious Ways to Enjoy Every Spoon
               </h2>
+              <div className="w-12 h-1 bg-amber-400 rounded-full mt-1.5" />
             </div>
             <Link
               to="/recipes"
@@ -857,53 +947,56 @@ export const Home: React.FC = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
             {RECIPES.slice(0, 3).map((recipe) => (
-              <div
+              <motion.div
                 key={recipe.id}
-                className="group rounded-2xl bg-[#FBF8FD] border border-purple-100 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1"
+                variants={staggerCard}
+                className="h-full"
               >
-                <div>
-                  <div className="relative h-48 overflow-hidden bg-stone-100">
-                    <img
-                      src={recipe.image}
-                      alt={recipe.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 left-3 bg-[#680183]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
-                      {recipe.category}
-                    </span>
-                    <span className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-stone-800 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <Clock size={11} />
-                      <span>{recipe.prepTime}</span>
-                    </span>
+                <div className="h-full group rounded-2xl bg-[#FBF8FD] border border-purple-100 overflow-hidden shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+                  <div>
+                    <div className="relative h-48 overflow-hidden bg-stone-100">
+                      <img
+                        src={recipe.image}
+                        alt={recipe.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <span className="absolute top-3 left-3 bg-[#680183]/90 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">
+                        {recipe.category}
+                      </span>
+                      <span className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-stone-800 text-[10px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <Clock size={11} />
+                        <span>{recipe.prepTime}</span>
+                      </span>
+                    </div>
+
+                    <div className="p-5 space-y-2">
+                      <h3 className="font-heading text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors line-clamp-1">
+                        {recipe.title}
+                      </h3>
+                      <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                        {recipe.summary}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="p-5 space-y-2">
-                    <h3 className="font-heading text-lg font-bold text-[#1A0022] group-hover:text-[#680183] transition-colors line-clamp-1">
-                      {recipe.title}
-                    </h3>
-                    <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
-                      {recipe.summary}
-                    </p>
+                  <div className="px-5 pb-5">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRecipe(recipe)}
+                      className="w-full py-2.5 rounded-xl bg-white border border-purple-200 text-[#680183] hover:bg-[#680183] hover:text-white hover:border-[#680183] text-xs font-bold transition-all shadow-xs"
+                    >
+                      Read Recipe
+                    </button>
                   </div>
                 </div>
-
-                <div className="px-5 pb-5">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRecipe(recipe)}
-                    className="w-full py-2.5 rounded-xl bg-white border border-purple-200 text-[#680183] hover:bg-[#680183] hover:text-white hover:border-[#680183] text-xs font-bold transition-all shadow-xs"
-                  >
-                    Read Recipe
-                  </button>
-                </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -913,10 +1006,10 @@ export const Home: React.FC = () => {
       <section className="py-16 sm:py-24 bg-stone-50/80 border-t border-stone-200/60">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-2xl mx-auto mb-10 sm:mb-14 space-y-2.5"
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/20 text-[#680183] text-xs font-extrabold uppercase tracking-wider border border-amber-400/40">
@@ -926,16 +1019,17 @@ export const Home: React.FC = () => {
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
               Loved by 10,000+ Health Enthusiasts
             </h2>
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto" />
             <p className="text-xs sm:text-sm text-stone-500">
               Honest experiences from families and wellness seekers who made Pureliva seeds part of their daily life.
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
           >
             {[
@@ -976,38 +1070,41 @@ export const Home: React.FC = () => {
                 date: "B2B Buyer",
               },
             ].map((rev, idx) => (
-              <div
+              <motion.div
                 key={idx}
-                className="p-5 sm:p-6 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between"
+                variants={staggerCard}
+                className="h-full"
               >
-                <div className="space-y-3">
-                  {/* Stars Row */}
-                  <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} size={14} className="fill-amber-400" />
-                    ))}
+                <div className="h-full p-5 sm:p-6 rounded-2xl bg-white border border-stone-200/80 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    {/* Stars Row */}
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {[...Array(rev.rating)].map((_, i) => (
+                        <Star key={i} size={14} className="fill-amber-400" />
+                      ))}
+                    </div>
+
+                    {/* Review Text */}
+                    <p className="text-xs sm:text-[13px] text-stone-700 leading-relaxed font-normal italic">
+                      "{rev.review}"
+                    </p>
                   </div>
 
-                  {/* Review Text */}
-                  <p className="text-xs sm:text-[13px] text-stone-700 leading-relaxed font-normal italic">
-                    "{rev.review}"
-                  </p>
-                </div>
-
-                <div className="pt-4 mt-4 border-t border-stone-100 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-heading font-bold text-xs sm:text-sm text-[#1A0022]">
-                      {rev.name}
-                    </h4>
-                    <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <Check size={10} /> Verified
-                    </span>
+                  <div className="pt-4 mt-4 border-t border-stone-100 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-heading font-bold text-xs sm:text-sm text-[#1A0022]">
+                        {rev.name}
+                      </h4>
+                      <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                        <Check size={10} /> Verified
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-stone-400">
+                      {rev.city} • <span className="text-[#680183] font-medium">{rev.product}</span>
+                    </p>
                   </div>
-                  <p className="text-[10px] text-stone-400">
-                    {rev.city} • <span className="text-[#680183] font-medium">{rev.product}</span>
-                  </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -1017,10 +1114,10 @@ export const Home: React.FC = () => {
       <section className="py-12 bg-purple-50/30 border-t border-purple-100">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-xl mx-auto mb-8 space-y-1"
           >
             <span className="text-[11px] font-bold uppercase tracking-wider text-[#680183]">
@@ -1029,13 +1126,14 @@ export const Home: React.FC = () => {
             <h3 className="font-heading text-2xl font-bold text-[#1A0022]">
               Certified for Safe Food Processing
             </h3>
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mt-1" />
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 items-center justify-center max-w-3xl mx-auto"
           >
             {[
@@ -1044,15 +1142,16 @@ export const Home: React.FC = () => {
               { title: "GMP", sub: "Good Manufacturing", color: "text-[#680183]" },
               { title: "HACCP", sub: "Hazard Control Certified", color: "text-[#4F0164]" },
             ].map((cert, idx) => (
-              <div
+              <motion.div
                 key={idx}
-                className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs hover:border-[#680183]/40 transition-colors"
+                variants={staggerCard}
+                className="p-4 rounded-xl bg-white border border-purple-100 text-center shadow-xs hover:border-[#680183]/40 hover:-translate-y-1 transition-all"
               >
                 <span className={`font-heading font-black text-xl ${cert.color} block`}>
                   {cert.title}
                 </span>
                 <span className="text-[10px] text-stone-500 font-semibold">{cert.sub}</span>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -1062,10 +1161,10 @@ export const Home: React.FC = () => {
       <section className="py-16 sm:py-24 bg-white border-t border-stone-200/70">
         <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2"
           >
             <span className="text-xs font-bold uppercase tracking-wider text-[#680183]">
@@ -1074,12 +1173,19 @@ export const Home: React.FC = () => {
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#1A0022]">
               Frequently Asked Questions
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500">
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mt-1" />
+            <p className="text-xs sm:text-sm text-stone-500 pt-1">
               Clear answers about our Khandwa farm sourcing, optical sorting purity, and ordering.
             </p>
           </motion.div>
 
-          <div className="space-y-3">
+          <motion.div
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
+            className="space-y-3"
+          >
             {[
               {
                 q: "Where are Pureliva seeds harvested and processed?",
@@ -1104,8 +1210,9 @@ export const Home: React.FC = () => {
             ].map((faq, idx) => {
               const isOpen = openFaq === idx;
               return (
-                <div
+                <motion.div
                   key={idx}
+                  variants={staggerCard}
                   className="rounded-2xl border border-stone-200/80 overflow-hidden bg-[#FBF8FD] transition-all"
                 >
                   <button
@@ -1138,13 +1245,19 @@ export const Home: React.FC = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* Quick Help Card */}
-          <div className="mt-8 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-[#39004B] to-[#590172] text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mt-8 p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-[#39004B] to-[#590172] text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md"
+          >
             <div className="space-y-1 text-center sm:text-left">
               <h4 className="font-heading font-bold text-sm sm:text-base text-amber-300">
                 Have a specific question or bulk requirement?
@@ -1159,7 +1272,7 @@ export const Home: React.FC = () => {
               size="sm"
               className="w-full sm:w-auto shrink-0 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -1167,10 +1280,10 @@ export const Home: React.FC = () => {
       <section className="py-16 bg-[#680183] text-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            variants={sectionHeader}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
             className="text-center max-w-2xl mx-auto mb-10 space-y-2"
           >
             <span className="text-xs font-bold uppercase tracking-widest text-amber-300">
@@ -1179,16 +1292,17 @@ export const Home: React.FC = () => {
             <h2 className="font-heading text-3xl font-bold text-white">
               What We Stand For, From P to A
             </h2>
-            <p className="text-xs sm:text-sm text-purple-200">
+            <div className="w-12 h-1 bg-amber-400 rounded-full mx-auto mt-1" />
+            <p className="text-xs sm:text-sm text-purple-200 pt-1">
               Eight foundational principles spelled out through our name.
             </p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+            variants={staggerGrid}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
             className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 text-center"
           >
             {[
@@ -1201,8 +1315,9 @@ export const Home: React.FC = () => {
               { l: "V", t: "Value", s: "Creation" },
               { l: "A", t: "Authenticity", s: "& Accountability" },
             ].map((v) => (
-              <div
+              <motion.div
                 key={v.l}
+                variants={staggerCard}
                 className="p-3 sm:p-4 rounded-xl bg-white/10 border border-white/15 flex flex-col items-center justify-center hover:bg-white/20 transition-all hover:-translate-y-1"
               >
                 <span className="font-heading font-black text-2xl sm:text-3xl text-amber-300 mb-1">
@@ -1214,7 +1329,7 @@ export const Home: React.FC = () => {
                 <span className="text-[10px] text-purple-200 block mt-0.5">
                   {v.s}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>

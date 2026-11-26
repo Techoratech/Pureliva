@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import ScrollProgress from "./components/ScrollProgress";
 import FloatingWhatsApp from "./components/FloatingWhatsApp";
+import BackToTop from "./components/BackToTop";
 
 // Public Pages
 import Home from "./pages/Home";
@@ -276,6 +277,9 @@ export const App: React.FC = () => {
 
             {/* Floating WhatsApp Action Button (Hidden on admin routes) */}
             {!isAdminRoute && <FloatingWhatsApp />}
+
+            {/* Back to Top Smooth Scroll Button */}
+            {!isAdminRoute && <BackToTop />}
 
             {/* Global Footer (Hidden on admin routes) */}
             {!isAdminRoute && <Footer />}
