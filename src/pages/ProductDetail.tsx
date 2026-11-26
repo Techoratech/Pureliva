@@ -1,422 +1,513 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { PRODUCTS, Product } from "../data/products";
-import Img from "../components/Img";
-import WhatsAppButton from "../components/WhatsAppButton";
-import QuantityStepper from "../components/QuantityStepper";
+import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
 import NutritionTable from "../components/NutritionTable";
 import ProductCard from "../components/ProductCard";
+import WhatsAppIcon from "../components/WhatsAppIcon";
 import { buildProductOrderLink } from "../lib/whatsapp";
 import {
   ShieldCheck,
   Leaf,
   Sparkles,
-  Layers,
-  AlertTriangle,
+  ShoppingBag,
+  Zap,
   ArrowLeft,
-  RotateCw,
   Check,
+  Heart,
+  ZoomIn,
+  Package,
+  Layers,
+  Award,
+  ChevronRight,
+  Info,
 } from "lucide-react";
 
 export const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const product = PRODUCTS.find((p) => p.slug === slug);
 
-  // Gallery view state: "bowl" | "pack-front" | "pack-back"
-  const [galleryTab, setGalleryTab] = useState<"bowl" | "pack-front" | "pack-back">("bowl");
-  // Pack 3D flip state: front (0deg) vs back (180deg)
-  const [isPackFlipped, setIsPackFlipped] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [zoomStyle, setZoomStyle] = useState({ transformOrigin: "center center", transform: "scale(1)" });
+  const { addItem } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
-  // Reset tab and quantity when slug changes
+  // Active gallery image: "front" | "back" | "bowl"
+  const [activeImageKey, setActiveImageKey] = useState<"front" | "back" | "bowl">("front");
+  const [quantity, setQuantity] = useState(1);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const [addedAnimation, setAddedAnimation] = useState(false);
+
   useEffect(() => {
-    setGalleryTab("bowl");
-    setIsPackFlipped(false);
+    setActiveImageKey("front");
     setQuantity(1);
+    setIsZoomed(false);
     window.scrollTo(0, 0);
   }, [slug]);
 
   if (!product) {
     return (
       <div className="pt-36 pb-24 min-h-screen bg-white text-center flex flex-col items-center justify-center px-4">
-        <h1 className="font-heading text-4xl font-bold text-pureliva-heading mb-4">
+        <h1 className="font-heading text-3xl sm:text-4xl font-bold text-stone-900 mb-4">
           Product Not Found
         </h1>
-        <p className="text-pureliva-body mb-6 max-w-md">
-          The natural seed product you're looking for might have been updated or moved.
+        <p className="text-stone-500 mb-6 max-w-md text-sm">
+          The natural seed variety you're looking for might have been updated or moved.
         </p>
         <Link
-          to="/products"
-          className="px-6 py-3 rounded-2xl bg-pureliva-green text-white font-semibold text-sm hover:bg-pureliva-green-hover transition-colors"
+          to="/collections"
+          className="px-6 py-3 rounded-full bg-pureliva-green text-white font-semibold text-xs hover:bg-emerald-800 transition-colors"
         >
-          View All Products
+          Explore All Products
         </Link>
       </div>
     );
   }
 
-  const otherProducts = PRODUCTS.filter((p) => p.slug !== product.slug).slice(0, 3);
+  const inWishlist = isInWishlist(product.slug);
+  const otherProducts = PRODUCTS.filter((p) => p.slug !== product.slug).slice(0, 4);
   const waUrl = buildProductOrderLink(product.titleWithVariant, quantity);
 
-  // Desktop hover zoom handler
-  const handleMouseMoveZoom = (e: React.MouseEvent<HTMLDivElement>) => {
+  // Gallery image selector
+  const activeImageUrl =
+    activeImageKey === "front"
+      ? product.images.front || product.images.packFront
+      : activeImageKey === "back"
+      ? product.images.back || product.images.packBack
+      : product.images.bowl;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
-    setZoomStyle({
-      transformOrigin: `${x}% ${y}%`,
-      transform: "scale(1.4)",
-    });
+    setZoomOrigin({ x, y });
   };
 
-  const handleMouseLeaveZoom = () => {
-    setZoomStyle({
-      transformOrigin: "center center",
-      transform: "scale(1)",
-    });
+  const handleAddToCart = () => {
+    addItem(product, quantity);
+    setAddedAnimation(true);
+    setTimeout(() => setAddedAnimation(false), 1200);
+  };
+
+  const handleBuyNow = () => {
+    addItem(product, quantity);
+    // WhatsApp direct checkout
+    const msg = `Hello Pureliva, I would like to order *${quantity}x ${product.name} (${product.variant}, ${product.netWeight})*. Please confirm availability!`;
+    const url = buildProductOrderLink(product.titleWithVariant, quantity);
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
     <>
       <Helmet>
-        <title>{`${product.name} – ${product.tagline} | Pureliva Foods`}</title>
+        <title>{`${product.name} (${product.variant}) | Pureliva Foods`}</title>
         <meta name="description" content={product.description} />
-        <link rel="canonical" href={`https://purelivafoods.com/products/${product.slug}`} />
+        <link rel="canonical" href={`https://purelivafoods.com/product/${product.slug}`} />
       </Helmet>
 
-      <div
-        className="pt-28 pb-24 bg-white"
-        style={{
-          // Apply product accent colour as CSS variable for accents
-          ["--product-accent" as string]: product.accent,
-        }}
-      >
+      <div className="pt-32 pb-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb / Back Link */}
-          <div className="mb-6">
-            <Link
-              to="/products"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-pureliva-muted hover:text-pureliva-green transition-colors"
-            >
-              <ArrowLeft size={16} />
-              <span>Back to Products</span>
+          {/* Breadcrumb Navigation */}
+          <nav className="flex items-center gap-2 text-xs text-stone-500 mb-8 overflow-x-auto pb-1">
+            <Link to="/" className="hover:text-pureliva-green transition-colors">
+              Home
             </Link>
-          </div>
+            <ChevronRight size={12} />
+            <Link to="/collections" className="hover:text-pureliva-green transition-colors">
+              Collections
+            </Link>
+            <ChevronRight size={12} />
+            <Link
+              to={`/collections/${product.category.toLowerCase().replace(/\s+/g, "-")}`}
+              className="hover:text-pureliva-green transition-colors"
+            >
+              {product.category}
+            </Link>
+            <ChevronRight size={12} />
+            <span className="text-stone-900 font-semibold truncate max-w-[200px]">
+              {product.name}
+            </span>
+          </nav>
 
-          {/* Main Product Showcase Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-            {/* Left Column: Image Gallery & 3D Pack Flip */}
-            <div className="lg:col-span-6 space-y-6">
-              {/* Gallery View Container */}
+          {/* Product Overview Section: Gallery + Details */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
+            {/* Left: Gallery (6 cols) */}
+            <div className="lg:col-span-6 space-y-4">
+              {/* Main Image Display with Click / Hover Zoom */}
               <div
-                onMouseMove={handleMouseMoveZoom}
-                onMouseLeave={handleMouseLeaveZoom}
-                className="relative w-full h-[400px] sm:h-[460px] bg-pureliva-cream/70 rounded-3xl p-6 sm:p-8 flex items-center justify-center overflow-hidden border border-stone-200/60 shadow-soft cursor-crosshair group"
+                className="relative w-full h-[380px] sm:h-[480px] bg-stone-50 rounded-3xl p-6 sm:p-8 flex items-center justify-center border border-stone-200/80 overflow-hidden cursor-zoom-in"
+                onMouseMove={handleMouseMove}
+                onClick={() => setIsZoomed(!isZoomed)}
               >
-                {/* Ambient glow in product accent */}
+                {/* Background accent aura */}
                 <div
-                  className="absolute inset-0 opacity-15 blur-3xl pointer-events-none"
+                  className="absolute w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none"
                   style={{ backgroundColor: product.accent }}
                 />
 
-                <AnimatePresence mode="wait">
-                  {galleryTab === "bowl" ? (
-                    /* 1. Transparent Bowl with floating animation and soft shadow */
-                    <motion.div
-                      key="bowl-view"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.35 }}
-                      className="relative z-10 w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center transition-transform duration-200 ease-out"
-                      style={zoomStyle}
-                    >
-                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-52 h-6 bg-black/15 rounded-full blur-md pointer-events-none" />
-                      <Img
-                        src={product.images.bowl}
-                        alt={`${product.name} fresh bowl`}
-                        transparent
-                        priority
-                        className="w-full h-full object-contain filter drop-shadow-lg"
-                      />
-                    </motion.div>
-                  ) : (
-                    /* 2. 3D Pack Card with Flip Animation */
-                    <motion.div
-                      key="pack-view"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.35 }}
-                      className="relative z-10 w-64 h-80 sm:w-72 sm:h-96 perspective-1000 flex items-center justify-center"
-                    >
-                      <div
-                        className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
-                          isPackFlipped ? "rotate-y-180" : ""
-                        }`}
-                        style={zoomStyle}
-                      >
-                        {/* Front Face */}
-                        <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-soft-lg bg-white border border-stone-200">
-                          <Img
-                            src={product.images.packFront}
-                            alt={`${product.name} packaging front`}
-                            priority
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+                <img
+                  src={activeImageUrl}
+                  alt={`${product.name} - ${activeImageKey}`}
+                  className="w-full h-full object-contain transition-transform duration-200 select-none"
+                  style={{
+                    transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+                    transform: isZoomed ? "scale(2)" : "scale(1)",
+                  }}
+                />
 
-                        {/* Back Face */}
-                        <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl overflow-hidden shadow-soft-lg bg-white border border-stone-200">
-                          <Img
-                            src={product.images.packBack}
-                            alt={`${product.name} packaging back`}
-                            priority
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Resealable zipper banner */}
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-stone-700 border border-stone-200 flex items-center gap-1.5 shadow-sm">
+                  <Package size={12} className="text-pureliva-green" />
+                  <span>Resealable Zipper Pouch</span>
+                </div>
 
-                {/* Flip control overlay if in pack view */}
-                {galleryTab !== "bowl" && (
+                {/* Zoom Hint */}
+                <span className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm text-white text-[10px] px-2.5 py-1 rounded-full flex items-center gap-1 opacity-70">
+                  <ZoomIn size={12} /> {isZoomed ? "Click to reset" : "Click to zoom"}
+                </span>
+              </div>
+
+              {/* Thumbnails (Front, Back, Bowl) */}
+              <div className="flex items-center gap-3 justify-center sm:justify-start">
+                <button
+                  type="button"
+                  onClick={() => setActiveImageKey("front")}
+                  className={`w-20 h-24 rounded-2xl p-1.5 bg-stone-50 border-2 transition-all flex flex-col items-center justify-center ${
+                    activeImageKey === "front"
+                      ? "border-pureliva-green shadow-soft"
+                      : "border-stone-200 hover:border-stone-300"
+                  }`}
+                >
+                  <img
+                    src={product.images.front || product.images.packFront}
+                    alt="Front of Pack"
+                    className="w-full h-16 object-contain"
+                  />
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-600 mt-1">
+                    Front
+                  </span>
+                </button>
+
+                {(product.images.back || product.images.packBack) && (
                   <button
                     type="button"
-                    onClick={() => setIsPackFlipped(!isPackFlipped)}
-                    className="absolute bottom-4 right-4 z-20 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-pureliva-heading text-xs font-semibold shadow-md hover:bg-white flex items-center gap-1.5 transition-colors"
+                    onClick={() => setActiveImageKey("back")}
+                    className={`w-20 h-24 rounded-2xl p-1.5 bg-stone-50 border-2 transition-all flex flex-col items-center justify-center ${
+                      activeImageKey === "back"
+                        ? "border-pureliva-green shadow-soft"
+                        : "border-stone-200 hover:border-stone-300"
+                    }`}
                   >
-                    <RotateCw size={14} className={isPackFlipped ? "rotate-180 transition-transform" : ""} />
-                    <span>Flip to {isPackFlipped ? "Front" : "Back (Nutrition)"}</span>
+                    <img
+                      src={product.images.back || product.images.packBack}
+                      alt="Back of Pack (Nutrition)"
+                      className="w-full h-16 object-contain"
+                    />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-600 mt-1">
+                      Back
+                    </span>
                   </button>
                 )}
 
-                <div className="absolute bottom-4 left-4 z-10 text-[11px] text-gray-400 font-medium hidden sm:block pointer-events-none">
-                  Hover to zoom
-                </div>
-              </div>
-
-              {/* Gallery Thumbnails */}
-              <div className="flex items-center justify-center gap-4">
-                {/* Bowl Thumbnail */}
-                <button
-                  type="button"
-                  onClick={() => setGalleryTab("bowl")}
-                  className={`w-20 h-20 rounded-2xl border-2 p-2 bg-white flex items-center justify-center overflow-hidden transition-all duration-200 ${
-                    galleryTab === "bowl"
-                      ? "border-pureliva-green shadow-md scale-105"
-                      : "border-stone-200 hover:border-gray-300 opacity-70"
-                  }`}
-                >
-                  <Img
-                    src={product.images.bowl}
-                    alt={`${product.name} bowl thumb`}
-                    transparent
-                    className="w-full h-full object-contain"
-                  />
-                </button>
-
-                {/* Pack Front Thumbnail */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setGalleryTab("pack-front");
-                    setIsPackFlipped(false);
-                  }}
-                  className={`w-20 h-20 rounded-2xl border-2 p-1 bg-white flex items-center justify-center overflow-hidden transition-all duration-200 ${
-                    galleryTab !== "bowl" && !isPackFlipped
-                      ? "border-pureliva-green shadow-md scale-105"
-                      : "border-stone-200 hover:border-gray-300 opacity-70"
-                  }`}
-                >
-                  <Img
-                    src={product.images.packFront}
-                    alt={`${product.name} pack front thumb`}
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                </button>
-
-                {/* Pack Back Thumbnail */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setGalleryTab("pack-back");
-                    setIsPackFlipped(true);
-                  }}
-                  className={`w-20 h-20 rounded-2xl border-2 p-1 bg-white flex items-center justify-center overflow-hidden transition-all duration-200 ${
-                    galleryTab !== "bowl" && isPackFlipped
-                      ? "border-pureliva-green shadow-md scale-105"
-                      : "border-stone-200 hover:border-gray-300 opacity-70"
-                  }`}
-                >
-                  <Img
-                    src={product.images.packBack}
-                    alt={`${product.name} pack back thumb`}
-                    className="w-full h-full object-cover rounded-xl"
-                  />
-                </button>
+                {product.images.bowl && (
+                  <button
+                    type="button"
+                    onClick={() => setActiveImageKey("bowl")}
+                    className={`w-20 h-24 rounded-2xl p-1.5 bg-stone-50 border-2 transition-all flex flex-col items-center justify-center ${
+                      activeImageKey === "bowl"
+                        ? "border-pureliva-green shadow-soft"
+                        : "border-stone-200 hover:border-stone-300"
+                    }`}
+                  >
+                    <img
+                      src={product.images.bowl}
+                      alt="Ready to eat seed bowl"
+                      className="w-full h-16 object-contain"
+                    />
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-600 mt-1">
+                      Seeds
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
 
-            {/* Right Column: Information, Quantity & Ordering */}
+            {/* Right: Product Details & Buying Actions (6 cols) */}
             <div className="lg:col-span-6 space-y-6">
-              {/* Badges & Tagline */}
-              <div>
-                <div className="flex flex-wrap items-center gap-3 mb-2">
+              {/* Variant, Category, Wishlist */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
                   <span
-                    className="px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider"
+                    className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
                     style={{
-                      backgroundColor: `${product.accent}20`,
+                      backgroundColor: `${product.accent}15`,
                       color: product.accentTextDark ? "#855800" : product.accent,
                     }}
                   >
-                    {product.type}
+                    {product.variant}
                   </span>
-                  <span className="font-script text-2xl text-pureliva-brown">
-                    "{product.tagline}"
-                  </span>
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 font-medium">
-                    Premium Quality
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-600">
+                    {product.category}
                   </span>
                 </div>
 
-                <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-pureliva-heading">
+                <button
+                  type="button"
+                  onClick={() => toggleWishlist(product.slug)}
+                  className={`p-2.5 rounded-full border transition-colors ${
+                    inWishlist
+                      ? "bg-rose-50 border-rose-200 text-rose-500"
+                      : "border-stone-200 text-stone-400 hover:text-rose-500"
+                  }`}
+                  title="Wishlist"
+                >
+                  <Heart size={18} fill={inWishlist ? "currentColor" : "none"} />
+                </button>
+              </div>
+
+              {/* Title & Tagline */}
+              <div>
+                <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-stone-900 leading-tight">
                   {product.name}
                 </h1>
-
-                <div className="flex items-center gap-4 mt-2 text-sm text-gray-500 font-medium">
-                  <span>Net Weight: <strong className="text-pureliva-heading">{product.netWeight}</strong></span>
-                  <span>•</span>
-                  <span>SKU: <span className="font-mono">{product.sku}</span></span>
-                </div>
-              </div>
-
-              {/* Description */}
-              <p className="text-base sm:text-lg text-pureliva-body leading-relaxed font-light">
-                {product.description}
-              </p>
-
-              {/* 4 Feature Badges */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-4 border-y border-gray-100">
-                <div className="flex items-center gap-2 text-xs font-medium text-pureliva-heading">
-                  <Leaf size={16} className="text-pureliva-green shrink-0" />
-                  <span>100% Natural</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-medium text-pureliva-heading">
-                  <ShieldCheck size={16} className="text-pureliva-green shrink-0" />
-                  <span>No Additives</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-medium text-pureliva-heading">
-                  <Sparkles size={16} className="text-pureliva-green shrink-0" />
-                  <span>Plant Based</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-medium text-pureliva-heading">
-                  <Layers size={16} className="text-pureliva-green shrink-0" />
-                  <span>Resealable Zipper</span>
-                </div>
-              </div>
-
-              {/* Ingredients */}
-              <div className="space-y-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-                  Ingredients:
-                </span>
-                <p className="text-sm font-medium text-pureliva-heading">
-                  {product.ingredients}
+                <p className="font-script text-xl text-pureliva-brown mt-1">
+                  {product.tagline}
                 </p>
               </div>
 
-              {/* Storage Instructions */}
-              <div className="p-4 rounded-2xl bg-pureliva-cream border border-stone-200/60 text-xs sm:text-sm text-pureliva-body leading-relaxed">
-                <strong className="text-pureliva-heading block mb-0.5">Storage Instructions:</strong>
-                {product.storage}
-              </div>
-
-              {/* Allergen Caution Box */}
-              <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/70 text-xs text-amber-900 flex items-start gap-3">
-                <AlertTriangle size={18} className="text-amber-600 shrink-0 mt-0.5" />
-                <div>
-                  <span className="font-semibold block">Allergen Advice:</span>
-                  {product.allergen}
-                </div>
-              </div>
-
-              {/* Desktop Stepper & WhatsApp Order CTA */}
-              <div className="hidden sm:flex items-center gap-4 pt-4">
-                <div className="flex flex-col">
-                  <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
-                    Quantity
+              {/* Price & Net Weight */}
+              <div className="flex items-baseline gap-3 p-4 rounded-2xl bg-stone-50 border border-stone-100">
+                <span className="font-heading text-3xl font-extrabold text-stone-900">
+                  {product.pricePlaceholder || (product.price ? `₹${product.price}` : "[PRICE]")}
+                </span>
+                {product.mrp && (
+                  <span className="text-sm text-stone-400 line-through">
+                    ₹{product.mrp}
                   </span>
-                  <QuantityStepper
-                    value={quantity}
-                    onChange={setQuantity}
-                    min={1}
-                    max={10}
-                  />
+                )}
+                <span className="text-xs text-stone-500 font-medium ml-auto">
+                  Net Wt: <strong className="text-stone-800">{product.netWeight}</strong>
+                </span>
+              </div>
+
+              {/* Description */}
+              <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+                {product.description}
+              </p>
+
+              {/* Quantity Stepper & Add to Cart / Buy Now / WhatsApp */}
+              <div className="space-y-3 pt-2">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-bold uppercase tracking-wider text-stone-500">
+                    Quantity:
+                  </span>
+                  <div className="flex items-center border border-stone-200 rounded-xl bg-stone-50 p-1">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="w-8 h-8 rounded-lg bg-white text-stone-700 font-bold hover:bg-stone-100 flex items-center justify-center text-sm shadow-sm"
+                    >
+                      -
+                    </button>
+                    <span className="w-12 text-center text-sm font-bold font-mono text-stone-900">
+                      {quantity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => q + 1)}
+                      className="w-8 h-8 rounded-lg bg-white text-stone-700 font-bold hover:bg-stone-100 flex items-center justify-center text-sm shadow-sm"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <span className="text-xs text-stone-400">
+                    ({quantity * 100}g total)
+                  </span>
                 </div>
 
-                <div className="flex-1 pt-4">
-                  <WhatsAppButton
-                    href={waUrl}
-                    text={`Order ${quantity > 1 ? `${quantity} x ` : ""}on WhatsApp`}
-                    fullWidth
-                    size="lg"
-                  />
+                {/* Primary CTA Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    className={`py-3.5 px-4 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-soft ${
+                      addedAnimation
+                        ? "bg-emerald-600 text-white"
+                        : "bg-pureliva-green hover:bg-emerald-900 text-white"
+                    }`}
+                  >
+                    {addedAnimation ? (
+                      <>
+                        <Check size={18} />
+                        <span>Added to Cart</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag size={18} />
+                        <span>Add to Cart</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    className="py-3.5 px-4 rounded-2xl bg-[#1E2140] hover:bg-stone-800 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-soft"
+                  >
+                    <Zap size={18} />
+                    <span>Buy Now</span>
+                  </button>
+                </div>
+
+                {/* Order on WhatsApp Button */}
+                <a
+                  href={waUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3.5 px-4 rounded-2xl bg-whatsapp hover:bg-whatsapp-hover text-white font-semibold text-sm shadow-soft flex items-center justify-center gap-2.5 transition-all"
+                >
+                  <WhatsAppIcon size={20} fill="#FFFFFF" />
+                  <span>Order on WhatsApp ({quantity} Pack{quantity > 1 ? "s" : ""})</span>
+                </a>
+              </div>
+
+              {/* Key Highlights / Benefits Strip */}
+              <div className="p-4 rounded-2xl bg-pureliva-cream border border-stone-200/80 space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-pureliva-green block">
+                  Key Benefits
+                </span>
+                <ul className="space-y-1.5">
+                  {product.benefits?.map((benefit, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs text-stone-700">
+                      <Check size={14} className="text-pureliva-green flex-shrink-0 mt-0.5" />
+                      <span>{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="grid grid-cols-3 gap-2 pt-1 text-center">
+                <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+                  <Leaf size={16} className="text-pureliva-green mx-auto mb-1" />
+                  <span className="text-[10px] font-bold text-stone-700 block">100% Natural</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+                  <ShieldCheck size={16} className="text-pureliva-green mx-auto mb-1" />
+                  <span className="text-[10px] font-bold text-stone-700 block">FSSAI Approved</span>
+                </div>
+                <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+                  <Package size={16} className="text-pureliva-green mx-auto mb-1" />
+                  <span className="text-[10px] font-bold text-stone-700 block">Zipper Fresh</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Full Nutritional Information Table */}
-          <div className="mt-20">
-            <div className="max-w-3xl mb-8">
-              <span className="text-xs uppercase font-semibold text-pureliva-green tracking-widest">
-                Comprehensive Nutrition
-              </span>
-              <h2 className="font-heading text-3xl font-bold text-pureliva-heading mt-1">
-                Nutrient Composition & ICMR %RDA
-              </h2>
-              <p className="text-sm text-pureliva-body mt-2">
-                All nutrients analyzed as per national testing protocols. Per serve calculated from {product.servingSizeGrams}g portion.
-              </p>
-            </div>
+          {/* Deep Info Tabs / Details: How to Use, Ingredients, Nutrition, Manufacturer */}
+          <div className="mt-20 pt-10 border-t border-stone-200">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+              {/* How to Use + Ingredients (6 cols) */}
+              <div className="lg:col-span-6 space-y-8">
+                {/* How to Use */}
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-stone-900 mb-4 flex items-center gap-2">
+                    <span>How to Enjoy {product.name}</span>
+                  </h3>
+                  <div className="space-y-3">
+                    {product.howToUse?.map((step, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3.5 rounded-2xl bg-stone-50 border border-stone-100"
+                      >
+                        <span className="w-6 h-6 rounded-full bg-emerald-100 text-pureliva-green text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                          {idx + 1}
+                        </span>
+                        <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
+                          {step}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-            <NutritionTable product={product} />
+                {/* Ingredients & Storage Info */}
+                <div className="p-6 rounded-3xl bg-stone-50 border border-stone-200/80 space-y-4">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-1">
+                      Ingredients (As on Pack)
+                    </span>
+                    <p className="text-sm font-semibold text-stone-900">
+                      {product.ingredients}
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-1">
+                      Storage Instructions
+                    </span>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      {product.storage}
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-1">
+                      Allergen Advice
+                    </span>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      {product.allergen}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-stone-200 text-xs text-stone-500 space-y-1">
+                    <p>
+                      <strong className="text-stone-700">Packed & Marketed by:</strong> PATIDAR ENTERPRISES
+                    </p>
+                    <p>31, Vaikunth Nagar, Khandwa, Madhya Pradesh - 450001, India</p>
+                    <p>FSSAI License: 21426950001159</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Nutrition Table (6 cols) */}
+              <div className="lg:col-span-6">
+                <h3 className="font-heading text-2xl font-bold text-stone-900 mb-4">
+                  Lab-Tested Nutritional Value
+                </h3>
+                <NutritionTable product={product} />
+              </div>
+            </div>
           </div>
 
-          {/* "You May Also Like" (Related Products) */}
-          <div className="mt-24 pt-16 border-t border-gray-100">
-            <h3 className="font-heading text-2xl sm:text-3xl font-bold text-pureliva-heading text-center mb-10">
-              You May Also Like
-            </h3>
+          {/* Related Products Carousel / Grid */}
+          <div className="mt-24 pt-12 border-t border-stone-200">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
+                  Wholesome Range
+                </span>
+                <h3 className="font-heading text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
+                  You May Also Like
+                </h3>
+              </div>
+              <Link
+                to="/collections"
+                className="text-xs sm:text-sm font-semibold text-pureliva-green hover:underline"
+              >
+                View All Seeds &rarr;
+              </Link>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               {otherProducts.map((p) => (
                 <ProductCard key={p.slug} product={p} />
               ))}
             </div>
           </div>
-        </div>
-
-        {/* Mobile Sticky Bottom Bar for Ordering */}
-        <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 flex items-center gap-3 shadow-lg">
-          <QuantityStepper
-            value={quantity}
-            onChange={setQuantity}
-            size="sm"
-            min={1}
-            max={10}
-          />
-          <WhatsAppButton
-            href={waUrl}
-            text={`Order ${quantity} on WhatsApp`}
-            size="sm"
-            className="flex-1"
-          />
         </div>
       </div>
     </>
@@ -424,4 +515,3 @@ export const ProductDetail: React.FC = () => {
 };
 
 export default ProductDetail;
-

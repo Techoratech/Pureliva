@@ -116,8 +116,8 @@ export const Contact: React.FC = () => {
                     <MapPin size={20} className="text-pureliva-brown shrink-0 mt-1" />
                     <div>
                       <strong className="text-pureliva-heading block">Registered Office:</strong>
-                      <p>{SITE_CONFIG.address}</p>
-                      <p className="text-xs text-pureliva-muted mt-0.5">Patidar Enterprises</p>
+                      <p>[ADDRESS]</p>
+                      <p className="text-xs text-pureliva-muted mt-0.5">{SITE_CONFIG.address}</p>
                     </div>
                   </div>
 
@@ -131,7 +131,7 @@ export const Contact: React.FC = () => {
                         rel="noopener noreferrer"
                         className="text-pureliva-green font-medium hover:underline"
                       >
-                        {SITE_CONFIG.phone}
+                        [PHONE] ({SITE_CONFIG.phone})
                       </a>
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export const Contact: React.FC = () => {
                         href={`mailto:${SITE_CONFIG.email}`}
                         className="hover:text-pureliva-green transition-colors"
                       >
-                        {SITE_CONFIG.email}
+                        [EMAIL] ({SITE_CONFIG.email})
                       </a>
                     </div>
                   </div>

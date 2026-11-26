@@ -1,241 +1,235 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { SITE_CONFIG } from "../config/site";
-import Img from "../components/Img";
 import SectionHeading from "../components/SectionHeading";
-import Marquee from "../components/Marquee";
 import {
-  Tractor,
-  Sparkles,
-  Flame,
-  ShieldCheck,
-  Package,
-  Award,
-  Heart,
-  Users,
   Leaf,
+  Heart,
+  ShieldCheck,
   CheckCircle2,
+  Sparkles,
+  RefreshCw,
+  Award,
+  Users,
+  Compass,
+  Tractor,
+  Smile,
+  Package,
 } from "lucide-react";
 
 export const About: React.FC = () => {
-  const timelineSteps = [
+  // 6 Mission Points with distinct icons
+  const missionPoints = [
     {
-      step: "01",
-      title: "Direct Farm Cultivation",
-      icon: Tractor,
-      desc: "We collaborate directly with generational farming families in Madhya Pradesh. Healthy fertile soils, non-GMO crops, and responsible agricultural stewardship from the very first sprout.",
+      num: 1,
+      title: "Deliver Nature’s Goodness",
+      desc: "Thoughtfully selected seeds, dry fruits, snacks and sweets, rooted in our farming heritage, that celebrate nature and support mindful eating.",
+      icon: Leaf,
+      color: "bg-emerald-50 text-emerald-800 border-emerald-200",
     },
     {
-      step: "02",
-      title: "Cleaning & Optical Sorting",
-      icon: Sparkles,
-      desc: "Multi-stage mechanical and optical color sorting removes all dust, stones, and broken seed fragments, ensuring only 100% whole, clean, uniform seeds move forward.",
+      num: 2,
+      title: "Make Nutrition Enjoyable",
+      desc: "Naturally sweet treats, snacks and desserts, made without added refined sugar, artificial colours or preservatives, so no one has to choose between taste and health.",
+      icon: Smile,
+      color: "bg-amber-50 text-amber-800 border-amber-200",
     },
     {
-      step: "03",
-      title: "Artisanal Roasting & Seasoning",
-      icon: Flame,
-      desc: "Slow-roasted at carefully controlled temperatures to bring out the natural nutty aromatics and crisp snap, lightly seasoned with iodised salt (or kept 100% raw for chia).",
-    },
-    {
-      step: "04",
-      title: "Stringent Quality Checks",
+      num: 3,
+      title: "Uphold Quality & Safety",
+      desc: "High standards of food safety, hygiene, ingredient selection and consistency at every stage of our work.",
       icon: ShieldCheck,
-      desc: "Every batch is inspected in accredited testing labs for moisture levels, protein integrity, and microbiological purity before any packing begins.",
+      color: "bg-indigo-50 text-indigo-800 border-indigo-200",
     },
     {
-      step: "05",
-      title: "Resealable Zipper Packaging",
-      icon: Package,
-      desc: "Packaged hygienically in high-barrier 100g zipper pouches that protect against oxidation and humidity, keeping your seeds crisp from the first spoonful to the last.",
+      num: 4,
+      title: "Build Trust Through Integrity",
+      desc: "Honest communication, responsible product claims and a commitment to delivering what we promise.",
+      icon: CheckCircle2,
+      color: "bg-blue-50 text-blue-800 border-blue-200",
+    },
+    {
+      num: 5,
+      title: "Innovate for Everyday Wellness",
+      desc: "Better ingredients, new flavours and convenient food solutions that keep pace with how people want to eat.",
+      icon: Sparkles,
+      color: "bg-purple-50 text-purple-800 border-purple-200",
+    },
+    {
+      num: 6,
+      title: "Grow Responsibly and Sustainably",
+      desc: "A business that respects people and resources, encourages ethical partnerships and creates long-term value for customers, partners and society.",
+      icon: RefreshCw,
+      color: "bg-stone-50 text-stone-800 border-stone-200",
     },
   ];
 
-  const brandValues = [
+  // 8 Core Values spelling P-U-R-E-L-I-V-A
+  const coreValues = [
     {
-      icon: Leaf,
-      title: "Soil-First Integrity",
-      desc: "We don't buy from anonymous commodity brokers. Purity begins with knowing who tilled the earth and how the seeds were nurtured.",
+      letter: "P",
+      title: "Purity & Integrity",
+      desc: "Honest ingredients, truthful communication and ethical practices. We stand by our promises.",
+      color: "#2E7D32", // Leaf green
     },
     {
-      icon: Heart,
-      title: "Transparency in Every Pack",
-      desc: "Exact lab-tested nutritional breakdowns, clear ingredients, and straightforward ICMR RDA guidance. No vague promises.",
+      letter: "U",
+      title: "Uncompromising Quality",
+      desc: "Excellence in safety, hygiene, sourcing, packaging and service. Quality is never negotiable.",
+      color: "#1E2140", // Navy
     },
     {
-      icon: Users,
-      title: "Fair Farmer Partnerships",
-      desc: "Long-term relationships with regional growers ensure fair market compensation and sustainable farming practices in Khandwa.",
+      letter: "R",
+      title: "Responsibility & Respect",
+      desc: "We respect our customers, people, partners, communities and the environment.",
+      color: "#8E24AA", // Chia purple
     },
     {
-      icon: Award,
-      title: "Certified Hygiene Standard",
-      desc: "Processed in facilities complying with rigorous international standards including ISO 22000, GMP, and HACCP guidelines.",
+      letter: "E",
+      title: "Excellence & Innovation",
+      desc: "We keep improving, embracing new ideas and creating better products and experiences.",
+      color: "#E65100", // Pumpkin orange
+    },
+    {
+      letter: "L",
+      title: "Love for Nutrition & Nature",
+      desc: "We celebrate natural ingredients, and believe wholesome food brings nourishment, joy and sweetness to everyday life.",
+      color: "#2E7D32", // Green
+    },
+    {
+      letter: "I",
+      title: "Inspiration & Customer First",
+      desc: "Our customers inspire everything we do. We listen first and aim to be delightful and dependable.",
+      color: "#FBC02D", // Sunflower yellow
+    },
+    {
+      letter: "V",
+      title: "Value Creation",
+      desc: "Quality products, trusted relationships and sustainable growth that benefit everyone we work with.",
+      color: "#880E4F", // Seed mix maroon
+    },
+    {
+      letter: "A",
+      title: "Authenticity & Accountability",
+      desc: "We stay true to our farming roots and genuine in who we are, and we keep earning the trust placed in us.",
+      color: "#B5652A", // Flax orange-brown
     },
   ];
 
   return (
     <>
       <Helmet>
-        <title>About Us | Pureliva Foods by Patidar Enterprises</title>
+        <title>About Us | Pureliva – Pure Nutrition in Every Spoon</title>
         <meta
           name="description"
-          content="Learn about Pureliva Foods, our farming roots in Khandwa, Madhya Pradesh, and our journey from agricultural heritage to certified natural seed nutrition."
+          content="Pureliva was born in a farmer's family with a simple belief: good food should never be a compromise. Learn our story, vision, mission and core values."
         />
         <link rel="canonical" href="https://purelivafoods.com/about" />
       </Helmet>
 
       <div className="pt-32 pb-24 bg-white">
-        {/* Hero Banner */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
           <SectionHeading
             badge="Our Heritage"
-            title="Rooted in Soil, Committed to Purity"
-            subtitle="From a generational farming family in Khandwa, Madhya Pradesh to dining tables across India — our story is built on honest nutrition."
+            title="About Us"
+            subtitle="Pureliva – Pure Nutrition in Every Spoon"
             align="center"
           />
 
-          {/* Story Narrative with Image */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center my-16">
-            <div className="lg:col-span-6 space-y-6">
-              <span className="font-script text-3xl text-pureliva-brown">
-                The Patidar Enterprises Story
-              </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-pureliva-heading leading-tight">
-                "Purity Isn't a Marketing Trend. It's How We Grew Up."
-              </h2>
-              <p className="text-base sm:text-lg text-pureliva-body leading-relaxed">
-                Pureliva was founded by Patidar Enterprises in Khandwa, in the fertile heartland of Madhya Pradesh. Growing up with mud on our boots and hands in the soil, our founder understood what true farm quality feels like long before modern health food trends began.
-              </p>
-              <p className="text-sm sm:text-base text-pureliva-body leading-relaxed">
-                Too often, commercial seeds on retail shelves are overly processed, stale, or blended with filler additives. Pureliva was born with a single mission: bring whole, crunchy, nutrient-packed natural seeds straight from reliable farms into your pantry with total honesty.
-              </p>
+          {/* Section 1: Our Story */}
+          <div className="my-16 max-w-4xl mx-auto">
+            <div className="p-8 sm:p-12 rounded-3xl bg-pureliva-cream border border-stone-200 shadow-soft space-y-6">
+              <div className="flex items-center gap-3 text-pureliva-green">
+                <Tractor size={28} />
+                <h2 className="font-heading text-2xl sm:text-3xl font-bold text-stone-900">
+                  Our Story
+                </h2>
+              </div>
 
-              <div className="p-6 bg-pureliva-cream rounded-3xl border border-stone-200/70">
-                <blockquote className="font-heading text-lg font-semibold text-pureliva-heading italic">
-                  "When the soil is your teacher, purity is our promise."
-                </blockquote>
-                <p className="text-xs text-pureliva-brown font-semibold uppercase tracking-wider mt-2">
-                  — Founder, Patidar Enterprises
+              <div className="space-y-4 text-stone-700 text-sm sm:text-base leading-relaxed">
+                <p className="font-medium text-stone-900 text-base sm:text-lg">
+                  Pureliva was born in a farmer’s family, with a simple belief: good food should never be a compromise.
+                </p>
+                <p>
+                  We grew up close to the land, where food begins. We learned that nature already gives us extraordinary nutrition, in seeds, nuts, fruits and grains, and that the simplest food is often the best.
+                </p>
+                <p>
+                  But we also noticed something that bothered us. Many of today’s sweets and desserts are made with refined sugar, artificial colours and preservatives, so people who care about their health end up denying themselves the joy of something sweet.
+                </p>
+                <p className="font-semibold text-pureliva-green">
+                  We didn’t think anyone should have to choose between taste and health.
+                </p>
+                <p>
+                  So we set out to create seeds, snacks and desserts that stay true to nature. We begin with wholesome roasted seeds, and we are growing into naturally sweet treats, snacks and desserts.
+                </p>
+                <p>
+                  Our sweets and snacks are made without added refined sugar, artificial colours or preservatives, and are naturally sweetened with the goodness of fruits and dry fruits. Alongside them, we offer wholesome seeds and dry fruits full of nutrients like protein, fibre and vitamins.
+                </p>
+                <p className="italic text-stone-900 font-medium pt-2 border-t border-stone-200">
+                  “Every Pureliva product is made with the care a family puts into the food it serves at its own table.”
                 </p>
               </div>
             </div>
+          </div>
 
-            <div className="lg:col-span-6 flex items-center justify-center">
-              <div className="relative w-full max-w-md aspect-square rounded-3xl bg-pureliva-cream/70 p-8 flex items-center justify-center border border-stone-200/60 shadow-soft">
-                <div className="absolute inset-8 rounded-full bg-pureliva-green/10 blur-xl" />
-                <Img
-                  src="/images/decor/seed-mix-bowl-alt"
-                  alt="Artisanal seed mix bowl"
-                  transparent
-                  className="relative z-10 w-full h-full object-contain filter drop-shadow-xl"
-                />
-              </div>
+          {/* Section 2: Our Vision */}
+          <div className="my-16 max-w-4xl mx-auto">
+            <div className="p-8 sm:p-10 rounded-3xl bg-[#1E2140] text-pureliva-cream shadow-xl space-y-4 text-center">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-300 block">
+                The Future We Envision
+              </span>
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white">
+                Our Vision
+              </h2>
+              <p className="text-base sm:text-lg text-stone-200 max-w-2xl mx-auto leading-relaxed">
+                To become one of India’s most trusted and loved wholesome nutritional food brands, where every seed, snack and sweet is naturally good, so eating well never means giving up joy.
+              </p>
+              <p className="text-xs sm:text-sm text-stone-300 max-w-xl mx-auto leading-relaxed">
+                We imagine a future where nutritious food is never a compromise on taste, convenience or enjoyment, but a natural and delightful part of everyday life.
+              </p>
             </div>
           </div>
-        </div>
 
-        {/* Animated Vertical Timeline */}
-        <div className="py-20 bg-pureliva-cream/50 border-y border-stone-200/50">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="From Farm to Table"
-              title="Our 5-Stage Journey of Purity"
-              subtitle="Step by step, here is how raw harvest turns into pristine superfood ready for your spoon."
-              align="center"
-            />
-
-            <div className="relative mt-16">
-              {/* Vertical timeline spine */}
-              <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-0.5 bg-pureliva-green/20 -translate-x-1/2" />
-
-              <div className="space-y-12">
-                {timelineSteps.map((step, idx) => {
-                  const Icon = step.icon;
-                  const isEven = idx % 2 === 0;
-                  return (
-                    <motion.div
-                      key={step.step}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-40px" }}
-                      transition={{ duration: 0.5, delay: idx * 0.1 }}
-                      className={`relative flex flex-col md:flex-row items-center gap-8 ${
-                        isEven ? "md:flex-row-reverse" : ""
-                      }`}
-                    >
-                      {/* Timeline Card */}
-                      <div className="w-full md:w-1/2">
-                        <div
-                          className={`p-8 bg-white rounded-3xl border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all ${
-                            isEven ? "md:text-left" : "md:text-right"
-                          }`}
-                        >
-                          <div
-                            className={`flex items-center gap-3 mb-3 ${
-                              isEven ? "md:justify-start" : "md:justify-end"
-                            }`}
-                          >
-                            <span className="font-mono text-xs font-bold text-pureliva-brown bg-pureliva-brown/10 px-2.5 py-1 rounded-full">
-                              Step {step.step}
-                            </span>
-                            <h3 className="font-heading text-xl font-bold text-pureliva-heading">
-                              {step.title}
-                            </h3>
-                          </div>
-                          <p className="text-sm text-pureliva-body leading-relaxed">
-                            {step.desc}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Center Timeline Icon Pin */}
-                      <div className="relative z-10 w-14 h-14 rounded-2xl bg-pureliva-green text-white flex items-center justify-center shadow-md">
-                        <Icon size={24} />
-                      </div>
-
-                      {/* Spacer for symmetrical layout */}
-                      <div className="hidden md:block md:w-1/2" />
-                    </motion.div>
-                  );
-                })}
-              </div>
+          {/* Section 3: Our Mission (6 icon cards in a grid) */}
+          <div className="my-20">
+            <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
+                Our Purpose
+              </span>
+              <h2 className="font-heading text-3xl font-bold text-stone-900">
+                Our Mission
+              </h2>
+              <p className="text-xs sm:text-sm text-stone-600">
+                To make wholesome nutrition accessible, enjoyable and trustworthy, through thoughtfully crafted foods that bring together nature’s goodness, exceptional quality and delightful taste.
+              </p>
             </div>
-          </div>
-        </div>
 
-        {/* Our Values Grid */}
-        <div className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionHeading
-              badge="Our Guiding Values"
-              title="What We Stand For"
-              subtitle="Ethical practices that inspire everything from soil preparation to packaging."
-              align="center"
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {brandValues.map((val, idx) => {
-                const Icon = val.icon;
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {missionPoints.map((item) => {
+                const IconComponent = item.icon;
                 return (
                   <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
+                    key={item.num}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: idx * 0.1 }}
-                    className="p-6 rounded-3xl bg-pureliva-cream border border-stone-200/60 shadow-sm flex flex-col justify-between"
+                    className="p-6 rounded-3xl bg-white border border-stone-200 shadow-soft space-y-3 flex flex-col justify-between"
                   >
                     <div>
-                      <div className="w-12 h-12 rounded-2xl bg-pureliva-green text-white flex items-center justify-center mb-5 shadow-sm">
-                        <Icon size={22} />
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="w-8 h-8 rounded-full bg-stone-100 text-stone-700 text-xs font-bold flex items-center justify-center font-mono">
+                          0{item.num}
+                        </span>
+                        <div className={`p-2.5 rounded-2xl border ${item.color}`}>
+                          <IconComponent size={20} />
+                        </div>
                       </div>
-                      <h4 className="font-heading text-lg font-bold text-pureliva-heading mb-2">
-                        {val.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-pureliva-body leading-relaxed">
-                        {val.desc}
+                      <h3 className="font-heading text-lg font-bold text-stone-900 mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                        {item.desc}
                       </p>
                     </div>
                   </motion.div>
@@ -243,14 +237,78 @@ export const About: React.FC = () => {
               })}
             </div>
           </div>
-        </div>
 
-        {/* Certifications Strip */}
-        <Marquee />
+          {/* Section 4: Our Core Values — P U R E L I V A (8 animated cards) */}
+          <div className="my-20">
+            <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
+                The DNA of Pureliva
+              </span>
+              <h2 className="font-heading text-3xl font-bold text-stone-900">
+                Our Core Values — What We Stand For
+              </h2>
+              <p className="text-xs sm:text-sm text-stone-600">
+                From <strong>P</strong> to <strong>A</strong>, our foundational principles that guide every decision and every pouch we seal.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {coreValues.map((val, idx) => (
+                <motion.div
+                  key={val.letter}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
+                  whileHover={{ y: -6 }}
+                  className="p-6 rounded-3xl bg-white border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all space-y-3 flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Big Letter badge */}
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black font-heading text-white shadow-soft mb-4"
+                      style={{ backgroundColor: val.color }}
+                    >
+                      {val.letter}
+                    </div>
+
+                    <h3 className="font-heading text-base font-bold text-stone-900 mb-1.5 leading-snug">
+                      {val.letter} – {val.title}
+                    </h3>
+                    <p className="text-xs text-stone-600 leading-relaxed">
+                      {val.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 5: Our Brand Promise */}
+          <div className="my-16 max-w-3xl mx-auto text-center p-8 sm:p-12 rounded-3xl bg-pureliva-cream border border-emerald-200/80 shadow-soft space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-pureliva-green">
+              Our Commitment to You
+            </span>
+            <h2 className="font-heading text-3xl font-extrabold text-stone-900">
+              Our Brand Promise
+            </h2>
+            <p className="font-heading text-xl sm:text-2xl font-bold text-pureliva-green">
+              Pure Nutrition. Honest Goodness. Everyday Delight.
+            </p>
+            <p className="text-sm text-stone-700 leading-relaxed max-w-xl mx-auto">
+              At Pureliva, we believe good food should nourish, delight and inspire. Every product we make brings nature’s goodness closer to your everyday life.
+            </p>
+            <p className="font-script text-2xl text-pureliva-brown">
+              Sweet without compromise.
+            </p>
+            <p className="text-xs uppercase font-bold tracking-widest text-stone-500 pt-2 border-t border-stone-200">
+              Pureliva: Pure Nutrition in Every Spoon.
+            </p>
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
 export default About;
-

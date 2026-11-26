@@ -115,33 +115,33 @@ export const Home: React.FC = () => {
   const whyChooseUs = [
     {
       icon: Leaf,
-      title: "100% Natural",
-      desc: "Zero synthetic preservatives, colors, or artificial flavorings. Pure nutrition straight from the farm.",
+      title: "No Added Refined Sugar",
+      desc: "Zero white sugars or chemical sweeteners. Wholesome goodness kept completely natural.",
     },
     {
       icon: ShieldCheck,
-      title: "No Additives",
-      desc: "Pure single-origin seeds or wholesome blends lightly tossed with iodised salt, nothing hidden.",
+      title: "No Artificial Colours or Preservatives",
+      desc: "Pure single-origin seeds and blends. Zero chemical additives or artificial colouring.",
     },
     {
       icon: Heart,
-      title: "Plant Based",
-      desc: "Naturally high in vegan proteins, vital dietary fibre, and clean omega healthy fats for heart wellness.",
+      title: "Rich in Protein, Fibre & Vitamins",
+      desc: "Naturally high in vegan plant protein, vital dietary fibre, and essential omega fatty acids.",
     },
     {
       icon: Layers,
-      title: "Direct Farm Sourcing",
-      desc: "Sourced directly from our family agricultural networks and trusted MP growers with transparent origins.",
+      title: "Rooted in Generational Farming",
+      desc: "Born in a farmer's family in Khandwa, Madhya Pradesh. We honor the soil from sprout to pack.",
     },
     {
       icon: Package,
-      title: "Resealable Zipper Pack",
-      desc: "Airtight, moisture-barrier packaging that locks in the farm-fresh crunch and natural aromas.",
+      title: "Airtight Resealable Zipper",
+      desc: "High-barrier moisture-proof pouches that lock in crunch, freshness, and nutrients.",
     },
     {
       icon: CheckCircle,
-      title: "Certified Quality Handling",
-      desc: "Hygienically sorted, cleaned and packed in ISO 22000, GMP and HACCP accredited processing lines.",
+      title: "Certified Food Safety & FSSAI",
+      desc: "Hygienically cleaned, optical sorted, and packed in accredited food safety processing lines.",
     },
   ];
 
@@ -369,6 +369,105 @@ export const Home: React.FC = () => {
 
       {/* 2. CERTIFICATE MARQUEE STRIP */}
       <Marquee />
+
+      {/* 2.5 SHOP BY CATEGORY SECTION */}
+      <section className="py-16 bg-stone-50/70 border-b border-stone-200/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
+              Curated Collections
+            </span>
+            <h2 className="font-heading text-3xl font-bold text-stone-900">
+              Shop by Category
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500">
+              Find the perfect natural crunch for your daily wellness routine.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link
+              to="/collections/raw-seeds"
+              className="group p-6 rounded-3xl bg-white border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all text-center flex flex-col items-center justify-between hover:-translate-y-1"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Leaf size={28} />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors">
+                  Raw Seeds
+                </h3>
+                <p className="text-xs text-stone-500 mt-1">
+                  Pure, unroasted raw chia seeds for smoothies & breakfast bowls.
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-semibold text-pureliva-green group-hover:underline">
+                Explore Raw Seeds &rarr;
+              </span>
+            </Link>
+
+            <Link
+              to="/collections/roasted-seeds"
+              className="group p-6 rounded-3xl bg-white border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all text-center flex flex-col items-center justify-between hover:-translate-y-1"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Sparkles size={28} />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors">
+                  Roasted Seeds
+                </h3>
+                <p className="text-xs text-stone-500 mt-1">
+                  Dry roasted pumpkin, sunflower & flax seeds, lightly salted.
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-semibold text-pureliva-green group-hover:underline">
+                Explore Roasted &rarr;
+              </span>
+            </Link>
+
+            <Link
+              to="/collections/seed-mix"
+              className="group p-6 rounded-3xl bg-white border border-stone-200 shadow-soft hover:shadow-soft-lg transition-all text-center flex flex-col items-center justify-between hover:-translate-y-1"
+            >
+              <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Layers size={28} />
+              </div>
+              <div>
+                <h3 className="font-heading text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors">
+                  Seed Mix (6-in-1)
+                </h3>
+                <p className="text-xs text-stone-500 mt-1">
+                  Synergistic blend of 6 roasted seeds for everyday vitality.
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-semibold text-pureliva-green group-hover:underline">
+                Explore Seed Mix &rarr;
+              </span>
+            </Link>
+
+            <div className="p-6 rounded-3xl bg-stone-100/70 border border-stone-200 text-center flex flex-col items-center justify-between opacity-80">
+              <div className="w-16 h-16 rounded-2xl bg-stone-200/80 text-stone-500 flex items-center justify-center mb-4">
+                <Heart size={28} />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-stone-200 text-stone-600 px-2 py-0.5 rounded-full inline-block mb-1.5">
+                  Coming Soon
+                </span>
+                <h3 className="font-heading text-lg font-bold text-stone-700">
+                  Healthy Snacks & Sweets
+                </h3>
+                <p className="text-xs text-stone-500 mt-1">
+                  Naturally sweet bites & desserts without refined sugar.
+                </p>
+              </div>
+              <span className="mt-4 text-xs font-semibold text-stone-400">
+                In Development
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* 3. OUR PRODUCTS – PINNED HORIZONTAL SCROLL ON DESKTOP & SNAP CAROUSEL ON MOBILE */}
       <section
@@ -726,6 +825,86 @@ export const Home: React.FC = () => {
           />
 
           <FAQAccordion items={FAQS} />
+        </div>
+      </section>
+
+      {/* CORE VALUES STRIP - P U R E L I V A */}
+      <section className="py-16 bg-[#1E2140] text-pureliva-cream">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-300">
+              Our Principles
+            </span>
+            <h2 className="font-heading text-3xl font-bold text-white">
+              What We Stand For, From P to A
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-300">
+              Eight core values rooted in our farming soil and everyday integrity.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 text-center">
+            {[
+              { l: "P", t: "Purity", s: "& Integrity" },
+              { l: "U", t: "Quality", s: "Uncompromising" },
+              { l: "R", t: "Respect", s: "& Responsibility" },
+              { l: "E", t: "Excellence", s: "& Innovation" },
+              { l: "L", t: "Love", s: "For Nature" },
+              { l: "I", t: "Inspiration", s: "Customer First" },
+              { l: "V", t: "Value", s: "Creation" },
+              { l: "A", t: "Authenticity", s: "& Accountability" },
+            ].map((v) => (
+              <div
+                key={v.l}
+                className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center hover:bg-white/10 transition-colors"
+              >
+                <span className="font-heading font-black text-2xl sm:text-3xl text-emerald-400 mb-1">
+                  {v.l}
+                </span>
+                <span className="text-xs font-bold text-white block leading-tight">
+                  {v.t}
+                </span>
+                <span className="text-[10px] text-stone-400 block mt-0.5">
+                  {v.s}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* NEWSLETTER SIGNUP */}
+      <section className="py-16 bg-white border-t border-stone-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-pureliva-green">
+            Stay Connected
+          </span>
+          <h2 className="font-heading text-3xl font-bold text-stone-900">
+            Wholesome Wellness in Your Inbox
+          </h2>
+          <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto">
+            Subscribe for seasonal recipes, seed benefits, and first access to our upcoming naturally sweet treats.
+          </p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              alert("Thank you for subscribing to Pureliva!");
+            }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-2 max-w-md mx-auto pt-2"
+          >
+            <input
+              type="email"
+              required
+              placeholder="Enter your email address..."
+              className="w-full px-4 py-3 rounded-2xl border border-stone-300 text-xs sm:text-sm focus:outline-none focus:border-pureliva-green bg-stone-50"
+            />
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-pureliva-green hover:bg-emerald-800 text-white font-semibold text-xs whitespace-nowrap shadow-soft transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
         </div>
       </section>
 

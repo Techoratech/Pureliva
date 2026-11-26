@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Product } from "../data/products";
-import Img from "./Img";
-import WhatsAppButton from "./WhatsAppButton";
+import { useCart } from "../context/CartContext";
+import { useWishlist } from "../context/WishlistContext";
+import WhatsAppIcon from "./WhatsAppIcon";
 import { buildProductOrderLink } from "../lib/whatsapp";
-import { ArrowUpRight } from "lucide-react";
+import { Heart, ShoppingBag, ArrowUpRight, Check, Eye } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -13,102 +14,179 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "" }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [addedAnimation, setAddedAnimation] = useState(false);
+  const { addItem } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+  const inWishlist = isInWishlist(product.slug);
   const waUrl = buildProductOrderLink(product.titleWithVariant, 1);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product, 1);
+    setAddedAnimation(true);
+    setTimeout(() => setAddedAnimation(false), 1200);
+  };
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product.slug);
+  };
 
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ y: -6 }}
-      className={`group relative bg-white rounded-3xl p-6 border border-gray-100 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between interactive-card ${className}`}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.4 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative bg-white rounded-3xl p-4 sm:p-5 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between ${className}`}
     >
       <div>
-        {/* Top Badges & Tag */}
-        <div className="flex items-start justify-between gap-2 mb-4">
+        {/* Top Badges & Wishlist */}
+        <div className="flex items-center justify-between gap-2 mb-3">
           <span
-            className="px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase"
+            className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase"
             style={{
               backgroundColor: `${product.accent}15`,
               color: product.accentTextDark ? "#855800" : product.accent,
             }}
           >
-            {product.type}
+            {product.variant || product.type}
           </span>
-          <span className="font-script text-xl text-pureliva-brown">
-            {product.tagline}
-          </span>
+
+          <button
+            type="button"
+            onClick={handleToggleWishlist}
+            className={`p-2 rounded-full transition-colors ${
+              inWishlist
+                ? "text-rose-500 bg-rose-50"
+                : "text-stone-400 hover:text-rose-500 hover:bg-stone-50"
+            }`}
+            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+            title="Wishlist"
+          >
+            <Heart size={16} fill={inWishlist ? "currentColor" : "none"} />
+          </button>
         </div>
 
-        {/* Bowl Image Container with soft shadow and hover rotation */}
+        {/* Product Image Container with Front/Back hover flip */}
         <Link
-          to={`/products/${product.slug}`}
-          className="block relative w-full h-52 sm:h-56 my-2 flex items-center justify-center overflow-visible"
+          to={`/product/${product.slug}`}
+          className="block relative w-full h-56 sm:h-64 my-1 flex items-center justify-center overflow-hidden rounded-2xl bg-stone-50/60 p-2"
           aria-label={`View ${product.name} details`}
         >
-          {/* Accent glow on hover */}
+          {/* Subtle accent glow on hover */}
           <div
-            className="absolute w-36 h-36 rounded-full blur-2xl opacity-0 group-hover:opacity-25 transition-opacity duration-500 pointer-events-none"
+            className="absolute w-40 h-40 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
             style={{ backgroundColor: product.accent }}
           />
 
-          {/* Shadow Ellipse under bowl */}
-          <div className="absolute bottom-2 w-32 h-5 bg-black/10 rounded-full blur-sm group-hover:scale-90 group-hover:opacity-40 transition-all duration-300 pointer-events-none" />
+          {/* Front pack image */}
+          <motion.img
+            src={product.images.front || product.images.packFront}
+            alt={`${product.name} Front Pack`}
+            className={`w-full h-full object-contain transition-opacity duration-400 ${
+              isHovered && (product.images.back || product.images.packBack)
+                ? "opacity-0 absolute"
+                : "opacity-100"
+            }`}
+            loading="lazy"
+          />
 
-          {/* Floating Bowl image */}
-          <div className="relative z-10 w-44 h-44 transition-transform duration-500 ease-out group-hover:-translate-y-3 group-hover:rotate-3">
-            <Img
-              src={product.images.bowl}
-              alt={`${product.name} ready to eat bowl`}
-              transparent
-              className="w-full h-full object-contain filter drop-shadow-sm"
+          {/* Back pack image (revealed on hover) */}
+          {(product.images.back || product.images.packBack) && (
+            <motion.img
+              src={product.images.back || product.images.packBack}
+              alt={`${product.name} Back Pack (Nutrition & Ingredients)`}
+              className={`w-full h-full object-contain transition-all duration-400 ${
+                isHovered ? "opacity-100 scale-105" : "opacity-0 absolute pointer-events-none"
+              }`}
+              loading="lazy"
             />
-          </div>
+          )}
+
+          {/* Quick Resealable Zipper Badge */}
+          <span className="absolute bottom-2 left-2 bg-stone-900/75 backdrop-blur-sm text-white text-[9px] font-semibold px-2 py-0.5 rounded-full">
+            Zipper Pouch • {product.netWeight}
+          </span>
         </Link>
 
-        {/* Product Details */}
-        <div className="mt-4">
-          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-            <span>Net Wt. {product.netWeight}</span>
-            <span className="flex items-center gap-1 font-mono text-[11px]">
+        {/* Details */}
+        <div className="mt-3 space-y-1">
+          <div className="flex items-center justify-between text-[11px] text-stone-500 font-medium">
+            <span>{product.category}</span>
+            <span className="font-mono text-stone-600">
               {product.nutrients[1]?.label}: {product.nutrients[1]?.per100g}g
             </span>
           </div>
 
-          <h3 className="font-heading text-xl font-bold text-pureliva-heading group-hover:text-pureliva-green transition-colors">
-            <Link to={`/products/${product.slug}`}>
+          <h3 className="font-heading text-base sm:text-lg font-bold text-stone-900 group-hover:text-pureliva-green transition-colors leading-tight">
+            <Link to={`/product/${product.slug}`}>
               {product.name}
             </Link>
           </h3>
 
-          <p className="mt-2 text-xs sm:text-sm text-pureliva-body line-clamp-2 leading-relaxed">
+          <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">
             {product.description}
           </p>
+
+          <div className="pt-2 flex items-baseline gap-2">
+            <span className="font-heading text-base font-bold text-stone-900">
+              {product.pricePlaceholder || (product.price ? `₹${product.price}` : "[PRICE]")}
+            </span>
+            {product.mrp && (
+              <span className="text-xs text-stone-400 line-through">
+                ₹{product.mrp}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Action buttons */}
-      <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2">
-        <Link
-          to={`/products/${product.slug}`}
-          className="flex-1 py-2.5 px-3 text-xs font-semibold text-pureliva-green bg-pureliva-green/5 hover:bg-pureliva-green/10 rounded-xl transition-colors flex items-center justify-center gap-1"
+      {/* Action Buttons */}
+      <div className="mt-4 pt-3 border-t border-stone-100 flex items-center gap-2">
+        {/* Add to Cart */}
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+            addedAnimation
+              ? "bg-emerald-600 text-white"
+              : "bg-pureliva-green hover:bg-emerald-900 text-white shadow-soft"
+          }`}
         >
-          <span>View Details</span>
-          <ArrowUpRight size={14} />
-        </Link>
-        <WhatsAppButton
+          {addedAnimation ? (
+            <>
+              <Check size={14} />
+              <span>Added!</span>
+            </>
+          ) : (
+            <>
+              <ShoppingBag size={14} />
+              <span>Add to Cart</span>
+            </>
+          )}
+        </button>
+
+        {/* WhatsApp Order Quick Link */}
+        <a
           href={waUrl}
-          text="Order"
-          size="sm"
-          className="flex-1"
-          ariaLabel={`Order ${product.name} on WhatsApp`}
-        />
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2.5 rounded-xl bg-whatsapp hover:bg-whatsapp-hover text-white transition-colors"
+          title={`Order ${product.name} on WhatsApp`}
+        >
+          <WhatsAppIcon size={16} fill="#FFFFFF" />
+        </a>
       </div>
     </motion.div>
   );
 };
 
 export default ProductCard;
-

@@ -137,18 +137,25 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               className="relative z-10"
             >
               <img
-                src="/images/brand/logo.png"
+                src="/images/logo/logo.webp"
                 alt="Pureliva Logo"
                 className="h-16 w-auto object-contain mx-auto"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/images/logo/logo.png";
+                }}
               />
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                className="font-script text-2xl text-pureliva-brown mt-2"
-              >
-                Natural Seeds for Everyday Wellness
-              </motion.p>
+              <div className="h-10 mt-2 flex items-center justify-center">
+                <motion.p
+                  key={progress > 45 ? "tagline" : "welcome"}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.4 }}
+                  className="font-script text-2xl text-pureliva-brown"
+                >
+                  {progress > 45 ? "Pure Nutrition in Every Spoon" : "Welcome to Pureliva"}
+                </motion.p>
+              </div>
             </motion.div>
 
             {/* Step 3: Small seed shapes (dots/ovals in 5 product accent colours) falling and scattering softly */}
