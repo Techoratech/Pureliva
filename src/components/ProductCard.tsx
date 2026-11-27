@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "../data/products";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
 import WhatsAppIcon from "./WhatsAppIcon";
 import { buildProductOrderLink } from "../lib/whatsapp";
-import { Heart, ShoppingBag, Check, Eye } from "lucide-react";
+import { ShoppingBag, Check, Eye, ChevronDown } from "lucide-react";
 import QuickViewModal from "./QuickViewModal";
 
 interface ProductCardProps {
@@ -18,10 +17,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
   const [isHovered, setIsHovered] = useState(false);
   const [addedAnimation, setAddedAnimation] = useState(false);
   const [showQuickView, setShowQuickView] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const { addItem } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
 
-  const inWishlist = isInWishlist(product.slug);
   const waUrl = buildProductOrderLink(product.titleWithVariant, 1);
 
   const discountPercent =
@@ -39,12 +37,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
     setTimeout(() => setAddedAnimation(false), 1200);
   };
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleWishlist(product.slug);
-  };
-
   const handleOpenQuickView = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -56,11 +48,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
       <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className={`group relative bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 ${className}`}
+        className={`group relative bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-stone-200/90 shadow-soft hover:shadow-soft-lg transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 ${className}`}
       >
         <div>
-          {/* Top Badges & Actions */}
-          <div className="flex items-center justify-between gap-1.5 mb-2 sm:mb-3">
+          {/* Top Badges & Quick View */}
+          <div className="flex items-center justify-between gap-1.5 mb-2 sm:mb-2.5">
             <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
               {discountPercent > 0 && (
                 <span className="px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[11px] font-extrabold bg-rose-600 text-white tracking-wide">
@@ -68,7 +60,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
                 </span>
               )}
               <span
-                className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] font-bold tracking-wider uppercase truncate max-w-[90px] sm:max-w-none"
+                className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[11px] font-bold tracking-wider uppercase truncate max-w-[95px] sm:max-w-none"
                 style={{
                   backgroundColor: `${product.accent}15`,
                   color: product.accentTextDark ? "#855800" : product.accent,
@@ -78,39 +70,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
               </span>
             </div>
 
-            <div className="flex items-center gap-0.5 sm:gap-1">
-              {/* Quick View Button (Desktop only on hover) */}
+            <div className="flex items-center">
+              {/* Quick View Button */}
               <button
                 type="button"
                 onClick={handleOpenQuickView}
-                className="hidden sm:flex p-1.5 sm:p-2 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors opacity-0 group-hover:opacity-100"
+                className="p-1 sm:p-1.5 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors"
                 aria-label={`Quick view ${product.name}`}
                 title="Quick View"
               >
                 <Eye size={15} />
               </button>
-
-              {/* Wishlist Button */}
-              <button
-                type="button"
-                onClick={handleToggleWishlist}
-                className={`p-1.5 sm:p-2 rounded-full transition-colors ${
-                  inWishlist
-                    ? "text-rose-500 bg-rose-50"
-                    : "text-stone-400 hover:text-rose-500 hover:bg-stone-50"
-                }`}
-                aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-                title="Wishlist"
-              >
-                <Heart size={15} fill={inWishlist ? "currentColor" : "none"} />
-              </button>
             </div>
           </div>
 
-          {/* Product Image Container with Front/Back hover flip */}
+          {/* Product Image Container with Front/Back hover flip (Compact & Balanced) */}
           <Link
             to={`/product/${product.slug}`}
-            className="block relative w-full h-36 sm:h-52 lg:h-60 my-1 flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-stone-50/60 p-1.5 sm:p-2"
+            className="block relative w-full h-32 sm:h-44 lg:h-48 my-1 flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-stone-50/60 p-1 sm:p-2"
             aria-label={`View ${product.name} details`}
           >
             {/* Subtle accent glow on hover */}
@@ -149,8 +126,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
             </span>
           </Link>
 
-          {/* Details */}
-          <div className="mt-2.5 sm:mt-3 space-y-1">
+          {/* Details (Clean & Compact) */}
+          <div className="mt-2 sm:mt-2.5 space-y-1">
             <div className="flex items-center justify-between text-[10px] sm:text-[11px] text-stone-500 font-medium">
               <span className="truncate">{product.category}</span>
               <span className="font-mono text-stone-600 shrink-0">
@@ -164,11 +141,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
               </Link>
             </h3>
 
-            <p className="hidden sm:block text-xs text-stone-500 line-clamp-2 leading-relaxed">
-              {product.description}
-            </p>
-
-            <div className="pt-1 sm:pt-2 flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
+            {/* Price Row */}
+            <div className="pt-0.5 sm:pt-1 flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
               <span className="font-heading text-sm sm:text-base font-bold text-stone-900">
                 {product.pricePlaceholder || (product.price ? `₹${product.price}` : "[PRICE]")}
               </span>
@@ -183,11 +157,61 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = "
                 </span>
               )}
             </div>
+
+            {/* Show Details Option (Tap to reveal lower portion) */}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setShowDetails(!showDetails);
+                }}
+                className="inline-flex items-center gap-1 text-[11px] font-bold text-[#680183] hover:text-[#4F0164] transition-colors py-0.5"
+              >
+                <span>{showDetails ? "Hide details" : "Show details"}</span>
+                <ChevronDown
+                  size={13}
+                  className={`transition-transform duration-200 ${showDetails ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {/* Expandable Lower Portion (revealed on tap) */}
+              <AnimatePresence>
+                {showDetails && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    className="overflow-hidden pt-2 mt-1 border-t border-purple-100/70 space-y-2 text-left"
+                  >
+                    <p className="text-[11px] text-stone-600 leading-relaxed">
+                      {product.description}
+                    </p>
+                    <div className="flex items-center gap-1.5 flex-wrap text-[10px]">
+                      <span className="bg-purple-50 text-[#680183] font-semibold px-2 py-0.5 rounded-md">
+                        {product.nutrients[0]?.per100g} kcal
+                      </span>
+                      <span className="bg-amber-50 text-amber-800 font-semibold px-2 py-0.5 rounded-md">
+                        Fibre: {product.nutrients[3]?.per100g}g
+                      </span>
+                      <Link
+                        to={`/product/${product.slug}`}
+                        className="text-[#680183] font-bold hover:underline ml-auto"
+                      >
+                        Full details →
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-stone-100 flex items-center gap-1.5 sm:gap-2">
+        <div className="mt-3 sm:mt-3.5 pt-2 sm:pt-2.5 border-t border-stone-100 flex items-center gap-1.5 sm:gap-2">
           {/* Add to Cart */}
           <button
             type="button"

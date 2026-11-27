@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SITE_CONFIG } from "../config/site";
 import { CATEGORIES } from "../data/products";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
 import SearchModal from "./SearchModal";
 import CartDrawer from "./CartDrawer";
 import WhatsAppIcon from "./WhatsAppIcon";
@@ -14,7 +13,6 @@ import {
   Menu,
   X,
   Search,
-  Heart,
   ShoppingBag,
   ChevronDown,
   Phone,
@@ -33,7 +31,6 @@ export const Navbar: React.FC = () => {
 
   const { isTop, scrollDirection } = useScrollDirection();
   const { totalItems, openCart } = useCart();
-  const { wishlistCount } = useWishlist();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -359,7 +356,7 @@ export const Navbar: React.FC = () => {
               </NavLink>
             </nav>
 
-            {/* Right Side Icons: Search, Wishlist, Cart, Admin */}
+            {/* Right Side Icons: Search, Cart, Admin */}
             <div className="flex items-center gap-1 sm:gap-2">
               {/* Search Icon */}
               <button
@@ -371,21 +368,6 @@ export const Navbar: React.FC = () => {
               >
                 <Search size={20} />
               </button>
-
-              {/* Wishlist Icon */}
-              <Link
-                to="/collections"
-                className="relative p-2 sm:p-2.5 rounded-full text-stone-700 hover:text-pureliva-green hover:bg-stone-100 transition-colors"
-                aria-label="Wishlist"
-                title="Wishlist"
-              >
-                <Heart size={20} />
-                {wishlistCount > 0 && (
-                  <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center">
-                    {wishlistCount}
-                  </span>
-                )}
-              </Link>
 
               {/* Cart Icon */}
               <button

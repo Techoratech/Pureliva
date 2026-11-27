@@ -3,13 +3,11 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "../data/products";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
 import WhatsAppIcon from "./WhatsAppIcon";
 import { buildProductOrderLink } from "../lib/whatsapp";
 import {
   X,
   ShoppingBag,
-  Heart,
   Check,
   Package,
   ShieldCheck,
@@ -29,11 +27,8 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
   const [added, setAdded] = useState(false);
 
   const { addItem } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
 
   if (!product) return null;
-
-  const inWishlist = isInWishlist(product.slug);
   const discountPercent =
     product.mrp && product.price
       ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
@@ -202,31 +197,18 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, onClose
 
               {/* Actions */}
               <div className="space-y-2 pt-4 border-t border-stone-100">
-                <div className="grid grid-cols-2 gap-2">
+                <div>
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    className={`py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
+                    className={`w-full py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors ${
                       added
                         ? "bg-[#4F0164] text-white"
-                        : "bg-[#680183] hover:bg-[#4F0164] text-white"
+                        : "bg-[#680183] hover:bg-[#4F0164] text-white shadow-soft"
                     }`}
                   >
                     {added ? <Check size={14} /> : <ShoppingBag size={14} />}
                     <span>{added ? "Added!" : "Add to Cart"}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => toggleWishlist(product.slug)}
-                    className={`py-3 px-4 rounded-xl text-xs font-semibold border flex items-center justify-center gap-1.5 transition-colors ${
-                      inWishlist
-                        ? "border-rose-300 bg-rose-50 text-rose-600"
-                        : "border-stone-200 text-stone-700 hover:bg-stone-50"
-                    }`}
-                  >
-                    <Heart size={14} fill={inWishlist ? "currentColor" : "none"} />
-                    <span>{inWishlist ? "Wishlisted" : "Wishlist"}</span>
                   </button>
                 </div>
 

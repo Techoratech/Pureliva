@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { PRODUCTS, Product } from "../data/products";
 import { useCart } from "../context/CartContext";
-import { useWishlist } from "../context/WishlistContext";
 import NutritionTable from "../components/NutritionTable";
 import ProductCard from "../components/ProductCard";
 import WhatsAppIcon from "../components/WhatsAppIcon";
@@ -17,7 +16,6 @@ import {
   Zap,
   ArrowLeft,
   Check,
-  Heart,
   ZoomIn,
   Package,
   Layers,
@@ -32,7 +30,6 @@ export const ProductDetail: React.FC = () => {
   const product = PRODUCTS.find((p) => p.slug === slug);
 
   const { addItem } = useCart();
-  const { toggleWishlist, isInWishlist } = useWishlist();
 
   // Active gallery image: "front" | "back" | "bowl"
   const [activeImageKey, setActiveImageKey] = useState<"front" | "back" | "bowl">("front");
@@ -79,7 +76,6 @@ export const ProductDetail: React.FC = () => {
     );
   }
 
-  const inWishlist = isInWishlist(product.slug);
   const otherProducts = PRODUCTS.filter((p) => p.slug !== product.slug).slice(0, 4);
   const waUrl = buildProductOrderLink(product.titleWithVariant, quantity);
 
@@ -265,19 +261,6 @@ export const ProductDetail: React.FC = () => {
                     {product.category}
                   </span>
                 </div>
-
-                <button
-                  type="button"
-                  onClick={() => toggleWishlist(product.slug)}
-                  className={`p-2.5 rounded-full border transition-colors ${
-                    inWishlist
-                      ? "bg-rose-50 border-rose-200 text-rose-500"
-                      : "border-stone-200 text-stone-400 hover:text-rose-500"
-                  }`}
-                  title="Wishlist"
-                >
-                  <Heart size={18} fill={inWishlist ? "currentColor" : "none"} />
-                </button>
               </div>
 
               {/* Title & Tagline */}
