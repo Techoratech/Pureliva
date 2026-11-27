@@ -11,8 +11,8 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState(false);
   const prefersReduced = useReducedMotion();
 
-  // 5 seed accent colors
-  const seedColors = ["#B5652A", "#7A0F2E", "#B57EDC", "#F5C518", "#F28C0F"];
+  // Signature seed accent colors (Royal Purple & Amber Gold palette)
+  const seedColors = ["#680183", "#F59E0B", "#9333EA", "#FFD700", "#B45309"];
 
   const handleFinish = () => {
     try {
@@ -23,7 +23,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
     setIsExiting(true);
     setTimeout(() => {
       onComplete();
-    }, 800);
+    }, 850);
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       return;
     }
 
-    // Progress counter 0 to 100 over ~2.4 seconds
+    // Progress counter 0 to 100 over ~2.2 seconds
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -44,7 +44,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         const increment = Math.floor(Math.random() * 5) + 3;
         return Math.min(prev + increment, 100);
       });
-    }, 60);
+    }, 55);
 
     return () => clearInterval(interval);
   }, [prefersReduced]);
@@ -55,10 +55,10 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         <motion.div
           key="preloader"
           exit={{ y: "-100%", transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] } }}
-          className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden"
+          className="fixed inset-0 z-50 bg-[#FAF7F2] flex flex-col items-center justify-center cursor-pointer select-none overflow-hidden"
           onClick={handleFinish}
           role="dialog"
-          aria-label="Loading Pureliva Foods"
+          aria-label="Welcome to Pureliva Foods"
         >
           {/* Subtle curved wave at bottom during slide up */}
           <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none translate-y-full">
@@ -70,15 +70,19 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
             >
               <path
                 d="M0,0 C480,120 960,0 1440,80 L1440,120 L0,120 Z"
-                fill="#0B3D1E"
+                fill="#680183"
               />
             </svg>
           </div>
 
+          {/* Ambient Glows */}
+          <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#680183]/10 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-amber-400/15 blur-3xl pointer-events-none" />
+
           {/* Center composition */}
-          <div className="relative flex flex-col items-center max-w-sm px-6 text-center">
-            {/* Step 1: SVG Leaf draw animation */}
-            <div className="w-20 h-20 mb-4 relative flex items-center justify-center">
+          <div className="relative flex flex-col items-center max-w-sm px-6 text-center z-10">
+            {/* Step 1: SVG Leaf & Sprout draw animation */}
+            <div className="w-20 h-20 mb-3 relative flex items-center justify-center">
               <svg
                 width="72"
                 height="72"
@@ -88,20 +92,20 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               >
                 <motion.path
                   d="M12 52C12 52 16 32 36 20C48 12.8 54 10 54 10C54 10 51.2 16 44 28C32 48 12 52 12 52Z"
-                  stroke="#0B3D1E"
+                  stroke="#680183"
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  initial={{ pathLength: 0, fill: "rgba(11, 61, 30, 0)" }}
+                  initial={{ pathLength: 0, fill: "rgba(104, 1, 131, 0)" }}
                   animate={{
                     pathLength: 1,
-                    fill: progress > 50 ? "rgba(11, 61, 30, 0.1)" : "rgba(11, 61, 30, 0)",
+                    fill: progress > 50 ? "rgba(104, 1, 131, 0.12)" : "rgba(104, 1, 131, 0)",
                   }}
                   transition={{ duration: 1.4, ease: "easeInOut" }}
                 />
                 <motion.path
                   d="M12 52C22 42 34 30 54 10"
-                  stroke="#B5652A"
+                  stroke="#F59E0B"
                   strokeWidth="2"
                   strokeLinecap="round"
                   initial={{ pathLength: 0 }}
@@ -110,7 +114,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 />
                 <motion.path
                   d="M26 38C30 35 36 33 42 32"
-                  stroke="#0B3D1E"
+                  stroke="#680183"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   initial={{ pathLength: 0 }}
@@ -119,7 +123,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                 />
                 <motion.path
                   d="M34 29C38 25 43 23 48 21"
-                  stroke="#0B3D1E"
+                  stroke="#680183"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   initial={{ pathLength: 0 }}
@@ -129,36 +133,39 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               </svg>
             </div>
 
-            {/* Step 2: Logo fades + scales in (0.8 -> 1) with soft blur-to-sharp */}
+            {/* Step 2: Logo fades + scales in (0.8 -> 1) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8, filter: "blur(8px)" }}
+              initial={{ opacity: 0, scale: 0.85, filter: "blur(6px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
+              transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
               className="relative z-10"
             >
               <img
                 src="/images/logo/logo.webp"
                 alt="Pureliva Logo"
-                className="h-16 w-auto object-contain mx-auto"
+                className="h-14 sm:h-16 w-auto object-contain mx-auto"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/images/logo/logo.png";
                 }}
               />
-              <div className="h-10 mt-2 flex items-center justify-center">
+              <div className="h-8 mt-2 flex items-center justify-center">
                 <motion.p
                   key={progress > 45 ? "tagline" : "welcome"}
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -5 }}
                   transition={{ duration: 0.4 }}
-                  className="font-script text-2xl text-pureliva-brown"
+                  className="font-heading font-bold text-lg sm:text-xl text-[#680183]"
                 >
                   {progress > 45 ? "Pure Nutrition in Every Spoon" : "Welcome to Pureliva"}
                 </motion.p>
               </div>
+              <p className="text-[11px] text-stone-500 font-medium">
+                Patidar Enterprises • Khandwa, Madhya Pradesh
+              </p>
             </motion.div>
 
-            {/* Step 3: Small seed shapes (dots/ovals in 5 product accent colours) falling and scattering softly */}
+            {/* Step 3: Small floating seed particles */}
             <div className="absolute inset-0 pointer-events-none overflow-visible">
               {[
                 { x: -70, y: -40, rotate: 25, delay: 0.8, color: seedColors[0], scale: 1 },
@@ -186,15 +193,15 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
               ))}
             </div>
 
-            {/* Step 4: Thin green progress line fills 0 -> 100% with counter */}
-            <div className="w-56 mt-10">
-              <div className="flex items-center justify-between text-xs font-mono text-pureliva-green font-semibold mb-1.5">
-                <span className="text-[10px] uppercase tracking-widest text-pureliva-muted">Loading Purity</span>
-                <span>{progress}%</span>
+            {/* Step 4: Royal Purple & Amber Gold progress line (0 -> 100%) */}
+            <div className="w-56 mt-8">
+              <div className="flex items-center justify-between text-xs font-mono font-semibold mb-1.5">
+                <span className="text-[10px] uppercase tracking-widest text-stone-500">Loading Purity</span>
+                <span className="text-[#680183] font-bold">{progress}%</span>
               </div>
-              <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+              <div className="h-1.5 w-full bg-purple-100 rounded-full overflow-hidden p-0.5">
                 <motion.div
-                  className="h-full bg-pureliva-green rounded-full"
+                  className="h-full bg-gradient-to-r from-[#53016A] via-[#680183] to-amber-400 rounded-full"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -202,9 +209,9 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
 
             <motion.span
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              transition={{ delay: 1.5 }}
-              className="text-[11px] text-gray-400 mt-4 tracking-wide"
+              animate={{ opacity: 0.6 }}
+              transition={{ delay: 1.2 }}
+              className="text-[11px] text-stone-400 mt-4 tracking-wide"
             >
               Click anywhere to skip
             </motion.span>
@@ -216,4 +223,3 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
 };
 
 export default Preloader;
-
